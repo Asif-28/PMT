@@ -11,6 +11,7 @@ const Form = () => {
     loi: "",
     scope: "",
     target: "",
+    country: "",
     targetDescription: "",
     onlineOffline: "",
     billingComments: "",
@@ -164,10 +165,7 @@ const Form = () => {
                 name="target"
                 value={formData.target}
                 onChange={handleChange}
-                className="
-      bg-white
-      appearance-none  xl:min-w-[480px] font-semibold border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-blue-900 focus:shadow-outline
-    "
+                className="bg-white appearance-none  xl:min-w-[480px] font-semibold border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-blue-900 focus:shadow-outline"
               >
                 <option className="" value="">
                   B2B
@@ -177,27 +175,44 @@ const Form = () => {
                 <option value="c">C</option>
               </select>
             </div>
-          </div>
-
-          {/* ... other fields in the same format ... */}
-
-          <div className="mb-4">
-            <label
-              htmlFor="targetDescription"
-              className="block text-gray-500 font-medium mb-4"
-            >
-              Target Description *
-            </label>
-            <textarea
-              id="targetDescription"
-              name="targetDescription"
-              value={formData.targetDescription}
-              onChange={handleChange}
-              placeholder="Enter your LOI "
-              className=" appearance-none font-light  xl:max-w-[480px] h-40 border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-blue-900 focus:shadow-outline"
-            />
-          </div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="mb-4">
+              <label
+                htmlFor="targetDescription"
+                className="block text-gray-500 font-medium mb-4"
+              >
+                Target Description *
+              </label>
+              <textarea
+                id="targetDescription"
+                name="targetDescription"
+                value={formData.targetDescription}
+                onChange={handleChange}
+                placeholder="Enter your LOI "
+                className=" appearance-none font-light  xl:max-w-[480px] h-40 border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-blue-900 focus:shadow-outline"
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="target"
+                className="block text-gray-500 font-medium mb-4"
+              >
+                Country *
+              </label>
+              <select
+                id="country"
+                name="country"
+                value={formData.country}
+                onChange={handleChange}
+                className="bg-white appearance-none  xl:min-w-[480px] font-semibold border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-blue-900 focus:shadow-outline"
+              >
+                <option className="" value="">
+                  India
+                </option>
+                <option value="a">A</option>
+                <option value="b">B</option>
+                <option value="c">C</option>
+              </select>
+            </div>
             <div className="mb-4">
               <label className="block text-gray-500 font-medium mb-4">
                 Methodology
@@ -257,6 +272,9 @@ const Form = () => {
               />
             </div>
           </div>
+
+          {/* ... other fields in the same format ... */}
+
           <div className="flex items-center justify-center">
             <button className="bg-[#000000] font-semibold text-[18px] w-[16.5rem] px-12 py-6 text-white rounded-lg mt-20">
               Create Project
