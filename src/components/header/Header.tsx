@@ -15,7 +15,7 @@ const Header = () => {
         <div className="flex items-center relative">
           <input
             placeholder="search"
-            className="text-[15px] border-none lg:min-w-[700px] px-16 py-4 rounded-full focus:outline-blue-900 focus:shadow-outline"
+            className="text-[15px] border-none min-w-[300px] md:w-[500px] lg:min-w-[700px] px-16 py-4 rounded-full focus:outline-[#392467] focus:shadow-outline"
             type="search"
           />
           <div className=" absolute left-5">
@@ -28,8 +28,8 @@ const Header = () => {
           </div>
         </div>
         <div className=" flex items-center gap-10">
-          <div className="flex  gap-10 border border-[#008000] px-8 py-[1.2rem] items-center justify-center rounded-full">
-            <div className="w-4 h-4 rounded-full bg-[#008000]"></div>
+          <div className="flex gap-3 md:gap-6 lg:gap-10 border border-[#008000] px-4 py-2 md:px-6 md:py-3 lg:px-8 lg:py-[1.2rem] items-center justify-center rounded-full">
+            <div className="w-2 h-2 md:w-4 md:h-4 rounded-full bg-[#008000]"></div>
             <h3>Active </h3>
           </div>
           <div>
