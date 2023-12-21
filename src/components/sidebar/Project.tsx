@@ -326,13 +326,13 @@ const Form = () => {
                   <span className="ml-2">Offline</span>
                 </label>
               </div>
-              <div className="flex gap-2 items-center  ">
+              <div className="flex gap-2 items-center cursor-pointer  ">
                 <div
                   onClick={() => handleDivClick("CATI")}
                   className={`${
                     selectedDiv === "CATI"
                       ? "bg-[#a367b1] text-[#392467]"
-                      : "bg-white text-black"
+                      : "bg-white text-gray-500"
                   } border border-gray-500 w-36 px-10 py-5 mt-2 rounded-2xl flex items-center justify-center cursor-pointer`}
                 >
                   CATI
@@ -342,7 +342,7 @@ const Form = () => {
                   className={`${
                     selectedDiv === "Recruitment"
                       ? "bg-[#a367b1] text-[#392467]"
-                      : "bg-white text-black"
+                      : "bg-white text-gray-500"
                   } border border-gray-500 w-36 px-10 py-5 mt-2 rounded-2xl flex items-center justify-center cursor-pointer`}
                 >
                   Recruitment
@@ -352,7 +352,7 @@ const Form = () => {
                   className={`${
                     selectedDiv === "IGD/IDI"
                       ? "bg-[#a367b1] text-[#392467]"
-                      : "bg-white text-black"
+                      : "bg-white text-gray-500"
                   } border border-gray-500 w-36 px-10 py-5 mt-2 rounded-2xl flex items-center justify-center cursor-pointer`}
                 >
                   IGD/IDI
