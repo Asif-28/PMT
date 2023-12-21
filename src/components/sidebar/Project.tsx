@@ -63,13 +63,10 @@ const Form = () => {
     setSelectedDiv(divName);
   };
   return (
-    <main className="">
+    <main>
       <h2 className="text-2xl font-semibold text-[#000]">Project Creation</h2>
       <div className="section bg-white pl-5 pr-2 sm:pl-6 sm:pr-16 py-12 rounded-3xl mt-2 sm:mt-4  ">
-        <form
-          className="text-[15px] max-w-[350px] sm:max-w-full"
-          onSubmit={handleSubmit}
-        >
+        <form className="text-[15px] " onSubmit={handleSubmit}>
           <h2 className="mb-10">Enter the following details</h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="mb-4">
@@ -87,7 +84,7 @@ const Form = () => {
                 value={formData.projectName}
                 onChange={handleChange}
                 placeholder="Enter your project Name "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl sm:w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
@@ -105,7 +102,7 @@ const Form = () => {
                 value={formData.projectCode}
                 onChange={handleChange}
                 placeholder="Enter your project Code "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl sm:w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
@@ -123,7 +120,7 @@ const Form = () => {
                 value={formData.projectManager}
                 onChange={handleChange}
                 placeholder="Enter your project Manager "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl sm:w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
@@ -141,7 +138,7 @@ const Form = () => {
                 value={formData.clientProjectManager}
                 onChange={handleChange}
                 placeholder="Enter your Client Project Manager "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl sm:w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
@@ -159,7 +156,7 @@ const Form = () => {
                 value={formData.incidenceRate}
                 onChange={handleChange}
                 placeholder="Enter your Incidence Rate "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl sm:w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
@@ -177,7 +174,7 @@ const Form = () => {
                 value={formData.loi}
                 onChange={handleChange}
                 placeholder="Enter your LOI "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl sm:w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
 
@@ -196,7 +193,7 @@ const Form = () => {
                 value={formData.scope}
                 onChange={handleChange}
                 placeholder="Enter your Scope "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl sm:w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
 
@@ -212,7 +209,7 @@ const Form = () => {
                   <button
                     onClick={handleToggle}
                     type="button"
-                    className=" bg-white inline-flex justify-center w-full  text-sm appearance-none  xl:min-w-[480px] border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                    className=" bg-white inline-flex justify-center min-w-[16.7rem] sm:w-full  text-sm appearance-none  xl:min-w-[480px] border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
                   >
                     {selectedOption ? selectedOption : "B2B"}
                   </button>
@@ -231,7 +228,7 @@ const Form = () => {
                       <div
                         key={index}
                         onClick={() => handleOptionClick(option)}
-                        className="block px-4 py-4 text-sm text-gray-700 w-full hover:bg-[#a367b1] hover:text-[#392467] font-semibold  text-left  my-2 rounded-xl"
+                        className="block px-4 py-4 text-sm text-gray-700 sm:w-full hover:bg-[#a367b1] hover:text-[#392467] font-semibold  text-left  my-2 rounded-xl"
                         role="menuitem"
                       >
                         {option}
@@ -255,7 +252,7 @@ const Form = () => {
                 value={formData.targetDescription}
                 onChange={handleChange}
                 placeholder="Enter your LOI "
-                className=" appearance-none font-light  xl:max-w-[480px] h-40 border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none font-light  xl:max-w-[480px] h-40 border border-gray-500 rounded-xl sm:w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
 
@@ -271,7 +268,7 @@ const Form = () => {
                   <button
                     onClick={handleToggleCountry}
                     type="button"
-                    className="inline-flex justify-center w-full  text-sm appearance-none  xl:min-w-[480px] border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                    className="inline-flex justify-center min-w-[16.7rem] sm:w-full  text-sm appearance-none  xl:min-w-[480px] border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
                   >
                     {selectedCountry ? selectedCountry : "INDIA"}
                   </button>
@@ -279,7 +276,7 @@ const Form = () => {
               </div>
 
               {isOpenCountry && (
-                <div className=" absolute  mt-2 w-full rounded-3xl shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                <div className=" absolute  mt-2 sm:w-full rounded-3xl shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                   <div
                     className="py-1 w-full px-3 bg-white"
                     role="menu"
@@ -290,7 +287,7 @@ const Form = () => {
                       <div
                         key={index}
                         onClick={() => handleOptionCountry(country)}
-                        className="block px-4 py-4 text-sm text-gray-700 w-full hover:bg-[#a367b1] hover:text-[#392467] font-semibold  text-left  my-2 rounded-xl"
+                        className="block px-4 py-4 text-sm text-gray-700 sm:w-full hover:bg-[#a367b1] hover:text-[#392467] font-semibold  text-left  my-2 rounded-xl"
                         role="menuitem"
                       >
                         {country}
@@ -378,7 +375,7 @@ const Form = () => {
                 value={formData.billingComments}
                 onChange={handleChange}
                 placeholder="Enter your billing comments"
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl sm:w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
           </div>
