@@ -55,7 +55,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <main className="section flex gap-8  ">
+    <main className="section flex gap-4 sm:gap-8  ">
       <div className="hidden sm:block bg-[#fff] w-72 rounded-3xl py-6 mt-12 ">
         {data.map((item) => (
           <div
@@ -84,7 +84,7 @@ const Sidebar = () => {
           </div>
         ))}
       </div>
-      <div className="sm:hidden bg-[#fff] w-36 rounded-3xl py-4 mt-6 ml-2 ">
+      <div className="sm:hidden bg-[#fff] min-w-28 rounded-3xl py-4 mt-6 ml-2 ">
         {data.map((item) => (
           <div
             className={`cursor-pointer mb-3 py-3 flex items-center justify-center  mx-auto w-24 `}
@@ -92,15 +92,15 @@ const Sidebar = () => {
             onClick={() => setSelectedItemId(item.id)}
           >
             <div
-              className={`cursor-pointer rounded-full px-4  py-4  flex justify-center items-center ${
+              className={`cursor-pointer rounded-full px-4  py-[1rem]  flex justify-center items-center ${
                 item.id === selectedItemId
                   ? "bg-[#392467] rounded-full text-white "
                   : ""
               }`}
             >
               <Image
-                height={30}
-                width={30}
+                height={25}
+                width={25}
                 src={`/${item.img}`}
                 alt="image-portfolio"
                 className=""
