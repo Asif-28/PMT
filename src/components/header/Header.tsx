@@ -2,9 +2,9 @@ import Image from "next/image";
 
 const Header = () => {
   return (
-    <main className="section h-24 sm:h-32">
-      <div className="flex  items-center gap-3 sm:justify-between">
-        <div className="left flex items-center gap-3 sm:gap-6">
+    <main className="section sm:h-32 overflow-hidden ">
+      <div className="flex  items-center gap-6 sm:justify-between">
+        <div className="left flex items-center gap-3 sm:gap-6 ml-1 sm:ml-0">
           <div className="rounded-full px-5 py-5 bg-white w-[4rem] flex justify-center items-center">
             <Image src={`/category.png`} alt="header" height={30} width={30} />
           </div>
@@ -12,7 +12,7 @@ const Header = () => {
             <Image src={`/Frame 1.png`} alt="header" height={50} width={110} />
           </div>
         </div>
-        <div className="flex items-center relative">
+        <div className="hidden sm:flex items-center relative">
           <input
             placeholder="search"
             className="text-[15px] border-none w-[150px] md:w-[500px] lg:min-w-[700px] px-10 py-3 sm:px-16 sm:py-4 rounded-full focus:outline-[#392467] focus:shadow-outline"
@@ -34,6 +34,23 @@ const Header = () => {
           </div>
           <div>
             <Image src={`/Ellipse 2.png`} alt="image" height={70} width={70} />
+          </div>
+        </div>
+      </div>
+      <div className="flex items-center justify-center mb-4">
+        <div className="sm:hidden flex items-center mx-auto  relative">
+          <input
+            placeholder="search"
+            className="text-[15px] border-none w-[300px] md:w-[500px] lg:min-w-[700px] px-16 py-3 sm:px-16 sm:py-4 rounded-full focus:outline-[#392467] focus:shadow-outline"
+            type="search"
+          />
+          <div className=" absolute left-5">
+            <Image
+              src={`/search-normal.png`}
+              alt="image"
+              height={10}
+              width={20}
+            />
           </div>
         </div>
       </div>
