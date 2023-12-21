@@ -5,7 +5,7 @@ import Sidebar from "@/components/sidebar/Sidebar";
 export default function Home() {
   return (
     <main>
-      {/* <Header /> */}
+      <Header />
       <Sidebar />
       {/* <Form /> */}
     </main>
