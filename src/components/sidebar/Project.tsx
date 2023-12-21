@@ -65,7 +65,7 @@ const Form = () => {
   return (
     <main>
       <h2 className="text-2xl font-semibold text-[#000]">Project Creation</h2>
-      <div className="section bg-white pl-10 pr-16 py-12 rounded-3xl mt-4">
+      <div className="section bg-white pl-10 pr-16 py-12 rounded-3xl mt-2 sm:mt-4">
         <form className="text-[15px]" onSubmit={handleSubmit}>
           <h2 className="mb-10">Enter the following details</h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
