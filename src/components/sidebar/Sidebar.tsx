@@ -84,10 +84,10 @@ const Sidebar = () => {
           </div>
         ))}
       </div>
-      <div className="sm:hidden bg-[#fff] min-w-28 rounded-3xl py-4 mt-6 ml-2 ">
+      <div className="sm:hidden bg-[#fff] min-w-20 rounded-3xl py-4 mt-6 ml-2 ">
         {data.map((item) => (
           <div
-            className={`cursor-pointer mb-3 py-3 flex items-center justify-center  mx-auto w-24 `}
+            className={`cursor-pointer mb-3 py-3 flex ml-2 `}
             key={item.id}
             onClick={() => setSelectedItemId(item.id)}
           >
