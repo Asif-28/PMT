@@ -85,7 +85,7 @@ const Sidebar = () => {
           </div>
         ))}
       </div>
-      <div className="sm:hidden bg-[#fff] min-w-[70px] rounded-3xl flex  flex-col  items-center py-4 mt-10 ml-1 ">
+      <div className="sm:hidden bg-[#fff] min-w-[60px] rounded-3xl flex  flex-col  items-center py-4 mt-10 ml-1 ">
         {data.map((item) => (
           <div
             className={`cursor-pointer mb-3 py-3 `}
@@ -101,7 +101,7 @@ const Sidebar = () => {
             >
               <Image
                 height={25}
-                width={35}
+                width={30}
                 src={`/${item.img}`}
                 alt="image-portfolio"
                 className=""
