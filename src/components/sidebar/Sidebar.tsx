@@ -2,6 +2,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import Form from "./Project";
+import ClientSetup from "./ClientSetup";
 
 const Sidebar = () => {
   const [selectedItemId, setSelectedItemId] = useState(1);
@@ -109,7 +110,10 @@ const Sidebar = () => {
           </div>
         ))}
       </div>
-      <div>{selectedItemId === 1 ? <Form /> : ""}</div>
+      <div>
+        {selectedItemId === 1 && <Form />}
+        {selectedItemId === 2 && <ClientSetup />}
+      </div>
     </main>
   );
 };
