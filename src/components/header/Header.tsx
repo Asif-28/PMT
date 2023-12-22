@@ -1,11 +1,17 @@
+"use client";
 import Image from "next/image";
-
+import { useMenu } from "../context/MenuContext";
 const Header = () => {
+  const { isOpen, toggleMenu } = useMenu();
+  console.log(isOpen);
   return (
     <main className="section sm:h-32 overflow-hidden ">
       <div className="flex  items-center gap-6 sm:justify-between">
         <div className="left flex items-center gap-3 sm:gap-6 ml-1 sm:ml-0">
-          <div className="rounded-full px-5 py-5 bg-white w-[4rem] flex justify-center items-center">
+          <div
+            onClick={toggleMenu}
+            className="rounded-full px-5 py-5 bg-white w-[4rem] flex justify-center items-center cursor-pointer"
+          >
             <Image src={`/category.png`} alt="header" height={30} width={30} />
           </div>
           <div>

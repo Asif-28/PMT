@@ -95,7 +95,7 @@ const VendorSetup: React.FC = () => {
                   <button
                     onClick={handleToggleVendor}
                     type="button"
-                    className="inline-flex justify-center min-w-[16.7rem] sm:w-full  text-sm appearance-none  xl:min-w-[480px] border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                    className="inline-flex justify-center min-w-[15.5rem] sm:w-full  text-sm appearance-none  xl:min-w-[480px] border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
                   >
                     {selectedVendor ? selectedVendor : "Choose from dropdown"}
                   </button>
@@ -204,7 +204,7 @@ const VendorSetup: React.FC = () => {
                 Quick Action *
               </label>
               <div className="mt-2">
-                <label className="inline-flex items-center border border-gray-500 px-20 py-6 rounded-2xl">
+                <label className="inline-flex items-center border border-gray-500 px-16 sm:px-20 py-4 sm:py-6 rounded-2xl">
                   <input
                     required
                     type="radio"
@@ -216,7 +216,7 @@ const VendorSetup: React.FC = () => {
                   />
                   <span className="ml-2 text-gray-500">Pause Vendor</span>
                 </label>
-                <label className="inline-flex items-center  mt-2 sm:mt-0 sm:ml-4 border border-gray-500 px-20 py-6 rounded-2xl">
+                <label className="inline-flex items-center  mt-2 sm:mt-0 sm:ml-4 border border-gray-500 px-12 sm:px-20 py-4 sm:py-6 rounded-2xl">
                   <input
                     type="radio"
                     name="pause"

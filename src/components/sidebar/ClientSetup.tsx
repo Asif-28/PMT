@@ -97,7 +97,7 @@ const ClientSetup: React.FC = () => {
                   <button
                     onClick={handleToggleCountry}
                     type="button"
-                    className="inline-flex justify-center min-w-[16.7rem] sm:w-full  text-sm appearance-none  xl:min-w-[480px] border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                    className="inline-flex justify-center min-w-[15.5rem] sm:w-full  text-sm appearance-none  xl:min-w-[480px] border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
                   >
                     {selectedCountry ? selectedCountry : "INDIA"}
                   </button>
