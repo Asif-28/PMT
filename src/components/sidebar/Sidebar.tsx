@@ -6,6 +6,7 @@ import ClientSetup from "./ClientSetup";
 import VendorSetup from "./VendorSetup";
 import AddNewClient from "./AddNewClient";
 import AddNewVendor from "./AddNewVendor";
+import IdReconciliation from "./IdReconciliation";
 
 const Sidebar = () => {
   const [selectedItemId, setSelectedItemId] = useState(1);
@@ -119,6 +120,7 @@ const Sidebar = () => {
         {selectedItemId === 3 && <VendorSetup />}
         {selectedItemId === 4 && <AddNewClient />}
         {selectedItemId === 5 && <AddNewVendor />}
+        {selectedItemId === 6 && <IdReconciliation />}
       </div>
     </main>
   );
