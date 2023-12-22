@@ -7,6 +7,9 @@ import VendorSetup from "./VendorSetup";
 import AddNewClient from "./AddNewClient";
 import AddNewVendor from "./AddNewVendor";
 import IdReconciliation from "./IdReconciliation";
+import DataExport from "./DataExport";
+import ProjectAllocation from "./ProjectAllocation";
+import Rejects from "./Rejects";
 
 const Sidebar = () => {
   const [selectedItemId, setSelectedItemId] = useState(1);
@@ -121,6 +124,9 @@ const Sidebar = () => {
         {selectedItemId === 4 && <AddNewClient />}
         {selectedItemId === 5 && <AddNewVendor />}
         {selectedItemId === 6 && <IdReconciliation />}
+        {selectedItemId === 7 && <DataExport />}
+        {selectedItemId === 8 && <ProjectAllocation />}
+        {selectedItemId === 9 && <Rejects />}
       </div>
     </main>
   );

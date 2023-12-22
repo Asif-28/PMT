@@ -4,7 +4,7 @@ interface FormData {
   projectCode: string;
   id: string;
 }
-const IdReconciliation: React.FC = () => {
+const Rejects: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     projectCode: "",
     id: "",
@@ -129,7 +129,7 @@ const IdReconciliation: React.FC = () => {
               onSubmit={handleSubmit}
               className="bg-[#000000] font-semibold text-base sm:text-[18px] w-[12rem] sm:w-[16.5rem] px-10 py-4 sm:px-16 sm:py-6 text-white rounded-lg mt-10 sm:mt-20"
             >
-              Confirm
+              Reconcile
             </button>
           </div>
         </form>
@@ -138,4 +138,4 @@ const IdReconciliation: React.FC = () => {
   );
 };
 
-export default IdReconciliation;
+export default Rejects;
