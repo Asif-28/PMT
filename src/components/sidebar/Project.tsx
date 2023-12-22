@@ -66,7 +66,7 @@ const Form = () => {
     <main>
       <h2 className="text-2xl font-semibold text-[#000]">Project Creation</h2>
       <div className="section bg-white pl-5 pr-2 sm:pl-6 sm:pr-16 py-12 rounded-3xl mt-2 sm:mt-4  ">
-        <form className="text-[15px] " onSubmit={handleSubmit}>
+        <form className="text-[14px] sm:text-[15px] " onSubmit={handleSubmit}>
           <h2 className="mb-10">Enter the following details</h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="mb-4">
@@ -385,7 +385,7 @@ const Form = () => {
           <div className="flex items-center justify-center">
             <button
               onSubmit={handleSubmit}
-              className="bg-[#000000] font-semibold text-[18px] w-[10rem] sm:w-[16.5rem] px-10 py-4 sm:px-16 sm:py-6 text-white rounded-lg mt-10 sm:mt-20"
+              className="bg-[#000000] font-semibold text-base sm:text-[18px] w-[12rem] sm:w-[16.5rem] px-10 py-4 sm:px-16 sm:py-6 text-white rounded-lg mt-10 sm:mt-20"
             >
               Create Project
             </button>
