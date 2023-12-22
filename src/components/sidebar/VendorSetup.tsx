@@ -3,22 +3,22 @@ import { countrys } from "../data/data";
 
 interface FormData {
   projectCode: string;
-  inputField: string;
-  countryCode: string;
+  vendorCode: string;
+  pause: string;
   scope: string;
-  country: string;
-  testLink: string;
-  liveLink: string;
+  complete: string;
+  terminate: string;
+  overQuota: string;
 }
-const ClientSetup: React.FC = () => {
+const VendorSetup: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     projectCode: "",
-    inputField: "",
-    countryCode: "",
+    vendorCode: "",
+    pause: "",
     scope: "",
-    country: "",
-    testLink: "",
-    liveLink: "",
+    complete: "",
+    terminate: "",
+    overQuota: "",
   });
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -31,19 +31,19 @@ const ClientSetup: React.FC = () => {
     console.log(formData); // Replace with actual submission logic
   };
 
-  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
-  const [isOpenCountry, setIsOpenCountry] = useState(false);
-  const handleOptionCountry = (country: string) => {
-    setSelectedCountry(country);
-    setIsOpenCountry(false);
+  const [selectedVendor, setSelectedVendor] = useState<string | null>(null);
+  const [isOpenVendor, setIsOpenVendor] = useState(false);
+  const handleOptionVendor = (country: string) => {
+    setSelectedVendor(country);
+    setIsOpenVendor(false);
   };
-  const handleToggleCountry = () => {
-    setIsOpenCountry(!isOpenCountry);
+  const handleToggleVendor = () => {
+    setIsOpenVendor(!isOpenVendor);
   };
-
+  const vendors = ["a", "b", "c", "d"];
   return (
     <main>
-      <h2 className="text-2xl font-semibold text-[#000]">Client Setup</h2>
+      <h2 className="text-2xl font-semibold text-[#000]">Vendor Setup</h2>
       <div className="section bg-white pl-5 pr-2 sm:pl-6 sm:pr-16 py-12 rounded-3xl mt-2 sm:mt-4  ">
         <form className="text-[15px] " onSubmit={handleSubmit}>
           <h2 className="mb-10">Enter the following details</h2>
@@ -68,43 +68,42 @@ const ClientSetup: React.FC = () => {
             </div>
             <div className="mb-4">
               <label
-                htmlFor="inputField"
+                htmlFor="vendorCode"
                 className="block text-gray-500 font-medium mb-4"
               >
-                Input Field *
+                Vendor Code *
               </label>
               <input
                 required
                 type="text"
-                id="inputField"
-                name="inputField"
-                value={formData.inputField}
+                id="vendorCode"
+                name="vendorCode"
+                value={formData.vendorCode}
                 onChange={handleChange}
                 placeholder="Enter your Input Field"
                 className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl sm:w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
-
             <div className="relative inline-block text-left z-30">
               <label
-                htmlFor="country"
+                htmlFor="selectVendor"
                 className="block text-gray-500 font-medium mb-4"
               >
-                Country *
+                Select Vendor *
               </label>
               <div>
                 <span className="rounded-md shadow-sm">
                   <button
-                    onClick={handleToggleCountry}
+                    onClick={handleToggleVendor}
                     type="button"
                     className="inline-flex justify-center min-w-[16.7rem] sm:w-full  text-sm appearance-none  xl:min-w-[480px] border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
                   >
-                    {selectedCountry ? selectedCountry : "INDIA"}
+                    {selectedVendor ? selectedVendor : "Choose from dropdown"}
                   </button>
                 </span>
               </div>
 
-              {isOpenCountry && (
+              {isOpenVendor && (
                 <div className="absolute mt-2 sm:w-full rounded-3xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-y-auto max-h-60">
                   <div
                     className="py-1 w-full px-3 bg-white"
@@ -112,38 +111,19 @@ const ClientSetup: React.FC = () => {
                     aria-orientation="vertical"
                     aria-labelledby="options-menu"
                   >
-                    {countrys.map((country, index) => (
+                    {vendors.map((Vendor, index) => (
                       <div
                         key={index}
-                        onClick={() => handleOptionCountry(country)}
+                        onClick={() => handleOptionVendor(Vendor)}
                         className="block px-4 py-4 text-sm text-gray-700 sm:w-full hover:bg-[#a367b1] hover:text-[#392467] font-semibold  text-left  my-2 rounded-xl"
                         role="menuitem"
                       >
-                        {country}
+                        {Vendor}
                       </div>
                     ))}
                   </div>
                 </div>
               )}
-            </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="countryCode"
-                className="block text-gray-500 font-medium mb-4"
-              >
-                Country Code *
-              </label>
-              <input
-                required
-                type="text"
-                id="countryCode"
-                name="countryCode"
-                value={formData.countryCode}
-                onChange={handleChange}
-                placeholder="Enter your Country Code"
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl sm:w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
-              />
             </div>
 
             <div className="mb-4">
@@ -168,19 +148,19 @@ const ClientSetup: React.FC = () => {
           <div className="grid grid-cols-1">
             <div className="mb-4">
               <label
-                htmlFor="testLink"
+                htmlFor="complete"
                 className="block text-gray-500 font-medium mb-4"
               >
-                Test Link *
+                Complete *
               </label>
               <input
                 required
                 type="text"
-                id="testLink"
-                name="testLink"
-                value={formData.testLink}
+                id="complete"
+                name="complete"
+                value={formData.complete}
                 onChange={handleChange}
-                placeholder="Enter your test Link "
+                placeholder="Enter your status "
                 className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl sm:w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
@@ -189,18 +169,66 @@ const ClientSetup: React.FC = () => {
                 htmlFor="liveLink"
                 className="block text-gray-500 font-medium mb-4"
               >
-                Live Link *
+                Terminate *
               </label>
               <input
                 required
                 type="text"
-                id="liveLink"
-                name="liveLink"
-                value={formData.liveLink}
+                id="terminate"
+                name="terminate"
+                value={formData.terminate}
                 onChange={handleChange}
-                placeholder="Enter your live Link "
+                placeholder="Enter your status"
                 className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl sm:w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="overQuota"
+                className="block text-gray-500 font-medium mb-4"
+              >
+                Over Quota*
+              </label>
+              <input
+                required
+                type="text"
+                id="overQuota"
+                name="overQuota"
+                value={formData.overQuota}
+                onChange={handleChange}
+                placeholder="Enter your status"
+                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl sm:w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-500 font-medium mb-4">
+                Quick Action *
+              </label>
+              <div className="mt-2">
+                <label className="inline-flex items-center border border-gray-500 px-20 py-6 rounded-2xl">
+                  <input
+                    required
+                    type="radio"
+                    name="pause"
+                    value="pauseVendor"
+                    checked={formData.pause === "pauseVendor"}
+                    onChange={handleChange}
+                    className="form-radio radio-container  "
+                  />
+                  <span className="ml-2 text-gray-500">Pause Vendor</span>
+                </label>
+                <label className="inline-flex items-center  mt-2 sm:mt-0 sm:ml-4 border border-gray-500 px-20 py-6 rounded-2xl">
+                  <input
+                    type="radio"
+                    name="pause"
+                    value="pauseall"
+                    checked={formData.pause === "pauseall"}
+                    onChange={handleChange}
+                    className="form-radio radio-container "
+                  />
+                  <span className="ml-2 text-gray-500">Pause All Vendor</span>
+                </label>
+              </div>
             </div>
           </div>
 
@@ -220,4 +248,4 @@ const ClientSetup: React.FC = () => {
   );
 };
 
-export default ClientSetup;
+export default VendorSetup;

@@ -3,6 +3,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import Form from "./Project";
 import ClientSetup from "./ClientSetup";
+import VendorSetup from "./VendorSetup";
 
 const Sidebar = () => {
   const [selectedItemId, setSelectedItemId] = useState(1);
@@ -113,6 +114,7 @@ const Sidebar = () => {
       <div>
         {selectedItemId === 1 && <Form />}
         {selectedItemId === 2 && <ClientSetup />}
+        {selectedItemId === 3 && <VendorSetup />}
       </div>
     </main>
   );
