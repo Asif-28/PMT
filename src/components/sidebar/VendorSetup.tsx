@@ -237,7 +237,7 @@ const VendorSetup: React.FC = () => {
           <div className="flex items-center justify-center">
             <button
               onSubmit={handleSubmit}
-              className="bg-[#000000] font-semibold text-[18px] w-[16.5rem] px-12 py-6 text-white rounded-lg mt-20"
+              className="bg-[#000000] font-semibold text-[18px] w-[10rem] sm:w-[16.5rem] px-10 py-4 text-white rounded-lg mt-10 sm:mt-20"
             >
               Add
             </button>
