@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Form from "./Project";
 import ClientSetup from "./ClientSetup";
 import VendorSetup from "./VendorSetup";
+import AddNewClient from "./AddNewClient";
 
 const Sidebar = () => {
   const [selectedItemId, setSelectedItemId] = useState(1);
@@ -115,6 +116,7 @@ const Sidebar = () => {
         {selectedItemId === 1 && <Form />}
         {selectedItemId === 2 && <ClientSetup />}
         {selectedItemId === 3 && <VendorSetup />}
+        {selectedItemId === 4 && <AddNewClient />}
       </div>
     </main>
   );
