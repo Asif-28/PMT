@@ -138,18 +138,24 @@ const Header = () => {
       </div>
 
       {/* mobile */}
-
-      <div className="md:hidden">
-        <div className="">
+      <div>
+        <div className="md:hidden flex justify-between py-1 px-2 ">
           <div
             onClick={toggleMenu}
-            className="rounded-full px-5 py-5 bg-white w-[4rem] flex flex-col justify-center items-center cursor-pointer relative "
+            className="rounded-full  flex flex-col justify-center items-center cursor-pointer relative "
           >
-            <Image src={`/category.png`} alt="header" height={30} width={30} />
+            <div className="flex items-center justify-center bg-white px-4 py-4 rounded-full">
+              <Image
+                src={`/category.png`}
+                alt="header"
+                height={30}
+                width={25}
+              />
+            </div>
 
-            <div className="absolute top-12 left-0">
+            <div className="absolute top-12 -left-2 z-50 ">
               {isOpen && (
-                <div className="sm:hidden bg-[#fff] min-w-[60px] rounded-3xl flex  flex-col  items-center py-4">
+                <div className="sm:hidden bg-[#fff] min-w-[60px] rounded-3xl flex  flex-col  items-center py-4 mt-6">
                   {data.map((item) => (
                     <div
                       className={`cursor-pointer mb-3 py-3 `}
@@ -165,7 +171,7 @@ const Header = () => {
                       >
                         <Image
                           height={25}
-                          width={30}
+                          width={25}
                           src={`/${item.img}`}
                           alt="image-portfolio"
                           className=""
@@ -177,6 +183,37 @@ const Header = () => {
               )}
             </div>
           </div>
+          <div className=" flex items-center gap-3 sm:gap-10">
+            <div className="flex gap-3 md:gap-6 lg:gap-10 border border-[#008000] px-4 py-2 md:px-6 md:py-3 lg:px-8 lg:py-[1.2rem] items-center justify-center rounded-full">
+              <div className="w-2 h-2 md:w-4 md:h-4 rounded-full bg-[#008000]"></div>
+              <h3 className="text-[14px] sm:text-base">Active </h3>
+            </div>
+            <div>
+              <Image
+                src={`/Ellipse 2.png`}
+                alt="image"
+                height={70}
+                width={70}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center justify-center mb-4">
+          <div className="sm:hidden flex items-center mx-auto  ">
+            <input
+              placeholder="search"
+              className="text-[15px] border-none w-[300px] md:w-[500px] lg:min-w-[700px] px-16 py-3 sm:px-16 sm:py-4 rounded-full focus:outline-[#392467] focus:shadow-outline"
+              type="search"
+            />
+            <div className=" absolute left-10">
+              <Image
+                src={`/search-normal.png`}
+                alt="image"
+                height={10}
+                width={20}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </main>
@@ -184,21 +221,3 @@ const Header = () => {
 };
 
 export default Header;
-
-// <div className="flex items-center justify-center mb-4">
-// <div className="sm:hidden flex items-center mx-auto  ">
-//   <input
-//     placeholder="search"
-//     className="text-[15px] border-none w-[300px] md:w-[500px] lg:min-w-[700px] px-16 py-3 sm:px-16 sm:py-4 rounded-full focus:outline-[#392467] focus:shadow-outline"
-//     type="search"
-//   />
-//   <div className=" absolute left-10">
-//     <Image
-//       src={`/search-normal.png`}
-//       alt="image"
-//       height={10}
-//       width={20}
-//     />
-//   </div>
-// </div>
-// </div>
