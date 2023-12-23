@@ -38,7 +38,7 @@ const Rejects: React.FC = () => {
   ];
   return (
     <main className="section">
-      <h2 className="text-2xl font-semibold text-[#000] ">ID Reconciliation</h2>
+      <h2 className="text-2xl font-semibold text-[#000] ">Rejects</h2>
       <div className="section bg-white pl-5 pr-2 sm:pl-6 sm:pr-16 py-12 rounded-3xl mt-2 sm:mt-4  ">
         <form className="text-[14px] sm:text-[15px] " onSubmit={handleSubmit}>
           <h2 className="mb-10">Enter the following details</h2>

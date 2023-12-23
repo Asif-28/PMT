@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useMenu } from "../context/MenuContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Form from "../sidebar/Project";
 import ClientSetup from "../sidebar/ClientSetup";
 import VendorSetup from "../sidebar/VendorSetup";
@@ -12,9 +12,53 @@ import DataExport from "../sidebar/DataExport";
 import ProjectAllocation from "../sidebar/ProjectAllocation";
 import Rejects from "../sidebar/Rejects";
 import { data } from "../data/data";
-const Header = () => {
-  const { isOpen, toggleMenu } = useMenu();
-  //   console.log(isOpen);
+import Link from "next/link";
+interface DataItem {
+  id: number;
+  title: string;
+  img: string;
+}
+
+// Assuming useMenu returns an object with isOpen and toggleMenu properties.
+interface MenuContext {
+  isOpen: boolean;
+  toggleMenu: () => void;
+}
+
+const Header: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [searchResults, setSearchResults] = useState<DataItem[]>([]);
+
+  const handleSection = (i: any) => {
+    if (i == "Project Creation") setSelectedItemId(1);
+    else if (i == "Client Setup") setSelectedItemId(2);
+    else if (i == "Vendor Setup") setSelectedItemId(3);
+    else if (i == "Add New Client") setSelectedItemId(4);
+    else if (i == "Add New Vendor") setSelectedItemId(5);
+    else if (i == "Id Reconciliation") setSelectedItemId(6);
+    else if (i == "Data Export") setSelectedItemId(7);
+    else if (i == "Project Allocation") setSelectedItemId(8);
+    else if (i == "Reject") setSelectedItemId(9);
+
+    setSearchResults([]);
+    setSearchTerm("");
+  };
+  console.log(searchTerm);
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const term = e.target.value;
+    setSearchTerm(term);
+
+    // Filter the data based on the search term
+    const filteredResults = data.filter((item) =>
+      item.title.toLowerCase().includes(term.toLowerCase())
+    );
+
+    // Update searchResults only if the search term is not empty
+    setSearchResults(term ? filteredResults : []);
+  };
+
+  const { isOpen, toggleMenu }: MenuContext = useMenu();
   const [selectedItemId, setSelectedItemId] = useState<number | null>(1);
 
   return (
@@ -79,7 +123,10 @@ const Header = () => {
             placeholder="search"
             className="text-[15px] border-none w-[150px] md:w-[500px] lg:min-w-[700px] px-10 py-3 sm:px-16 sm:py-4 rounded-full focus:outline-[#392467] focus:shadow-outline"
             type="search"
+            value={searchTerm}
+            onChange={handleSearch}
           />
+
           <div className=" absolute left-5">
             <Image
               src={`/search-normal.png`}
@@ -87,6 +134,20 @@ const Header = () => {
               height={10}
               width={20}
             />
+          </div>
+          <div className="absolute bg-white top-16 w-full  rounded-3xl">
+            <ul>
+              {searchResults.map((item) => (
+                <li key={item.id}>
+                  <div
+                    onClick={() => handleSection(item.title)}
+                    className="px-5 py-2 pt-5 pb-4 cursor-pointer hover:bg-[#a367b1] hover:text-[#392467] font-semibold rounded-xl"
+                  >
+                    <button>{item.title}</button>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
         <div className=" flex items-center gap-3 sm:gap-10">
