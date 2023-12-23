@@ -1,5 +1,4 @@
 "use client";
-// MenuContext.tsx
 
 import { createContext, useContext, ReactNode, useState } from "react";
 
@@ -13,7 +12,7 @@ const MenuContext = createContext<MenuContextProps | undefined>(undefined);
 export const MenuProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);

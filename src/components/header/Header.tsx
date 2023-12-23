@@ -4,7 +4,7 @@ import { useMenu } from "../context/MenuContext";
 import { useState } from "react";
 const Header = () => {
   const { isOpen, toggleMenu } = useMenu();
-  console.log(isOpen);
+  //   console.log(isOpen);
   const [selectedItemId, setSelectedItemId] = useState(1);
 
   const data = [
@@ -56,7 +56,7 @@ const Header = () => {
   ];
   return (
     <main className="  py-3 ">
-      <div className="hidden section sm:flex  items-center gap-6 sm:justify-around">
+      <div className="hidden section sm:flex  items-center gap-6 sm:justify-around ">
         <div className="left flex items-center gap-3 sm:gap-6 ml-1 sm:ml-0">
           <div
             onClick={toggleMenu}
@@ -71,7 +71,7 @@ const Header = () => {
               }}
             >
               {isOpen && (
-                <div className="hidden sm:block bg-[#fff] w-72 rounded-3xl py-6 mt-12 ">
+                <div className="hidden sm:block bg-[#fff] w-72 rounded-3xl py-6 mt-12 h-[100vh] ">
                   <div className="flex items-center justify-center pb-10 mt-3">
                     <Image
                       src={`/category.png`}
@@ -82,7 +82,7 @@ const Header = () => {
                   </div>
                   {data.map((item) => (
                     <div
-                      className={`cursor-pointer flex gap-3 mb-3 items-center py-3 pl-8 mx-auto w-56 ${
+                      className={`cursor-pointer flex gap-3 mb-3 items-center py-3 pl-8 mx-auto w-56  ${
                         item.id === selectedItemId
                           ? "bg-[#392467] rounded-full text-white "
                           : ""
@@ -153,9 +153,9 @@ const Header = () => {
               />
             </div>
 
-            <div className="absolute top-12 -left-2 z-50 ">
+            <div className="absolute top-12 -left-2 z-50  ">
               {isOpen && (
-                <div className="sm:hidden bg-[#fff] min-w-[60px] rounded-3xl flex  flex-col  items-center py-4 mt-6">
+                <div className="sm:hidden bg-[#fff] min-w-[60px] h-[100vh] rounded-3xl flex  flex-col  items-center py-4 mt-6">
                   {data.map((item) => (
                     <div
                       className={`cursor-pointer mb-3 py-3 `}
