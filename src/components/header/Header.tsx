@@ -2,10 +2,19 @@
 import Image from "next/image";
 import { useMenu } from "../context/MenuContext";
 import { useState } from "react";
+import Form from "../sidebar/Project";
+import ClientSetup from "../sidebar/ClientSetup";
+import VendorSetup from "../sidebar/VendorSetup";
+import AddNewClient from "../sidebar/AddNewClient";
+import AddNewVendor from "../sidebar/AddNewVendor";
+import IdReconciliation from "../sidebar/IdReconciliation";
+import DataExport from "../sidebar/DataExport";
+import ProjectAllocation from "../sidebar/ProjectAllocation";
+import Rejects from "../sidebar/Rejects";
 const Header = () => {
   const { isOpen, toggleMenu } = useMenu();
   //   console.log(isOpen);
-  const [selectedItemId, setSelectedItemId] = useState(1);
+  const [selectedItemId, setSelectedItemId] = useState<number | null>(1);
 
   const data = [
     {
@@ -55,23 +64,23 @@ const Header = () => {
     },
   ];
   return (
-    <main className="  py-3 ">
+    <main className="py-3 ">
       <div className="hidden section sm:flex  items-center gap-6 sm:justify-around ">
         <div className="left flex items-center gap-3 sm:gap-6 ml-1 sm:ml-0">
           <div
             onClick={toggleMenu}
-            className="rounded-full px-5 py-5 bg-white w-[4rem] flex justify-center items-center cursor-pointer relative "
+            className="rounded-full px-5 py-5 bg-white w-[4rem] flex justify-center items-center cursor-pointer relative  z-100"
           >
             <Image src={`/category.png`} alt="header" height={30} width={30} />
             <div
-              className="absolute  -top-16"
+              className="absolute -top-16 "
               style={{
                 transform: isOpen ? "translateX(0)" : "translateX(-100%)",
                 transition: "all 0.3s ease-out",
               }}
             >
               {isOpen && (
-                <div className="hidden sm:block bg-[#fff] w-72 rounded-3xl py-6 mt-12 h-[100vh] ">
+                <div className="hidden sm:block bg-[#fff] w-72 rounded-3xl py-6 mt-12 h-[100vh]   ">
                   <div className="flex items-center justify-center pb-10 mt-3">
                     <Image
                       src={`/category.png`}
@@ -82,7 +91,7 @@ const Header = () => {
                   </div>
                   {data.map((item) => (
                     <div
-                      className={`cursor-pointer flex gap-3 mb-3 items-center py-3 pl-8 mx-auto w-56  ${
+                      className={`cursor-pointer flex gap-3 mb-3 items-center py-3 pl-8 mx-auto w-56   ${
                         item.id === selectedItemId
                           ? "bg-[#392467] rounded-full text-white "
                           : ""
@@ -142,7 +151,7 @@ const Header = () => {
         <div className="md:hidden flex justify-between py-1 px-2 ">
           <div
             onClick={toggleMenu}
-            className="rounded-full  flex flex-col justify-center items-center cursor-pointer relative "
+            className="rounded-full  flex flex-col justify-center items-center cursor-pointer relative z-100 "
           >
             <div className="flex items-center justify-center bg-white px-4 py-4 rounded-full">
               <Image
@@ -153,7 +162,13 @@ const Header = () => {
               />
             </div>
 
-            <div className="absolute top-12 -left-2 z-50  ">
+            <div
+              style={{
+                transform: isOpen ? "translateX(0)" : "translateX(-100%)",
+                transition: "all 0.3s ease-out",
+              }}
+              className="absolute top-12 -left-2 z-50  "
+            >
               {isOpen && (
                 <div className="sm:hidden bg-[#fff] min-w-[60px] h-[100vh] rounded-3xl flex  flex-col  items-center py-4 mt-6">
                   {data.map((item) => (
@@ -215,6 +230,18 @@ const Header = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      <div>
+        {selectedItemId === 1 && <Form />}
+        {selectedItemId === 2 && <ClientSetup />}
+        {selectedItemId === 3 && <VendorSetup />}
+        {selectedItemId === 4 && <AddNewClient />}
+        {selectedItemId === 5 && <AddNewVendor />}
+        {selectedItemId === 6 && <IdReconciliation />}
+        {selectedItemId === 7 && <DataExport />}
+        {selectedItemId === 8 && <ProjectAllocation />}
+        {selectedItemId === 9 && <Rejects />}
       </div>
     </main>
   );
