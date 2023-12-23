@@ -5,7 +5,7 @@ const Header = () => {
   const { isOpen, toggleMenu } = useMenu();
   console.log(isOpen);
   return (
-    <main className="section sm:h-32 overflow-hidden ">
+    <main className="section sm:h-32 overflow-hidden py-3 ">
       <div className="flex  items-center gap-6 sm:justify-between">
         <div className="left flex items-center gap-3 sm:gap-6 ml-1 sm:ml-0">
           <div
@@ -14,9 +14,9 @@ const Header = () => {
           >
             <Image src={`/category.png`} alt="header" height={30} width={30} />
           </div>
-          <div>
+          {/* <div>
             <Image src={`/Frame 1.png`} alt="header" height={50} width={110} />
-          </div>
+          </div> */}
         </div>
         <div className="hidden sm:flex items-center relative">
           <input
