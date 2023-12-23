@@ -11,58 +11,12 @@ import IdReconciliation from "../sidebar/IdReconciliation";
 import DataExport from "../sidebar/DataExport";
 import ProjectAllocation from "../sidebar/ProjectAllocation";
 import Rejects from "../sidebar/Rejects";
+import { data } from "../data/data";
 const Header = () => {
   const { isOpen, toggleMenu } = useMenu();
   //   console.log(isOpen);
   const [selectedItemId, setSelectedItemId] = useState<number | null>(1);
 
-  const data = [
-    {
-      id: 1,
-      title: "Project Creation",
-      img: "1.png",
-    },
-    {
-      id: 2,
-      title: "Client Setup",
-      img: "2.png",
-    },
-    {
-      id: 3,
-      title: "Vendor Setup",
-      img: "shop.png",
-    },
-    {
-      id: 4,
-      title: "Add New Client",
-      img: "user-add.png",
-    },
-    {
-      id: 5,
-      title: "Add New Vendor",
-      img: "people.png",
-    },
-    {
-      id: 6,
-      title: "Id Reconciliation",
-      img: "user-octagon.svg",
-    },
-    {
-      id: 7,
-      title: "Data Export",
-      img: "document-upload.png",
-    },
-    {
-      id: 8,
-      title: "Project Allocation",
-      img: "flag.png",
-    },
-    {
-      id: 9,
-      title: "Reject",
-      img: "tag-cross.png",
-    },
-  ];
   return (
     <main className="py-3 ">
       <div className="hidden section sm:flex  items-center gap-6 sm:justify-around ">
@@ -147,8 +101,8 @@ const Header = () => {
       </div>
 
       {/* mobile */}
-      <div>
-        <div className="md:hidden flex justify-between py-1 px-2 ">
+      <div className="">
+        <div className="sm:hidden flex justify-between py-1 px-2 ">
           <div
             onClick={toggleMenu}
             className="rounded-full  flex flex-col justify-center items-center cursor-pointer relative z-100 "
@@ -214,13 +168,13 @@ const Header = () => {
           </div>
         </div>
         <div className="flex items-center justify-center mb-4">
-          <div className="sm:hidden flex items-center mx-auto  ">
+          <div className="sm:hidden flex items-center mx-auto relative px-3">
             <input
               placeholder="search"
-              className="text-[15px] border-none w-[300px] md:w-[500px] lg:min-w-[700px] px-16 py-3 sm:px-16 sm:py-4 rounded-full focus:outline-[#392467] focus:shadow-outline"
+              className="text-[15px] border-none w-full px-14 py-3 sm:px-16 sm:py-4 rounded-full focus:outline-[#392467] focus:shadow-outline"
               type="search"
             />
-            <div className=" absolute left-10">
+            <div className=" absolute left-8">
               <Image
                 src={`/search-normal.png`}
                 alt="image"

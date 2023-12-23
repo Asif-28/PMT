@@ -195,3 +195,50 @@ export const countrys = [
   "Zambia",
   "Zimbabwe",
 ];
+export const data = [
+  {
+    id: 1,
+    title: "Project Creation",
+    img: "1.png",
+  },
+  {
+    id: 2,
+    title: "Client Setup",
+    img: "2.png",
+  },
+  {
+    id: 3,
+    title: "Vendor Setup",
+    img: "shop.png",
+  },
+  {
+    id: 4,
+    title: "Add New Client",
+    img: "user-add.png",
+  },
+  {
+    id: 5,
+    title: "Add New Vendor",
+    img: "people.png",
+  },
+  {
+    id: 6,
+    title: "Id Reconciliation",
+    img: "user-octagon.svg",
+  },
+  {
+    id: 7,
+    title: "Data Export",
+    img: "document-upload.png",
+  },
+  {
+    id: 8,
+    title: "Project Allocation",
+    img: "flag.png",
+  },
+  {
+    id: 9,
+    title: "Reject",
+    img: "tag-cross.png",
+  },
+];
