@@ -64,8 +64,8 @@ const Sidebar = () => {
   ];
   const { isOpen } = useMenu();
   return (
-    <main className="section flex gap-2 sm:gap-8  ">
-      <div
+    <main className="section   ">
+      {/* <div
         style={{
           transform: isOpen ? "translateX(0)" : "translateX(-100%)",
           transition: "all 0.3s ease-out",
@@ -128,7 +128,7 @@ const Sidebar = () => {
             </div>
           </div>
         )}
-      </div>
+      </div> */}
 
       <div>
         {selectedItemId === 1 && <Form />}
