@@ -5,7 +5,7 @@ interface FormData {
   projectCode: string;
   inputField: string;
   countryCode: string;
-  scope: string;
+  scope: number;
   country: string;
   testLink: string;
   liveLink: string;
@@ -15,7 +15,7 @@ const ClientSetup: React.FC = () => {
     projectCode: "",
     inputField: "",
     countryCode: "",
-    scope: "",
+    scope: 0,
     country: "",
     testLink: "",
     liveLink: "",

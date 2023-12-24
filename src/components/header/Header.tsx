@@ -78,7 +78,7 @@ const Header: React.FC = () => {
               }}
             >
               {isOpen && (
-                <div className="hidden sm:block bg-[#fff] w-72 rounded-3xl py-6 mt-12 h-[100vh]   ">
+                <div className="hidden sm:block bg-[rgb(255,255,255)] w-72 rounded-3xl py-6 mt-12 h-[100vh]   ">
                   <div className="flex items-center justify-center pb-10 mt-3">
                     <Image
                       src={`/category.png`}
@@ -135,7 +135,7 @@ const Header: React.FC = () => {
               width={20}
             />
           </div>
-          <div className="absolute bg-white top-16 w-full  rounded-3xl">
+          <div className="absolute bg-white top-16 w-full  rounded-3xl z-100">
             <ul>
               {searchResults.map((item) => (
                 <li key={item.id}>
