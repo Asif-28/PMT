@@ -51,7 +51,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
     return NextResponse.json(
       {
-        message: "form submit successfully",
+        message: "success",
         data: Saved,
       },
       {

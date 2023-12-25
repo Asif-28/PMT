@@ -8,7 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Form = () => {
-  const notify = () => toast("Wow so easy !");
+  // const notify = () => toast("Wow so easy !");
   const router = useRouter();
   const [formData, setFormData] = useState({
     projectName: "",
@@ -116,6 +116,24 @@ const Form = () => {
           selectedDiv,
         });
         console.log(data, "success");
+        toast.success("Form submitted successfully");
+        if (data.message === "success") {
+          setFormData({
+            projectName: "",
+            projectCode: "",
+            projectManager: "",
+            clientProjectManager: "",
+            incidenceRate: "",
+            loi: "",
+            scope: 0,
+            targetDescription: "",
+            onlineOffline: "",
+            billingComments: "",
+          });
+          setSelectedCountry(null);
+          setSelectedDiv(null);
+          setSelectedOption(null);
+        }
       }
       // Handle form submission logic here
     } catch (error) {

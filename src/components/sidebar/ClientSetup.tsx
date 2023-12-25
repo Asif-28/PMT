@@ -155,9 +155,10 @@ const ClientSetup: React.FC = () => {
               </label>
               <input
                 required
-                type="text"
+                type="number"
                 id="scope"
                 name="scope"
+                min={0}
                 value={formData.scope}
                 onChange={handleChange}
                 placeholder="Enter your Scope "
