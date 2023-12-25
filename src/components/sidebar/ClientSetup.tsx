@@ -1,12 +1,13 @@
 import React, { useState, FormEvent, ChangeEvent } from "react";
 import { countrys } from "../data/data";
+import { ToastContainer, toast } from "react-toastify";
+import axios from "axios";
 
 interface FormData {
   projectCode: string;
   inputField: string;
   countryCode: string;
   scope: number;
-  country: string;
   testLink: string;
   liveLink: string;
 }
@@ -16,19 +17,18 @@ const ClientSetup: React.FC = () => {
     inputField: "",
     countryCode: "",
     scope: 0,
-    country: "",
     testLink: "",
     liveLink: "",
   });
+  console.log(formData.projectCode);
+  console.log(formData.inputField);
+  console.log(formData.countryCode);
+  console.log(formData.scope);
+  console.log(formData.testLink);
+  console.log(formData.liveLink);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
-  };
-
-  const handleSubmit = (event: FormEvent) => {
-    event.preventDefault();
-    // Handle form submission logic here
-    console.log(formData); // Replace with actual submission logic
   };
 
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
@@ -40,9 +40,65 @@ const ClientSetup: React.FC = () => {
   const handleToggleCountry = () => {
     setIsOpenCountry(!isOpenCountry);
   };
+  const validateForm = () => {
+    // Check if any field is empty
+    if (
+      !formData.projectCode ||
+      !formData.inputField ||
+      !formData.scope ||
+      !formData.liveLink ||
+      !formData.testLink ||
+      !formData.countryCode ||
+      !selectedCountry
+    ) {
+      toast.error("Input all the fields");
+      return false;
+    }
+    return true;
+  };
 
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    try {
+      if (validateForm()) {
+        const { data } = await axios.post("/api/clientsetup", {
+          formData,
+          selectedCountry,
+        });
+        console.log(data, "success");
+        toast.success("Form submitted successfully");
+        if (data.message === "success") {
+          setFormData({
+            projectCode: "",
+            inputField: "",
+            countryCode: "",
+            scope: 0,
+            testLink: "",
+            liveLink: "",
+          });
+          setSelectedCountry(null);
+        }
+      }
+      // Handle form submission logic here
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
+  console.log(selectedCountry);
   return (
     <main className="section">
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <h2 className="text-2xl font-semibold text-[#000]">Client Setup</h2>
       <div className="section bg-white pl-5 pr-2 sm:pl-6 sm:pr-16 py-12 rounded-3xl mt-2 sm:mt-4  ">
         <form className="text-[14px] sm:text-[15px] " onSubmit={handleSubmit}>
@@ -99,7 +155,7 @@ const ClientSetup: React.FC = () => {
                     type="button"
                     className="inline-flex justify-center min-w-[15.5rem] sm:w-full  text-sm appearance-none  xl:min-w-[480px] border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
                   >
-                    {selectedCountry ? selectedCountry : "INDIA"}
+                    {selectedCountry ? selectedCountry : "Select a Country"}
                   </button>
                 </span>
               </div>
@@ -209,7 +265,7 @@ const ClientSetup: React.FC = () => {
 
           <div className="flex items-center justify-center">
             <button
-              onSubmit={handleSubmit}
+              type="submit"
               className="bg-[#000000] font-semibold text-base sm:text-[18px] w-[12rem] sm:w-[16.5rem] px-10 py-4 sm:px-16 sm:py-6 text-white rounded-lg mt-10 sm:mt-20"
             >
               Add
