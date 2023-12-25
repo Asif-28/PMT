@@ -54,6 +54,20 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
 });
+userSchema.pre("save", function (next) {
+  // Check if incidenceRate is present and convert it to String, then append ' Min' to it
+  if (this.incidenceRate !== undefined && this.incidenceRate !== null) {
+    this.incidenceRate = this.incidenceRate.toString() + "%";
+  }
+  next();
+});
+userSchema.pre("save", function (next) {
+  // Check if incidenceRate is present and convert it to String, then append ' Min' to it
+  if (this.loi !== undefined && this.loi !== null) {
+    this.loi = this.loi.toString() + " Min";
+  }
+  next();
+});
 const ProjectDetails =
   mongoose.models.ProjectDetails ||
   mongoose.model("ProjectDetails", userSchema);

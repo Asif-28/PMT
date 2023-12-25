@@ -3,8 +3,13 @@ import React, { useState } from "react";
 import "../../app/globals.css";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import ClientSetup from "./ClientSetup";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Form = () => {
+  const notify = () => toast("Wow so easy !");
+  const router = useRouter();
   const [formData, setFormData] = useState({
     projectName: "",
     projectCode: "",
@@ -20,23 +25,6 @@ const Form = () => {
 
   const handleChange = (event: any) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
-  };
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    try {
-      const { data } = await axios.post("/api/projectdetails", {
-        formData,
-        selectedOption,
-        selectedCountry,
-        selectedDiv,
-      });
-      // Handle form submission logic here
-      console.log(data, "success");
-    } catch (error) {
-      console.error("Error submitting form:", error);
-    }
   };
 
   const [isOpen, setIsOpen] = useState(false);
@@ -75,11 +63,83 @@ const Form = () => {
   const handleDivClick = (divName: any) => {
     setSelectedDiv(divName);
   };
+
+  const validateForm = () => {
+    // Check if any field is empty
+    if (
+      !formData.projectName ||
+      !formData.projectCode ||
+      !formData.projectManager ||
+      !formData.clientProjectManager ||
+      !formData.incidenceRate ||
+      !formData.loi ||
+      !formData.scope ||
+      !selectedOption ||
+      !formData.targetDescription ||
+      !selectedCountry ||
+      !formData.onlineOffline ||
+      !selectedDiv ||
+      !formData.billingComments
+    ) {
+      toast.error("Input all the fields");
+
+      return false;
+    }
+
+    // Check if incidenceRate is a number in the range 1-100
+    const incidenceRate = parseFloat(formData.incidenceRate);
+    if (isNaN(incidenceRate) || incidenceRate < 1 || incidenceRate > 100) {
+      toast.error("Please enter a valid incidence rate between 1 and 100");
+      return false;
+    }
+
+    // Check if loi is a positive number
+    const loi = parseFloat(formData.loi);
+    if (isNaN(loi) || loi <= 0) {
+      toast.error("Please enter a valid loi ");
+
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    try {
+      if (validateForm()) {
+        const { data } = await axios.post("/api/projectdetails", {
+          formData,
+          selectedOption,
+          selectedCountry,
+          selectedDiv,
+        });
+        console.log(data, "success");
+      }
+      // Handle form submission logic here
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
+
   return (
     <main className="section">
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <h2 className="text-2xl font-semibold text-[#000]">Project Creation</h2>
       <div className=" bg-white pl-5 pr-2 sm:pl-6 sm:pr-16 py-12 rounded-3xl mt-2 sm:mt-4  ">
-        <form className="text-[14px] sm:text-[15px] " onSubmit={handleSubmit}>
+        <form className="text-[14px] sm:text-[15px]" onSubmit={handleSubmit}>
           <h2 className="mb-10">Enter the following details</h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="mb-4">
@@ -166,6 +226,9 @@ const Form = () => {
                 type="text"
                 id="incidenceRate"
                 name="incidenceRate"
+                // min="0"
+                // max="100"
+                // step="1"
                 value={formData.incidenceRate}
                 onChange={handleChange}
                 placeholder="Enter your Incidence Rate "
