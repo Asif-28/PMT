@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import "../../app/globals.css";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 const Form = () => {
   const [formData, setFormData] = useState({
@@ -10,9 +12,7 @@ const Form = () => {
     clientProjectManager: "",
     incidenceRate: "",
     loi: "",
-    scope: "",
-    target: "",
-    country: "",
+    scope: 0,
     targetDescription: "",
     onlineOffline: "",
     billingComments: "",
@@ -22,14 +22,26 @@ const Form = () => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Handle form submission logic here
-    console.log(formData); // Replace with actual submission logic
+
+    try {
+      const { data } = await axios.post("/api/projectdetails", {
+        formData,
+        selectedOption,
+        selectedCountry,
+        selectedDiv,
+      });
+      // Handle form submission logic here
+      console.log(data, "success");
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
+  // console.log(selectedOption);
 
   const options = [
     "B2B (Business-to-business)",
@@ -56,9 +68,10 @@ const Form = () => {
   const handleToggleCountry = () => {
     setIsOpenCountry(!isOpenCountry);
   };
+  // console.log(selectedCountry);
 
   const [selectedDiv, setSelectedDiv] = useState(null);
-
+  // console.log(selectedDiv);
   const handleDivClick = (divName: any) => {
     setSelectedDiv(divName);
   };
@@ -187,9 +200,10 @@ const Form = () => {
               </label>
               <input
                 required
-                type="text"
+                type="number"
                 id="scope"
                 name="scope"
+                min={0}
                 value={formData.scope}
                 onChange={handleChange}
                 placeholder="Enter your Scope "
@@ -384,7 +398,7 @@ const Form = () => {
 
           <div className="flex items-center justify-center">
             <button
-              onSubmit={handleSubmit}
+              type="submit"
               className="bg-[#000000] font-semibold text-base sm:text-[18px] w-[12rem] sm:w-[16.5rem] px-10 py-4 sm:px-16 sm:py-6 text-white rounded-lg mt-10 sm:mt-20"
             >
               Create Project
