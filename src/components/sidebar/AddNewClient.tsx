@@ -22,16 +22,6 @@ const AddNewClient: React.FC = () => {
     console.log(formData); // Replace with actual submission logic
   };
 
-  const [selectedVendor, setSelectedVendor] = useState<string | null>(null);
-  const [isOpenVendor, setIsOpenVendor] = useState(false);
-  const handleOptionVendor = (i: string) => {
-    setSelectedVendor(i);
-    setIsOpenVendor(false);
-  };
-  const handleToggleVendor = () => {
-    setIsOpenVendor(!isOpenVendor);
-  };
-  const vendors = ["a", "b", "c", "d"];
   return (
     <main className="section">
       <h2 className="text-2xl font-semibold text-[#000]">Add New Client</h2>
