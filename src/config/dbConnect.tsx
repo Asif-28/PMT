@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
+      DB_LOCAL: string;
       DB_URI: string;
     }
   }
@@ -12,7 +13,7 @@ declare global {
 const dbConnect = async () => {
   try {
     // if (mongoose.connection.readyState >= 1) return;
-    mongoose.connect(process.env.DB_URI);
+    mongoose.connect(process.env.DB_LOCAL);
     const connection = mongoose.connection;
     connection.on("connected", () => {
       console.log("MongoDB connected successfully");
