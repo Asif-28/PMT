@@ -6,6 +6,7 @@ declare global {
     interface ProcessEnv {
       DB_LOCAL: string;
       DB_URI: string;
+      DB_URI_LOCAL: string;
     }
   }
 }
@@ -13,7 +14,7 @@ declare global {
 const dbConnect = async () => {
   try {
     // if (mongoose.connection.readyState >= 1) return;
-    mongoose.connect(process.env.DB_LOCAL);
+    mongoose.connect(process.env.DB_URI_LOCAL);
     const connection = mongoose.connection;
     connection.on("connected", () => {
       console.log("MongoDB connected successfully");
