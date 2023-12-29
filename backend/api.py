@@ -75,6 +75,6 @@ async def list_clients() -> list[Client]:
     print(clients)
     return [Client(**client) for client in clients]
 
-@app.get("/get/countries_code")
+@app.get("/countries_code/get")
 async def get_countries_code():
     return countries
