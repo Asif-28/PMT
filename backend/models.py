@@ -13,7 +13,7 @@ class Project(BaseModel):
     Target: str
     TargetDescription: str
     SelectedCountry: str
-    OnlineOffline: str
+    Online: bool
     SelectedDiv: str
     BillingComments: str
 
