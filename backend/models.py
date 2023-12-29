@@ -35,6 +35,9 @@ class Project(BaseModel):
 
 
 class Client(BaseModel):
+    """
+    ProjectCode relates to -> class Project
+    """
     ProjectCode: str
     InputField: str
     Country: str
