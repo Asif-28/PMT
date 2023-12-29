@@ -1,11 +1,13 @@
+# third prarty
 from fastapi import FastAPI, status
+import pymongo
 
+# locals
 from models import Project, Client
 from database import db
-import pymongo
 from constants import message, JSONResponse
+from _country_codes import countries
 
-# from constants import Message
 
 app = FastAPI()
 
@@ -72,3 +74,7 @@ async def list_clients() -> list[Client]:
     clients = db_clients.find()
     print(clients)
     return [Client(**client) for client in clients]
+
+@app.get("/get/countries_code")
+async def get_countries_code():
+    return countries
