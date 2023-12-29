@@ -8,6 +8,10 @@ import pymongo
 
 app = FastAPI()
 
+"""
+Project
+"""
+
 
 @app.post("/project/create")
 async def create_project(project: Project) -> Response:
@@ -27,6 +31,22 @@ async def create_project(project: Project) -> Response:
         )
 
 
+@app.get("/project/list")
+async def list_projects() -> list[Project]:
+    """
+    List all projects
+    """
+
+    db_projects = db["Projects"]
+    projects = db_projects.find()
+    return [Project(**project) for project in projects]
+
+
+"""
+Client
+"""
+
+
 @app.post("/client/create")
 async def create_client(client: Client) -> Response:
     """
@@ -43,3 +63,15 @@ async def create_client(client: Client) -> Response:
         return Response(
             content="Client already exists", status_code=status.HTTP_400_BAD_REQUEST
         )
+
+
+@app.get("/client/list")
+async def list_clients() -> list[Client]:
+    """
+    List all clients
+    """
+
+    db_clients = db["Clients"]
+    clients = db_clients.find()
+    print(clients)
+    return [Client(**client) for client in clients]
