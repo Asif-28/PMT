@@ -11,7 +11,7 @@ class Project(BaseModel):
     Loi: str
     Scope: int
     SelectedOption: str
-    TargetDescription: str
+    Target: str
     SelectedCountry: str
     OnlineOffline: str
     SelectedDiv: str
