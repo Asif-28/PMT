@@ -3,19 +3,19 @@ from typing import Optional
 
 
 class Project(BaseModel):
-    projectName: str
-    projectCode: str
-    projectManager: str
-    clientProjectManager: str
-    incidenceRate: str
-    loi: str
-    scope: int
-    selectedOption: str
-    targetDescription: str
-    selectedCountry: str
-    onlineOffline: str
-    selectedDiv: str
-    billingComments: str
+    ProjectName: str
+    ProjectCode: str
+    ProjectManager: str
+    ClientProjectManager: str
+    IncidenceRate: str
+    Loi: str
+    Scope: int
+    SelectedOption: str
+    TargetDescription: str
+    SelectedCountry: str
+    OnlineOffline: str
+    SelectedDiv: str
+    BillingComments: str
 
     @validator("incidenceRate", pre=True, always=True)
     def append_percentage(cls, v):
@@ -31,18 +31,18 @@ class Project(BaseModel):
 
     @staticmethod
     def index_key() -> str:
-        return "projectCode"
+        return "ProjectCode"
 
 
 class Client(BaseModel):
-    projectCode: str
-    inputField: str
-    selectedCountry: str
-    countryCode: str
-    scope: int
-    testLink: str
-    liveLink: str
+    ProjectCode: str
+    InputField: str
+    Country: str
+    CountryCode: str
+    Scope: int
+    TestLink: str
+    LiveLink: str
 
     @staticmethod
     def index_key() -> str:
-        return "projectCode"
+        return "ProjectCode"
