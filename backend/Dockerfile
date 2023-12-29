@@ -11,3 +11,4 @@ RUN poetry config virtualenvs.create false; poetry install --no-dev
 
 COPY . .
 
+ENTRYPOINT ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8000"]
