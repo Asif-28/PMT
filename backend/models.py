@@ -31,7 +31,7 @@ class Project(BaseModel):
 
     @staticmethod
     def index_key() -> str:
-        return "projectName"
+        return "projectCode"
 
 
 class Client(BaseModel):
