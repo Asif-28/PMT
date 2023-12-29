@@ -17,13 +17,13 @@ class Project(BaseModel):
     SelectedDiv: str
     BillingComments: str
 
-    @validator("incidenceRate", pre=True, always=True)
+    @validator("IncidenceRate", pre=True, always=True)
     def append_percentage(cls, v):
         if v is not None:
             return f"{v}%"
         return v
 
-    @validator("loi", pre=True, always=True)
+    @validator("Loi", pre=True, always=True)
     def append_min(cls, v):
         if v is not None:
             return f"{v} Min"
