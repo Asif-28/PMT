@@ -1,15 +1,16 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Response, status
 
 from models import Project, Client
 from database import db
 import pymongo
-from constants import Message
+
+# from constants import Message
 
 app = FastAPI()
 
 
 @app.post("/project/create")
-async def create_project(project: Project) -> Message:
+async def create_project(project: Project) -> Response:
     """
     Create a new project
     """
@@ -19,13 +20,15 @@ async def create_project(project: Project) -> Message:
 
     try:
         db_projects.insert_one(project.model_dump())
-        return Message(message="Project created", status_code=200)
+        return Response(content="Project created", status_code=status.HTTP_200_OK)
     except pymongo.errors.DuplicateKeyError:
-        return Message(message="Project already exists", status_code=400)
+        return Response(
+            content="Project already exists", status_code=status.HTTP_400_BAD_REQUEST
+        )
 
 
 @app.post("/client/create")
-async def create_client(client: Client) -> Message:
+async def create_client(client: Client) -> Response:
     """
     Create a new client
     """
@@ -35,6 +38,8 @@ async def create_client(client: Client) -> Message:
 
     try:
         db_clients.insert_one(client.model_dump())
-        return Message(message="Client created", status_code=200)
+        return Response(content="Client created", status_code=status.HTTP_200_OK)
     except pymongo.errors.DuplicateKeyError:
-        return Message(message="Client already exists", status_code=400)
+        return Response(
+            content="Client already exists", status_code=status.HTTP_400_BAD_REQUEST
+        )
