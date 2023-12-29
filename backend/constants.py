@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from typing import Optional
 
 import os
 
@@ -11,4 +12,5 @@ DB_NAME: str = os.getenv("DB_NAME")
 
 class Message(BaseModel):
     message: str
-    status_code: int = 200
+    status_code: Optional[int] = Field(default=200)
+    level: Optional[str] = Field(default="INFO")
