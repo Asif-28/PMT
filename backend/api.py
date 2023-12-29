@@ -29,7 +29,7 @@ async def create_project(project: Project) -> JSONResponse:
         db_projects.insert_one(project.model_dump())
         return message.success(text="Project created")
     except pymongo.errors.DuplicateKeyError:
-        return message.error(text=f"Project {project.projectName} already exists.")
+        return message.error(text=f"Project {project.ProjectName} already exists.")
 
 
 @app.get("/project/list")
