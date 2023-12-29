@@ -24,7 +24,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
     volumes:
-      - mongo-ptm:/data/db
+      - mongo-pmt:/data/db
 
 volumes:
-  mongo-ptm:
+  mongo-pmt:
