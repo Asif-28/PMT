@@ -1,5 +1,5 @@
 # third prarty
-from fastapi import FastAPI, status
+from fastapi import FastAPI
 import pymongo
 
 # locals
