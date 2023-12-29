@@ -1,8 +1,9 @@
-from fastapi import FastAPI, Response, status
+from fastapi import FastAPI, status
 
 from models import Project, Client
 from database import db
 import pymongo
+from constants import message, JSONResponse
 
 # from constants import Message
 
@@ -12,8 +13,9 @@ app = FastAPI()
 Project
 """
 
+
 @app.post("/project/create")
-async def create_project(project: Project) -> Response:
+async def create_project(project: Project) -> JSONResponse:
     """
     Create a new project
     """
@@ -23,11 +25,9 @@ async def create_project(project: Project) -> Response:
 
     try:
         db_projects.insert_one(project.model_dump())
-        return Response(content="Project created", status_code=status.HTTP_200_OK)
+        return message.success(text="Project created")
     except pymongo.errors.DuplicateKeyError:
-        return Response(
-            content="Project already exists", status_code=status.HTTP_400_BAD_REQUEST
-        )
+        return message.error(text=f"Project {project.projectName} already exists.")
 
 
 @app.get("/project/list")
@@ -41,13 +41,13 @@ async def list_projects() -> list[Project]:
     return [Project(**project) for project in projects]
 
 
-
 """
 Client
 """
 
+
 @app.post("/client/create")
-async def create_client(client: Client) -> Response:
+async def create_client(client: Client) -> JSONResponse:
     """
     Create a new client
     """
@@ -57,11 +57,9 @@ async def create_client(client: Client) -> Response:
 
     try:
         db_clients.insert_one(client.model_dump())
-        return Response(content="Client created", status_code=status.HTTP_200_OK)
+        return message.success(text="Client created")
     except pymongo.errors.DuplicateKeyError:
-        return Response(
-            content="Client already exists", status_code=status.HTTP_400_BAD_REQUEST
-        )
+        return message.error(text="Client already exists")
 
 
 @app.get("/client/list")
