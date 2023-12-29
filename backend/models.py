@@ -42,3 +42,7 @@ class Client(BaseModel):
     scope: int
     testLink: str
     liveLink: str
+
+    @staticmethod
+    def index_key() -> str:
+        return "projectCode"

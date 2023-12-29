@@ -22,3 +22,19 @@ async def create_project(project: Project) -> Message:
         return Message(message="Project created", status_code=200)
     except pymongo.errors.DuplicateKeyError:
         return Message(message="Project already exists", status_code=400)
+
+
+@app.post("/client/create")
+async def create_client(client: Client) -> Message:
+    """
+    Create a new client
+    """
+
+    db_clients = db["Clients"]
+    db_clients.create_index(client.index_key(), unique=True)
+
+    try:
+        db_clients.insert_one(client.model_dump())
+        return Message(message="Client created", status_code=200)
+    except pymongo.errors.DuplicateKeyError:
+        return Message(message="Client already exists", status_code=400)
