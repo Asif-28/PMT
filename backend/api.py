@@ -12,7 +12,6 @@ app = FastAPI()
 Project
 """
 
-
 @app.post("/project/create")
 async def create_project(project: Project) -> Response:
     """
@@ -42,10 +41,10 @@ async def list_projects() -> list[Project]:
     return [Project(**project) for project in projects]
 
 
+
 """
 Client
 """
-
 
 @app.post("/client/create")
 async def create_client(client: Client) -> Response:
