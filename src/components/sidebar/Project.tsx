@@ -109,7 +109,7 @@ const Form = () => {
 
     try {
       if (validateForm()) {
-        const { data } = await axios.post("/api/projectdetails", {
+        const { data } = await axios.post("", {
           formData,
           selectedOption,
           selectedCountry,

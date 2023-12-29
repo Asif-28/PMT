@@ -20,12 +20,13 @@ const ClientSetup: React.FC = () => {
     testLink: "",
     liveLink: "",
   });
-  console.log(formData.projectCode);
-  console.log(formData.inputField);
-  console.log(formData.countryCode);
-  console.log(formData.scope);
-  console.log(formData.testLink);
-  console.log(formData.liveLink);
+
+  // console.log(formData.projectCode);
+  // console.log(formData.inputField);
+  // console.log(formData.countryCode);
+  // console.log(formData.scope);
+  // console.log(formData.testLink);
+  // console.log(formData.liveLink);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -61,7 +62,7 @@ const ClientSetup: React.FC = () => {
     event.preventDefault();
     try {
       if (validateForm()) {
-        const { data } = await axios.post("/api/clientsetup", {
+        const { data } = await axios.post("", {
           formData,
           selectedCountry,
         });

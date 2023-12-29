@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useMenu } from "../context/MenuContext";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Form from "../sidebar/Project";
 import ClientSetup from "../sidebar/ClientSetup";
 import VendorSetup from "../sidebar/VendorSetup";
@@ -12,7 +12,7 @@ import DataExport from "../sidebar/DataExport";
 import ProjectAllocation from "../sidebar/ProjectAllocation";
 import Rejects from "../sidebar/Rejects";
 import { data } from "../data/data";
-import Link from "next/link";
+
 interface DataItem {
   id: number;
   title: string;
@@ -28,18 +28,11 @@ interface MenuContext {
 const Header: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [searchResults, setSearchResults] = useState<DataItem[]>([]);
+  const prevSelectedItemIdRef = useRef<number | null>(null);
 
   const handleSection = (i: any) => {
-    if (i == "Project Creation") setSelectedItemId(1);
-    else if (i == "Client Setup") setSelectedItemId(2);
-    else if (i == "Vendor Setup") setSelectedItemId(3);
-    else if (i == "Add New Client") setSelectedItemId(4);
-    else if (i == "Add New Vendor") setSelectedItemId(5);
-    else if (i == "Id Reconciliation") setSelectedItemId(6);
-    else if (i == "Data Export") setSelectedItemId(7);
-    else if (i == "Project Allocation") setSelectedItemId(8);
-    else if (i == "Reject") setSelectedItemId(9);
-
+    const newSelectedItemId = getSelectedItemId(i);
+    setSelectedItemId(newSelectedItemId);
     setSearchResults([]);
     setSearchTerm("");
   };
@@ -59,8 +52,36 @@ const Header: React.FC = () => {
   };
 
   const { isOpen, toggleMenu }: MenuContext = useMenu();
-  const [selectedItemId, setSelectedItemId] = useState<number | null>(1);
+  const [selectedItemId, setSelectedItemId] = useState<number>(1);
+  useEffect(() => {
+    // Update the previous state when selectedItemId changes
+    prevSelectedItemIdRef.current = selectedItemId;
+  }, [selectedItemId]);
 
+  const getSelectedItemId = (section: string): number => {
+    switch (section) {
+      case "Project Creation":
+        return 1;
+      case "Client Setup":
+        return 2;
+      case "Vendor Setup":
+        return 3;
+      case "Add New Client":
+        return 4;
+      case "Add New Vendor":
+        return 5;
+      case "Id Reconciliation":
+        return 6;
+      case "Data Export":
+        return 7;
+      case "Project Allocation":
+        return 8;
+      case "Reject":
+        return 9;
+      default:
+        return 1;
+    }
+  };
   return (
     <main className="py-3 ">
       <div className="hidden section sm:flex  items-center gap-6 sm:justify-around ">
@@ -234,6 +255,8 @@ const Header: React.FC = () => {
               placeholder="search"
               className="text-[15px] border-none w-full px-14 py-3 sm:px-16 sm:py-4 rounded-full focus:outline-[#392467] focus:shadow-outline"
               type="search"
+              value={searchTerm}
+              onChange={handleSearch}
             />
             <div className=" absolute left-8">
               <Image
@@ -242,6 +265,20 @@ const Header: React.FC = () => {
                 height={10}
                 width={20}
               />
+            </div>
+            <div className="absolute bg-white top-12 shadow-md ">
+              <ul>
+                {searchResults.map((item) => (
+                  <li key={item.id}>
+                    <div
+                      onClick={() => handleSection(item.title)}
+                      className="px-7 py-3 pt-3 pb-3 cursor-pointer hover:bg-[#a367b1] hover:text-[#392467] font-medium rounded-xl"
+                    >
+                      <button>{item.title}</button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
