@@ -1,6 +1,4 @@
 from dotenv import load_dotenv
-from pydantic import BaseModel, Field
-from typing import Optional
 from fastapi import status
 from fastapi.responses import JSONResponse
 
