@@ -3,7 +3,8 @@ import React, { useState, FormEvent, ChangeEvent } from "react";
 interface FormData {
   projectCode: string;
   vendorCode: string;
-  pause: string;
+  pauseVendor: boolean;
+  pauseAll: boolean;
   scope: string;
   complete: string;
   terminate: string;
@@ -13,15 +14,22 @@ const VendorSetup: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     projectCode: "",
     vendorCode: "",
-    pause: "",
+    pauseVendor: false,
+    pauseAll: false,
     scope: "",
     complete: "",
     terminate: "",
     overQuota: "",
   });
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLInputElement>
+  ) => {
+    if (event.target.type === "checkbox") {
+      setFormData({ ...formData, [event.target.name]: event.target.checked });
+    } else {
+      setFormData({ ...formData, [event.target.name]: event.target.value });
+    }
   };
 
   const handleSubmit = (event: FormEvent) => {
@@ -39,6 +47,7 @@ const VendorSetup: React.FC = () => {
   const handleToggleVendor = () => {
     setIsOpenVendor(!isOpenVendor);
   };
+  console.log(formData.pauseVendor + " " + formData.pauseAll);
   const vendors = ["a", "b", "c", "d"];
   return (
     <main className="section">
@@ -144,7 +153,7 @@ const VendorSetup: React.FC = () => {
               />
             </div>
           </div>
-          <div className="grid grid-cols-1">
+          <div className="grid grid-cols-1 gap-4">
             <div className="mb-4">
               <label
                 htmlFor="complete"
@@ -206,24 +215,21 @@ const VendorSetup: React.FC = () => {
               <div className="mt-2">
                 <label className="inline-flex items-center border border-gray-500 px-16 sm:px-20 py-4 sm:py-6 rounded-2xl">
                   <input
-                    required
-                    type="radio"
-                    name="pause"
-                    value="pauseVendor"
-                    checked={formData.pause === "pauseVendor"}
+                    type="checkbox"
+                    name="pauseVendor"
+                    checked={formData.pauseVendor}
                     onChange={handleChange}
-                    className="form-radio radio-container  "
+                    className="form-radio radio-container"
                   />
                   <span className="ml-2 text-gray-500">Pause Vendor</span>
                 </label>
-                <label className="inline-flex items-center  mt-2 sm:mt-0 sm:ml-4 border border-gray-500 px-12 sm:px-20 py-4 sm:py-6 rounded-2xl">
+                <label className="inline-flex items-center mt-2 sm:mt-0 sm:ml-4 border border-gray-500 px-12 sm:px-20 py-4 sm:py-6 rounded-2xl">
                   <input
-                    type="radio"
-                    name="pause"
-                    value="pauseall"
-                    checked={formData.pause === "pauseall"}
+                    type="checkbox"
+                    name="pauseAll"
+                    checked={formData.pauseAll}
                     onChange={handleChange}
-                    className="form-radio radio-container "
+                    className="form-radio radio-container"
                   />
                   <span className="ml-2 text-gray-500">Pause All Vendor</span>
                 </label>

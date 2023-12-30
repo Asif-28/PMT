@@ -4,8 +4,8 @@ WORKDIR /app
 
 COPY package.json yarn.lock ./
 
-RUN yarn install
+RUN npm install
 
 COPY . .
 
-ENTRYPOINT ["yarn", "start"]
+ENTRYPOINT ["npm", "run" ,"dev"]

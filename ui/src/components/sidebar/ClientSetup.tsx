@@ -10,6 +10,7 @@ interface FormData {
   scope: number;
   testLink: string;
   liveLink: string;
+  checkcountry: boolean;
 }
 const ClientSetup: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
@@ -19,8 +20,10 @@ const ClientSetup: React.FC = () => {
     scope: 0,
     testLink: "",
     liveLink: "",
+    checkcountry: false,
   });
 
+  // console.log(formData.checkcountry);
   // console.log(formData.projectCode);
   // console.log(formData.inputField);
   // console.log(formData.countryCode);
@@ -28,8 +31,14 @@ const ClientSetup: React.FC = () => {
   // console.log(formData.testLink);
   // console.log(formData.liveLink);
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLInputElement>
+  ) => {
+    if (event.target.type === "checkbox") {
+      setFormData({ ...formData, [event.target.name]: event.target.checked });
+    } else {
+      setFormData({ ...formData, [event.target.name]: event.target.value });
+    }
   };
 
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
@@ -52,7 +61,7 @@ const ClientSetup: React.FC = () => {
       !formData.countryCode ||
       !selectedCountry
     ) {
-      toast.error("Input all the fields");
+      toast.error("Fill the necessary fields");
       return false;
     }
     return true;
@@ -76,6 +85,7 @@ const ClientSetup: React.FC = () => {
             scope: 0,
             testLink: "",
             liveLink: "",
+            checkcountry: false,
           });
           setSelectedCountry(null);
         }
@@ -86,6 +96,7 @@ const ClientSetup: React.FC = () => {
     }
   };
   console.log(selectedCountry);
+
   return (
     <main className="section">
       <ToastContainer
@@ -223,7 +234,7 @@ const ClientSetup: React.FC = () => {
               />
             </div>
           </div>
-          <div className="grid grid-cols-1">
+          <div className="grid grid-cols-1 gap-4">
             <div className="mb-4">
               <label
                 htmlFor="testLink"
@@ -259,6 +270,23 @@ const ClientSetup: React.FC = () => {
                 placeholder="Enter your live Link "
                 className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl sm:w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-500 font-medium mb-4">
+                Quick Action *
+              </label>
+              <div className="mt-2">
+                <label className="inline-flex items-center border border-gray-500 px-16 sm:px-20 py-4 sm:py-6 rounded-2xl">
+                  <input
+                    type="checkbox"
+                    name="checkcountry"
+                    checked={formData.checkcountry}
+                    onChange={handleChange}
+                    className="form-radio radio-container"
+                  />
+                  <span className="ml-2 text-gray-500">Country ?</span>
+                </label>
+              </div>
             </div>
           </div>
 

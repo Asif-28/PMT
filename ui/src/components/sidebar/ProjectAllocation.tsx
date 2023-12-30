@@ -106,7 +106,6 @@ const ProjectAllocation: React.FC = () => {
           </div>
 
           {/* ... other fields in the same format ... */}
-
           <div className="flex items-center justify-center">
             <button
               onSubmit={handleSubmit}

@@ -7,10 +7,22 @@ import ClientSetup from "./ClientSetup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+interface FormData {
+  projectName: string;
+  projectCode: string;
+  projectManager: string;
+  clientProjectManager: string;
+  incidenceRate: string;
+  loi: string;
+  scope: number;
+  targetDescription: string;
+  onlineOffline: string;
+  billingComments: string;
+}
+
 const Form = () => {
-  // const notify = () => toast("Wow so easy !");
   const router = useRouter();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     projectName: "",
     projectCode: "",
     projectManager: "",
@@ -29,6 +41,8 @@ const Form = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
+  // console.log(selectedCountry);
+  // console.log(selectedDiv);
   // console.log(selectedOption);
 
   const options = [
@@ -56,10 +70,8 @@ const Form = () => {
   const handleToggleCountry = () => {
     setIsOpenCountry(!isOpenCountry);
   };
-  // console.log(selectedCountry);
 
   const [selectedDiv, setSelectedDiv] = useState(null);
-  // console.log(selectedDiv);
   const handleDivClick = (divName: any) => {
     setSelectedDiv(divName);
   };
