@@ -42,7 +42,7 @@ const AddNewVendor: React.FC = () => {
                 value={formData.vendorName}
                 onChange={handleChange}
                 placeholder="Enter Vendor Name "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl sm:w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
@@ -60,7 +60,7 @@ const AddNewVendor: React.FC = () => {
                 value={formData.vendorEmail}
                 onChange={handleChange}
                 placeholder="Enter Vendor Email address "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl sm:w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
           </div>

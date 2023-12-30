@@ -1,5 +1,4 @@
 import React, { useState, FormEvent, ChangeEvent } from "react";
-import "../../app/globals.css";
 
 interface FormData {
   projectCode: string;
@@ -72,7 +71,7 @@ const VendorSetup: React.FC = () => {
                 value={formData.projectCode}
                 onChange={handleChange}
                 placeholder="Enter your project Code "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl sm:w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
@@ -90,7 +89,7 @@ const VendorSetup: React.FC = () => {
                 value={formData.vendorCode}
                 onChange={handleChange}
                 placeholder="Enter your Input Field"
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl sm:w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
             <div className="relative inline-block text-left z-30">
@@ -105,7 +104,7 @@ const VendorSetup: React.FC = () => {
                   <button
                     onClick={handleToggleVendor}
                     type="button"
-                    className="inline-flex justify-center min-w-[15.5rem] sm:w-full  text-sm appearance-none  xl:min-w-[480px] border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                    className="inline-flex justify-center min-w-[15.5rem] w-full  text-sm appearance-none  xl:min-w-[480px] border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
                   >
                     {selectedVendor ? selectedVendor : "Choose from dropdown"}
                   </button>
@@ -113,7 +112,7 @@ const VendorSetup: React.FC = () => {
               </div>
 
               {isOpenVendor && (
-                <div className="absolute mt-2 sm:w-full rounded-3xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-y-auto max-h-60">
+                <div className="absolute mt-2 w-full rounded-3xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-y-auto max-h-60">
                   <div
                     className="py-1 w-full px-3 bg-white"
                     role="menu"
@@ -124,7 +123,7 @@ const VendorSetup: React.FC = () => {
                       <div
                         key={index}
                         onClick={() => handleOptionVendor(Vendor)}
-                        className="block px-4 py-4 text-sm text-gray-700 sm:w-full hover:bg-[#a367b1] hover:text-[#392467] font-semibold  text-left  my-2 rounded-xl"
+                        className="block px-4 py-4 text-sm text-gray-700 w-full hover:bg-[#a367b1] hover:text-[#392467] font-semibold  text-left  my-2 rounded-xl"
                         role="menuitem"
                       >
                         {Vendor}
@@ -150,7 +149,7 @@ const VendorSetup: React.FC = () => {
                 value={formData.scope}
                 onChange={handleChange}
                 placeholder="Enter your Scope "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl sm:w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
           </div>
@@ -170,7 +169,7 @@ const VendorSetup: React.FC = () => {
                 value={formData.complete}
                 onChange={handleChange}
                 placeholder="Enter your status "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl sm:w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
@@ -188,7 +187,7 @@ const VendorSetup: React.FC = () => {
                 value={formData.terminate}
                 onChange={handleChange}
                 placeholder="Enter your status"
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl sm:w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
@@ -206,7 +205,7 @@ const VendorSetup: React.FC = () => {
                 value={formData.overQuota}
                 onChange={handleChange}
                 placeholder="Enter your status"
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl sm:w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
@@ -214,7 +213,7 @@ const VendorSetup: React.FC = () => {
                 Quick Action *
               </label>
               <div className="mt-2">
-                <label className="inline-flex items-center border border-gray-500 px-16 sm:px-20 py-4 sm:py-6 rounded-2xl">
+                <label className="inline-flex items-center mt-2 sm:mt-0 sm:ml-4 border border-gray-500 w-[240px] sm:w-auto px-12 sm:px-[4rem] py-4 sm:py-6 rounded-2xl">
                   <input
                     type="checkbox"
                     name="pauseVendor"
@@ -224,7 +223,7 @@ const VendorSetup: React.FC = () => {
                   />
                   <span className="ml-2 text-gray-500">Pause Vendor</span>
                 </label>
-                <label className="inline-flex items-center mt-2 sm:mt-0 sm:ml-4 border border-gray-500 px-12 sm:px-20 py-4 sm:py-6 rounded-2xl">
+                <label className="inline-flex items-center mt-2 sm:mt-0 sm:ml-4 border border-gray-500 w-[240px] sm:w-auto px-12 sm:px-[4rem] py-4 sm:py-6 rounded-2xl">
                   <input
                     type="checkbox"
                     name="pauseAll"
