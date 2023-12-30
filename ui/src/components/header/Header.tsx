@@ -92,7 +92,7 @@ const Header: React.FC = () => {
           >
             <Image src={`/category.png`} alt="header" height={30} width={30} />
             <div
-              className="absolute -top-16 "
+              className="absolute -top-16 left-0 xl:-left-[2.6rem] 2xl:-left-[6.8rem] "
               style={{
                 transform: isOpen ? "translateX(0)" : "translateX(-100%)",
                 transition: "all 0.3s ease-out",

@@ -409,7 +409,7 @@ const Form: React.FC = () => {
                 Methodology
               </label>
               <div className="mt-2">
-                <label className="inline-flex items-center border border-gray-500 px-20 py-6 rounded-2xl">
+                <label className="inline-flex items-center border border-gray-500 px-20 py-6 rounded-2xl lg:ml-1">
                   <input
                     required
                     type="radio"
@@ -421,7 +421,7 @@ const Form: React.FC = () => {
                   />
                   <span className="ml-2">Online</span>
                 </label>
-                <label className="inline-flex items-center  mt-2 sm:mt-0 sm:ml-4 border border-gray-500 px-20 py-6 rounded-2xl">
+                <label className="inline-flex items-center  mt-2 xl:mt-0 lg:ml-1 xl:ml-4 border border-gray-500 px-20 py-6 rounded-2xl">
                   <input
                     type="radio"
                     name="onlineOffline"
