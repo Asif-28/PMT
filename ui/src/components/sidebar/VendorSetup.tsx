@@ -1,4 +1,5 @@
 import React, { useState, FormEvent, ChangeEvent } from "react";
+import "../../app/globals.css";
 
 interface FormData {
   projectCode: string;
@@ -219,7 +220,7 @@ const VendorSetup: React.FC = () => {
                     name="pauseVendor"
                     checked={formData.pauseVendor}
                     onChange={handleChange}
-                    className="form-radio radio-container"
+                    className="checkbox-container"
                   />
                   <span className="ml-2 text-gray-500">Pause Vendor</span>
                 </label>
@@ -229,7 +230,7 @@ const VendorSetup: React.FC = () => {
                     name="pauseAll"
                     checked={formData.pauseAll}
                     onChange={handleChange}
-                    className="form-radio radio-container"
+                    className="checkbox-container"
                   />
                   <span className="ml-2 text-gray-500">Pause All Vendor</span>
                 </label>

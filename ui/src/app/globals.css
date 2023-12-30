@@ -14,3 +14,34 @@ body {
   background-color: rgb(250, 250, 248);
   overflow-x: hidden;
 }
+
+label > input[type="checkbox"] {
+  display: none;
+}
+
+label > input[type="checkbox"] + *::before {
+  content: "";
+  display: inline-block;
+  vertical-align: bottom;
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 10%;
+  border-style: solid;
+  border-width: 0.1rem;
+  border-color: gray;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+label > input[type="checkbox"]:checked + *::before {
+  content: "✓";
+  transform: scale(1.2);
+  color: #a367b1;
+  text-align: center;
+  background: white;
+  border-color: white;
+  margin-bottom: 8px;
+}
+label > input[type="checkbox"]:checked + * {
+  color: #a367b1;
+}

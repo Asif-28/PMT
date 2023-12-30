@@ -20,7 +20,7 @@ interface FormData {
   billingComments: string;
 }
 
-const Form = () => {
+const Form: React.FC = () => {
   const router = useRouter();
   const [formData, setFormData] = useState<FormData>({
     projectName: "",
