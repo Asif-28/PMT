@@ -1,9 +1,12 @@
 from bson.objectid import ObjectId
 
+class BsonObjectId(ObjectId):
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate
 
-def validate_object(cls, v):
-    # check if user_id is valid
-    if v is not None:
-        if not ObjectId.is_valid(v):
-            raise ValueError("user_id is not valid")
-    return v
+    @classmethod
+    def validate(cls, v):
+        if not isinstance(v, ObjectId):
+            raise TypeError('ObjectId required')
+        return str(v)
