@@ -132,7 +132,7 @@ const Form: React.FC = () => {
           {
             ProjectName: projectName,
             ProjectCode: projectCode,
-            projectManager: projectManager,
+            ProjectManager: projectManager,
             ClientProjectManager: clientProjectManager,
             IncidenceRate: incidenceRate,
             Loi: loi,
@@ -150,9 +150,9 @@ const Form: React.FC = () => {
             },
           }
         );
-        console.log(data, "success");
+        console.log(data.level);
         toast.success("Form submitted successfully");
-        if (data.message === "success") {
+        if (data.level === "SUCESS") {
           setFormData({
             projectName: "",
             projectCode: "",
@@ -173,6 +173,7 @@ const Form: React.FC = () => {
       // Handle form submission logic here
     } catch (error) {
       console.error("Error submitting form:", error);
+      toast.error("Project Code already exists");
     }
   };
 

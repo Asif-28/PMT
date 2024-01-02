@@ -13,7 +13,7 @@ class Project(BaseModel):
     Target: str
     TargetDescription: str
     SelectedCountry: str
-    Online: bool
+    Online: str
     SelectedDiv: str
     BillingComments: str
 
@@ -53,6 +53,7 @@ class Client(BaseModel):
     Scope: int
     TestLink: str
     LiveLink: str
+    CheckCountry:str
 
     @staticmethod
     def index_key() -> str:

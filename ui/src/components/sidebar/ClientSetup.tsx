@@ -69,15 +69,38 @@ const ClientSetup: React.FC = () => {
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+    const {
+      projectCode,
+      inputField,
+      countryCode,
+      scope,
+      testLink,
+      liveLink,
+      checkcountry,
+    } = formData;
     try {
       if (validateForm()) {
-        const { data } = await axios.post("", {
-          formData,
-          selectedCountry,
-        });
-        console.log(data, "success");
+        const { data } = await axios.post(
+          "http://0.0.0.0:8001/client/create",
+          {
+            ProjectCode: projectCode,
+            InputField: inputField,
+            Country: selectedCountry,
+            CountryCode: countryCode,
+            Scope: scope,
+            TestLink: testLink,
+            LiveLink: liveLink,
+            CheckCountry: checkcountry,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(data.level, "success");
         toast.success("Form submitted successfully");
-        if (data.message === "success") {
+        if (data.level === "SUCESS") {
           setFormData({
             projectCode: "",
             inputField: "",
@@ -93,6 +116,7 @@ const ClientSetup: React.FC = () => {
       // Handle form submission logic here
     } catch (error) {
       console.error("Error submitting form:", error);
+      toast.error("Project Code Should be Unique");
     }
   };
   console.log(selectedCountry);
