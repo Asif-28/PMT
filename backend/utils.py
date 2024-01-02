@@ -9,4 +9,4 @@ class BsonObjectId(ObjectId):
     def validate(cls, v):
         if not isinstance(v, ObjectId):
             raise TypeError('ObjectId required')
-        return str(v)
+        return v
