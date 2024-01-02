@@ -7,6 +7,6 @@ class BsonObjectId(ObjectId):
 
     @classmethod
     def validate(cls, v):
-        if not isinstance(v, ObjectId):
-            raise TypeError('ObjectId required')
+        if not ObjectId.is_valid(v):
+            raise ValueError("ObjectId is not valid")
         return v
