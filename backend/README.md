@@ -4,6 +4,7 @@ Table of Content
 - [Backend fastapi app](#backend-fastapi-app)
   - [System requirement](#system-requirement)
   - [Starting the backend via docker-compose:](#starting-the-backend-via-docker-compose)
+  - [Using the backend](#using-the-backend)
 
 
 ### System requirement
@@ -30,3 +31,14 @@ docker-compose up --build
 ```
 
 > Note: Backend is running on port 8001 for case of docker-compose.
+
+
+### Using the backend
+
+The backend api is running on port `8001` by docker-compose.
+
+Visit `http://localhost:8001/docs` to see the swagger documentation for the backend api. 
+
+This contains the list of all the api endpoints and their request and response schema.
+
+- Ref swagger doc: https://fastapi.tiangolo.com/tutorial/first-steps/
