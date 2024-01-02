@@ -99,11 +99,11 @@ async def get_countries_code():
 
 
 """
-Survey get
+Survey
 """
 
 
-@app.get("/survey/get")
+@app.get("/survey/start")
 def get_survey(survey: GetSurvey):
     """
     Get survey details
@@ -141,5 +141,13 @@ def get_survey(survey: GetSurvey):
         FraudScore=None,
     )
 
+@app.post("/survey/end/{TransId}")
+def end_survey(TransId: str):
+    """
+    End survey
+    """
+    # Survey
+    # Check if project exists
+    ...
 
 # &name=dgdg&api=436346&country=India&country_code=IN&project_code=436346&scope=1&loi=10&ip=
