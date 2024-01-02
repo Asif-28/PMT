@@ -40,16 +40,12 @@ const Form: React.FC = () => {
   };
 
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState<String | null>(null);
   // console.log(selectedCountry);
   // console.log(selectedDiv);
   // console.log(selectedOption);
 
-  const options = [
-    "B2B (Business-to-business)",
-    "B2C (Business-to-Consumer)",
-    "HCP(Health Care)",
-  ];
+  const options = ["B2B", "B2C", "HCP"];
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -61,7 +57,7 @@ const Form: React.FC = () => {
   };
 
   const countrys = ["INDIA", "USA", "GERMANY"];
-  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [selectedCountry, setSelectedCountry] = useState<String | null>(null);
   const [isOpenCountry, setIsOpenCountry] = useState(false);
   const handleOptionCountry = (countrys: any) => {
     setSelectedCountry(countrys);
@@ -115,18 +111,45 @@ const Form: React.FC = () => {
 
     return true;
   };
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+    const {
+      projectName,
+      projectCode,
+      projectManager,
+      clientProjectManager,
+      incidenceRate,
+      loi,
+      scope,
+      targetDescription,
+      onlineOffline,
+      billingComments,
+    } = formData;
     try {
       if (validateForm()) {
-        const { data } = await axios.post("", {
-          formData,
-          selectedOption,
-          selectedCountry,
-          selectedDiv,
-        });
+        const { data } = await axios.post(
+          "http://0.0.0.0:8001/project/create",
+          {
+            ProjectName: projectName,
+            ProjectCode: projectCode,
+            projectManager: projectManager,
+            ClientProjectManager: clientProjectManager,
+            IncidenceRate: incidenceRate,
+            Loi: loi,
+            Scope: scope,
+            Target: selectedOption,
+            TargetDescription: targetDescription,
+            SelectedCountry: selectedCountry,
+            Online: onlineOffline,
+            SelectedDiv: selectedDiv,
+            BillingComments: billingComments,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
         console.log(data, "success");
         toast.success("Form submitted successfully");
         if (data.message === "success") {
