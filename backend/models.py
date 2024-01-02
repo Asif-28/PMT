@@ -1,4 +1,4 @@
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, validator, Field
 from typing import Optional
 
 
@@ -19,22 +19,17 @@ class Project(BaseModel):
 
     @validator("IncidenceRate", pre=True, always=True)
     def append_percentage(cls, v):
-        if v is not None:
-            return f"{v}%"
-        return v
+        return f"{v}%"
 
     @validator("Loi", pre=True, always=True)
     def append_min(cls, v):
-        if v is not None:
-            return f"{v} Min"
-        return v
-    
+        return f"{v} Min"
+
     @validator("Target", pre=True, always=True)
     def validate_target(cls, v):
         # check if Target is one of those values
-        if v is not None:
-            if v not in ["HCP", "B2B", "B2C"]:
-                raise ValueError("Target must be one of GenPop, B2B, B2C")
+        if v not in ["HCP", "B2B", "B2C"]:
+            raise ValueError("Target must be one of GenPop, B2B, B2C")
         return v
 
     @staticmethod
@@ -46,6 +41,7 @@ class Client(BaseModel):
     """
     ProjectCode relates to -> class Project
     """
+
     ProjectCode: str
     InputField: str
     Country: str
@@ -58,3 +54,28 @@ class Client(BaseModel):
     @staticmethod
     def index_key() -> str:
         return "ProjectCode"
+
+
+class GetSurvey(BaseModel):
+    Ip: str
+    CountryCode: str
+    ProjectCode: str
+    VendorId: str
+    VendorCode: str
+    Test: bool = Field(default=False)
+
+
+class PostSurvey(BaseModel):
+    Ip: str
+    Country: str  # Project Country
+    CountryCode: str  # Project Country Code
+    ProjectCode: str
+    Loi: str
+    TransId: str
+    VendorId: str
+    VendorCode: str
+    Status: str
+    FraudScore: int
+    Proxy: bool
+    StartTime: int  # Epoch time
+    EndTime: int  # Epoch time
