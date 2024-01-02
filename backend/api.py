@@ -89,6 +89,7 @@ async def list_clients() -> list[Client]:
 Countries Code details
 """
 
+
 @app.get("/countries_code/get")
 async def get_countries_code():
     """
@@ -96,9 +97,12 @@ async def get_countries_code():
     """
     return countries
 
+
 """
 Survey get
 """
+
+
 @app.get("/survey/get")
 def get_survey(survey: GetSurvey):
     """
@@ -111,16 +115,15 @@ def get_survey(survey: GetSurvey):
         client = Client(**db_clients.find_one({"ProjectCode": survey.ProjectCode}))
     except Exception as e:
         return message.error(text=f"{e}")
-    
+
     # Check if country exists
     if survey.CountryCode not in countries:
         return message.error(text="Country does not exist")
-    
+
     # validate Ip
     data = check_ip(survey.Ip)
     if not isinstance(data, dict):
         return message.error(text="Invalid Ip")
-    
 
     # Check if client exists
     data = PostSurvey(
@@ -133,11 +136,10 @@ def get_survey(survey: GetSurvey):
         VendorId=None,
         VendorCode=None,
         Status=None,
-        StartTime=None, # Epoch time
-        EndTime=None, # Epoch time
+        StartTime=None,  # Epoch time
+        EndTime=None,  # Epoch time
         FraudScore=None,
     )
-    
-    
+
 
 # &name=dgdg&api=436346&country=India&country_code=IN&project_code=436346&scope=1&loi=10&ip=
