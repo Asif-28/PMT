@@ -47,7 +47,7 @@ const VendorSetup: React.FC = () => {
   const handleToggleVendor = () => {
     setIsOpenVendor(!isOpenVendor);
   };
-  console.log(formData.pauseVendor + " " + formData.pauseAll);
+  // console.log(formData.pauseVendor + " " + formData.pauseAll);
   const vendors = ["a", "b", "c", "d"];
   return (
     <main className="section">
@@ -212,27 +212,37 @@ const VendorSetup: React.FC = () => {
               <label className="block text-gray-500 font-medium mb-4">
                 Quick Action *
               </label>
-              <div className="mt-2">
-                <label className="inline-flex items-center mt-2 sm:mt-0 sm:ml-4 border border-gray-500 w-[240px] sm:w-auto px-12 sm:px-[4rem] py-4 sm:py-6 rounded-2xl">
-                  <input
-                    type="checkbox"
-                    name="pauseVendor"
-                    checked={formData.pauseVendor}
-                    onChange={handleChange}
-                    className="checkbox-container"
-                  />
-                  <span className="ml-2 text-gray-500">Pause Vendor</span>
-                </label>
-                <label className="inline-flex items-center mt-2 sm:mt-0 sm:ml-4 border border-gray-500 w-[240px] sm:w-auto px-12 sm:px-[4rem] py-4 sm:py-6 rounded-2xl">
-                  <input
-                    type="checkbox"
-                    name="pauseAll"
-                    checked={formData.pauseAll}
-                    onChange={handleChange}
-                    className="checkbox-container"
-                  />
-                  <span className="ml-2 text-gray-500">Pause All Vendor</span>
-                </label>
+              <div className="mt-2 sm:flex gap-3">
+                <div
+                  onClick={() =>
+                    setFormData((prevFormData) => ({
+                      ...prevFormData,
+                      pauseVendor: !prevFormData.pauseVendor,
+                    }))
+                  }
+                  className={`${
+                    formData.pauseVendor === true
+                      ? "bg-[#a367b1] text-[#392467]"
+                      : "bg-white text-gray-500"
+                  } border border-gray-500 w-52 px-10 py-5 mt-2 rounded-2xl flex items-center justify-center cursor-pointer`}
+                >
+                  Pause Vendor
+                </div>
+                <div
+                  onClick={() =>
+                    setFormData((prevFormData) => ({
+                      ...prevFormData,
+                      pauseAll: !prevFormData.pauseAll,
+                    }))
+                  }
+                  className={`${
+                    formData.pauseAll === true
+                      ? "bg-[#a367b1] text-[#392467]"
+                      : "bg-white text-gray-500"
+                  } border border-gray-500 w-52 px-10 py-5 mt-2 rounded-2xl flex items-center justify-center cursor-pointer`}
+                >
+                  Pause All Vendor
+                </div>
               </div>
             </div>
           </div>

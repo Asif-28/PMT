@@ -4,6 +4,7 @@ import "../../app/globals.css";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import ClientSetup from "./ClientSetup";
+import { countrys } from "../data/data";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -56,7 +57,7 @@ const Form: React.FC = () => {
     setIsOpen(false);
   };
 
-  const countrys = ["INDIA", "USA", "GERMANY"];
+  // const countrys = ["INDIA", "USA", "GERMANY"];
   const [selectedCountry, setSelectedCountry] = useState<String | null>(null);
   const [isOpenCountry, setIsOpenCountry] = useState(false);
   const handleOptionCountry = (countrys: any) => {
@@ -86,7 +87,6 @@ const Form: React.FC = () => {
       !formData.targetDescription ||
       !selectedCountry ||
       !formData.onlineOffline ||
-      !selectedDiv ||
       !formData.billingComments
     ) {
       toast.error("Input all the fields");
@@ -171,9 +171,9 @@ const Form: React.FC = () => {
         }
       }
       // Handle form submission logic here
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error submitting form:", error);
-      toast.error("Project Code already exists");
+      toast.error("Error in submitting");
     }
   };
 
@@ -382,7 +382,7 @@ const Form: React.FC = () => {
                 name="targetDescription"
                 value={formData.targetDescription}
                 onChange={handleChange}
-                placeholder="Enter your LOI "
+                placeholder="Target Description "
                 className=" appearance-none font-light  xl:max-w-[480px] h-40 border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
@@ -401,13 +401,13 @@ const Form: React.FC = () => {
                     type="button"
                     className="inline-flex justify-center min-w-[15.5rem] w-full  text-sm appearance-none  xl:min-w-[480px] border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
                   >
-                    {selectedCountry ? selectedCountry : "INDIA"}
+                    {selectedCountry ? selectedCountry : "Select a Country"}
                   </button>
                 </span>
               </div>
 
               {isOpenCountry && (
-                <div className=" absolute  mt-2 sm:w-full rounded-3xl shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                <div className="absolute mt-2 sm:w-full rounded-3xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-y-auto max-h-60">
                   <div
                     className="py-1 w-full px-3 bg-white"
                     role="menu"
@@ -457,38 +457,40 @@ const Form: React.FC = () => {
                   <span className="ml-2">Offline</span>
                 </label>
               </div>
-              <div className="flex flex-col justify-start items-start sm:flex-row gap-2 sm:items-center cursor-pointer  ">
-                <div
-                  onClick={() => handleDivClick("CATI")}
-                  className={`${
-                    selectedDiv === "CATI"
-                      ? "bg-[#a367b1] text-[#392467]"
-                      : "bg-white text-gray-500"
-                  } border border-gray-500 w-36 px-10 py-5 mt-2 rounded-2xl flex items-center justify-center cursor-pointer`}
-                >
-                  CATI
+              {formData.onlineOffline === "offline" && (
+                <div className="flex flex-col justify-start items-start sm:flex-row gap-2 sm:items-center cursor-pointer  ">
+                  <div
+                    onClick={() => handleDivClick("CATI")}
+                    className={`${
+                      selectedDiv === "CATI"
+                        ? "bg-[#a367b1] text-[#392467]"
+                        : "bg-white text-gray-500"
+                    } border border-gray-500 w-36 px-10 py-5 mt-2 rounded-2xl flex items-center justify-center cursor-pointer`}
+                  >
+                    CATI
+                  </div>
+                  <div
+                    onClick={() => handleDivClick("Recruitment")}
+                    className={`${
+                      selectedDiv === "Recruitment"
+                        ? "bg-[#a367b1] text-[#392467]"
+                        : "bg-white text-gray-500"
+                    } border border-gray-500 w-36 px-10 py-5 mt-2 rounded-2xl flex items-center justify-center cursor-pointer`}
+                  >
+                    Recruitment
+                  </div>
+                  <div
+                    onClick={() => handleDivClick("IGD/IDI")}
+                    className={`${
+                      selectedDiv === "IGD/IDI"
+                        ? "bg-[#a367b1] text-[#392467]"
+                        : "bg-white text-gray-500"
+                    } border border-gray-500 w-36 px-10 py-5 mt-2 rounded-2xl flex items-center justify-center cursor-pointer`}
+                  >
+                    IGD/IDI
+                  </div>
                 </div>
-                <div
-                  onClick={() => handleDivClick("Recruitment")}
-                  className={`${
-                    selectedDiv === "Recruitment"
-                      ? "bg-[#a367b1] text-[#392467]"
-                      : "bg-white text-gray-500"
-                  } border border-gray-500 w-36 px-10 py-5 mt-2 rounded-2xl flex items-center justify-center cursor-pointer`}
-                >
-                  Recruitment
-                </div>
-                <div
-                  onClick={() => handleDivClick("IGD/IDI")}
-                  className={`${
-                    selectedDiv === "IGD/IDI"
-                      ? "bg-[#a367b1] text-[#392467]"
-                      : "bg-white text-gray-500"
-                  } border border-gray-500 w-36 px-10 py-5 mt-2 rounded-2xl flex items-center justify-center cursor-pointer`}
-                >
-                  IGD/IDI
-                </div>
-              </div>
+              )}
             </div>
 
             <div className="mb-4">

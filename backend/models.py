@@ -14,7 +14,7 @@ class Project(BaseModel):
     TargetDescription: str
     SelectedCountry: str
     Online: str
-    SelectedDiv: str
+    SelectedDiv:str
     BillingComments: str
 
     @validator("IncidenceRate", pre=True, always=True)
@@ -49,7 +49,7 @@ class Client(BaseModel):
     Scope: int
     TestLink: str
     LiveLink: str
-    CheckCountry:str
+    CheckCountry:bool
 
     @staticmethod
     def index_key() -> str:

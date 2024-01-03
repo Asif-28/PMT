@@ -21,7 +21,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState(
     "Password must contain  8 characters at least one uppercase, lowercase, number, and special character"
-  ); // Store password error
+  );
   console.log(email, password, passwordError);
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -103,7 +103,7 @@ const Login = () => {
             </div>
             <div className="flex items-center justify-center">
               <button
-                onSubmit={handleSubmit}
+                type="submit"
                 className="bg-[#000000] w-full font-semibold text-base px-10 py-4 sm:px-16 sm:py-5 text-white rounded-lg mt-10 sm:mt-20"
               >
                 Get Started

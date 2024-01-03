@@ -23,7 +23,10 @@ const ClientSetup: React.FC = () => {
     checkcountry: false,
   });
 
-  // console.log(formData.checkcountry);
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  const [isOpenCountry, setIsOpenCountry] = useState(false);
+
+  console.log(formData.checkcountry);
   // console.log(formData.projectCode);
   // console.log(formData.inputField);
   // console.log(formData.countryCode);
@@ -34,19 +37,14 @@ const ClientSetup: React.FC = () => {
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLInputElement>
   ) => {
-    if (event.target.type === "checkbox") {
-      setFormData({ ...formData, [event.target.name]: event.target.checked });
-    } else {
-      setFormData({ ...formData, [event.target.name]: event.target.value });
-    }
+    setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
-  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
-  const [isOpenCountry, setIsOpenCountry] = useState(false);
   const handleOptionCountry = (country: string) => {
     setSelectedCountry(country);
     setIsOpenCountry(false);
   };
+
   const handleToggleCountry = () => {
     setIsOpenCountry(!isOpenCountry);
   };
@@ -65,6 +63,12 @@ const ClientSetup: React.FC = () => {
       return false;
     }
     return true;
+  };
+  const handleCheckCountryClick = () => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      checkcountry: !prevFormData.checkcountry,
+    }));
   };
 
   const handleSubmit = async (event: FormEvent) => {
@@ -114,12 +118,13 @@ const ClientSetup: React.FC = () => {
         }
       }
       // Handle form submission logic here
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      toast.error("Project Code Should be Unique");
+    } catch (error: any) {
+      // console.error("Error submitting form:", error);
+      // toast.error("Project Code Should be Unique");
+      toast.error(error);
     }
   };
-  console.log(selectedCountry);
+  // console.log(selectedCountry);
 
   return (
     <main className="section">
@@ -300,16 +305,16 @@ const ClientSetup: React.FC = () => {
                 Quick Action *
               </label>
               <div className="mt-2">
-                <label className="inline-flex items-center border border-gray-500 px-16 sm:px-20 py-4 sm:py-6 rounded-2xl">
-                  <input
-                    type="checkbox"
-                    name="checkcountry"
-                    checked={formData.checkcountry}
-                    onChange={handleChange}
-                    className="form-radio radio-container"
-                  />
-                  <span className="ml-2 text-gray-500">Country ?</span>
-                </label>
+                <div
+                  onClick={handleCheckCountryClick}
+                  className={`${
+                    formData.checkcountry === true
+                      ? "bg-[#a367b1] text-[#392467]"
+                      : "bg-white text-gray-500"
+                  } border border-gray-500 w-48 px-10 py-5 mt-2 rounded-2xl flex items-center justify-center cursor-pointer`}
+                >
+                  Country Check
+                </div>
               </div>
             </div>
           </div>
