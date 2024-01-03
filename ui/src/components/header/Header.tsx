@@ -84,7 +84,7 @@ const Header: React.FC = () => {
   };
   return (
     <main className="py-3 ">
-      <div className="hidden section sm:flex  items-center gap-6 sm:justify-around ">
+      <div className="hidden section sm:flex  items-center gap-6 sm:justify-between md:justify-around  ">
         <div className="left flex items-center gap-3 sm:gap-6 ml-1 sm:ml-0">
           <div
             onClick={toggleMenu}
@@ -142,7 +142,7 @@ const Header: React.FC = () => {
         <div className="hidden sm:flex items-center relative">
           <input
             placeholder="search"
-            className="text-[15px] border-none w-[150px] md:w-[500px] lg:min-w-[700px] px-10 py-3 sm:px-16 sm:py-4 rounded-full focus:outline-[#392467] focus:shadow-outline"
+            className="text-[15px] border-none w-auto md:w-[500px] lg:min-w-[700px] px-10 py-3 sm:px-16 sm:py-4 rounded-full focus:outline-[#392467] focus:shadow-outline"
             type="search"
             value={searchTerm}
             onChange={handleSearch}
@@ -172,7 +172,7 @@ const Header: React.FC = () => {
           </div>
         </div>
         <div className=" flex items-center gap-3 sm:gap-10">
-          <div className="flex gap-3 md:gap-6 lg:gap-10 border border-[#008000] px-4 py-2 md:px-6 md:py-3 lg:px-8 lg:py-[1.2rem] items-center justify-center rounded-full">
+          <div className="flex gap-3 md:gap-6 lg:gap-8 border border-[#008000] px-4 py-2 md:px-4 md:py-[.7rem] lg:px-6 lg:py-[.8rem] items-center justify-center rounded-full">
             <div className="w-2 h-2 md:w-4 md:h-4 rounded-full bg-[#008000]"></div>
             <h3 className="text-[14px] sm:text-base">Active </h3>
           </div>
