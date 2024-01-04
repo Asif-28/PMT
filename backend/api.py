@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import pymongo
 
 # locals
-from models import Project, Client, GetSurvey, PostSurvey
+from models import Project, ProjectClient, GetSurvey, PostSurvey
 from database import db_projects, db_clients
 from constants import message, JSONResponse
 from _country_codes import countries
@@ -60,29 +60,29 @@ Client
 
 
 @app.post("/client/create")
-async def create_client(client: Client) -> JSONResponse:
+async def create_client(project_client: ProjectClient) -> JSONResponse:
     """
     Create a new client
     """
 
-    db_clients.create_index(client.index_key(), unique=True)
+    db_clients.create_index(project_client.index_key(), unique=True)
 
     try:
-        db_clients.insert_one(client.model_dump())
+        db_clients.insert_one(project_client.model_dump())
         return message.success(text="Client created")
     except pymongo.errors.DuplicateKeyError:
         return message.error(text="Client already exists")
 
 
-@app.get("/client/list")
-async def list_clients() -> list[Client]:
+@app.get("/client/list/")
+async def list_clients() -> list[ProjectClient]:
     """
     List all clients
     """
 
-    clients = db_clients.find()
-    print(clients)
-    return [Client(**client) for client in clients]
+    project_clients = db_clients.find()
+    print(project_clients)
+    return [ProjectClient(**client) for client in project_clients]
 
 
 """
@@ -112,7 +112,7 @@ def get_survey(survey: GetSurvey):
     # Check if project exists
     try:
         project = Project(**db_projects.find_one({"ProjectCode": survey.ProjectCode}))
-        client = Client(**db_clients.find_one({"ProjectCode": survey.ProjectCode}))
+        project_client = ProjectClient(**db_clients.find_one({"ProjectCode": survey.ProjectCode}))
     except Exception as e:
         return message.error(text=f"{e}")
 

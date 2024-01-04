@@ -40,7 +40,7 @@ class Project(BaseModel):
         return "ProjectCode"
 
 
-class Client(BaseModel):
+class ProjectClient(BaseModel):
     """
     ProjectCode relates to -> class Project
     """
@@ -52,12 +52,20 @@ class Client(BaseModel):
     Scope: int
     TestLink: str
     LiveLink: str
-    CheckCountry:bool
+    CheckCountry: bool
 
     @staticmethod
     def index_key() -> str:
         return "ProjectCode"
 
+class ProjectVendor(BaseModel):
+    ClientName: str
+    ClientProjectManager: str
+    EmailId: str
+
+
+class Client(BaseModel):
+    ...
 
 class GetSurvey(BaseModel):
     """
