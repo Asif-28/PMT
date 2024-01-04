@@ -1,7 +1,8 @@
-import React, { useState, FormEvent, ChangeEvent } from "react";
-import { countrys } from "../data/data";
+import React, { useState, FormEvent, ChangeEvent, useEffect } from "react";
+import { countrys, clientData } from "../data/data";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
+import Link from "next/link";
 
 interface FormData {
   projectCode: string;
@@ -124,8 +125,20 @@ const ClientSetup: React.FC = () => {
       toast.error(error);
     }
   };
+  // const [clientData, setClientData] = useState([{}]);
   // console.log(selectedCountry);
+  // useEffect(() => {
+  //   async function getAllList() {
+  //     const response = await fetch("", {
+  //       method: "GET",
+  //     });
 
+  //     const data = await response.json();
+  //     setClientData(data);
+  //   }
+  //   getAllList();
+  // }, []);
+  console.log(clientData);
   return (
     <main className="section">
       <ToastContainer
@@ -330,6 +343,85 @@ const ClientSetup: React.FC = () => {
             </button>
           </div>
         </form>
+      </div>
+      {/* For The Desktop Screen view  */}
+      <div className="bg-[#fff] px-8 py-6 rounded-3xl mt-6 hidden sm:block ">
+        <div className="flex items-center justify-between mb-4"></div>
+
+        <table className="table-auto w-full">
+          <thead>
+            <tr>
+              <th className="px-4 py-4">Input</th>
+              <th className="px-4 py-4">Country</th>
+              <th className="px-4 py-4">Country Code</th>
+              <th className="px-4 py-4">Scope</th>
+              <th className="px-4 py-4">Test Link</th>
+              <th className="px-4 py-4">Live Link</th>
+            </tr>
+          </thead>
+          <tbody>
+            {clientData.map((item) => (
+              <tr key={item.id} className="border-b border-gray-200 ">
+                <td className="px-4 text-center py-6">{item.input}</td>
+                <td className="px-4 text-center py-6">{item.country}</td>
+                <td className="px-4 text-center py-6">{item.countryCode}</td>
+                <td className="px-4 text-center py-6">{item.scope}</td>
+                <td className="px-4 text-center py-6">
+                  <Link href={item.testLink}>Link</Link>
+                </td>
+                <td className="px-4 text-center py-6">
+                  <Link href={item.liveLink}>Link</Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Moblie  */}
+      <div className="bg-[#fff] px-2 py-4 rounded-3xl mt-4 sm:hidden ">
+        <div className="flex items-center justify-between mb-4"></div>
+
+        <table className="table-auto w-full">
+          <thead>
+            <tr>
+              <th className="px-2 py-3 text-center">Input</th>
+              <th className="px-2 py-3 text-center">Country</th>
+              <th className="px-2 py-3 text-center">Country Code</th>
+            </tr>
+          </thead>
+          <tbody>
+            {clientData.map((item) => (
+              <tr key={item.id} className="border-b border-gray-200 ">
+                <td className="px-3 text-center py-5">{item.input}</td>
+                <td className="px-3 text-center py-5">{item.country}</td>
+                <td className="px-3 text-center py-5">{item.countryCode}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <table className="table-auto w-full mt-8 ">
+          <thead>
+            <tr>
+              <th className="px-2 py-3 text-center">Scope</th>
+              <th className="px-2 py-3 text-center">Test Link</th>
+              <th className="px-2 py-3 text-center">Live Link</th>
+            </tr>
+          </thead>
+          <tbody>
+            {clientData.map((item) => (
+              <tr key={item.id} className="border-b border-gray-200 ">
+                <td className="px-3 text-center py-5">{item.scope}</td>
+                <td className="px-3 text-center py-5">
+                  <Link href={item.testLink}>Link </Link>
+                </td>
+                <td className="px-3 text-center py-5">
+                  <Link href={item.liveLink}>Link</Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </main>
   );

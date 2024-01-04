@@ -242,3 +242,33 @@ export const data = [
     img: "tag-cross.png",
   },
 ];
+
+export const clientData = [
+  {
+    id: 1,
+    input: "VC123",
+    country: "India",
+    countryCode: "J563",
+    scope: "12",
+    testLink: "http://localhost",
+    liveLink: "http://localhost",
+  },
+  {
+    id: 2,
+    input: "VC123",
+    country: "India",
+    countryCode: "J563",
+    scope: "12",
+    testLink: "http://localhost",
+    liveLink: "http://localhost",
+  },
+  {
+    id: 3,
+    input: "VC123",
+    country: "India ",
+    countryCode: "J563",
+    scope: "12",
+    testLink: "http://localhost",
+    liveLink: "http://localhost",
+  },
+];

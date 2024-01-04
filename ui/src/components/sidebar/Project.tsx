@@ -42,10 +42,6 @@ const Form: React.FC = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<String | null>(null);
-  // console.log(selectedCountry);
-  // console.log(selectedDiv);
-  // console.log(selectedOption);
-
   const options = ["B2B", "B2C", "HCP"];
 
   const handleToggle = () => {
@@ -56,8 +52,6 @@ const Form: React.FC = () => {
     setSelectedOption(option);
     setIsOpen(false);
   };
-
-  // const countrys = ["INDIA", "USA", "GERMANY"];
   const [selectedCountry, setSelectedCountry] = useState<String | null>(null);
   const [isOpenCountry, setIsOpenCountry] = useState(false);
   const handleOptionCountry = (countrys: any) => {
@@ -93,7 +87,15 @@ const Form: React.FC = () => {
 
       return false;
     }
-
+    const incidenceRateRegex = /^[0-9]+$/;
+    const loiRegex = /^[0-9]+$/;
+    if (
+      !incidenceRateRegex.test(formData.incidenceRate) ||
+      !loiRegex.test(formData.loi)
+    ) {
+      toast.error("Incidence rate and loi should contain numbers only");
+      return false;
+    }
     // Check if incidenceRate is a number in the range 1-100
     const incidenceRate = parseFloat(formData.incidenceRate);
     if (isNaN(incidenceRate) || incidenceRate < 1 || incidenceRate > 100) {
