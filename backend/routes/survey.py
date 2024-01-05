@@ -1,9 +1,3 @@
-import sys
-import os
-
-pwd = os.path.dirname(os.path.realpath(__file__))
-sys.path.append("..")
-
 from fastapi import APIRouter
 from ..utils import message
 from ..models.survey import GetSurvey, PostSurvey
