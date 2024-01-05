@@ -3,6 +3,9 @@ from typing import Optional
 
 
 class Project(BaseModel):
+    """
+    Description: Project
+    """
     ProjectName: str
     ProjectCode: str
     ProjectManager: str
@@ -57,6 +60,8 @@ class Client(BaseModel):
 
 
 class GetSurvey(BaseModel):
+    """
+    """
     Ip: str
     CountryCode: str
     ProjectCode: str
@@ -66,6 +71,8 @@ class GetSurvey(BaseModel):
 
 
 class PostSurvey(BaseModel):
+    """
+    """
     Ip: str
     Country: str  # Project Country
     CountryCode: str  # Project Country Code
