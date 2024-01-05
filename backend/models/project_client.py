@@ -1,20 +1,24 @@
 from pydantic import BaseModel, Field
 from typing import Optional
+from mongoengine import Document, StringField, URLField, ReferenceField, CASCADE, BooleanField
 
-class ProjectClient(BaseModel):
-    """
-    ProjectCode relates to -> class Project
-    """
+from .project import ProjectCreationModel
+from ..utils import mongoengine_to_pydantic
 
-    ProjectCode: str
-    InputField: str
-    Country: str
-    CountryCode: str
-    Scope: int
-    TestLink: str
-    LiveLink: str
-    CheckCountry: bool
+class ProjectClientModel(Document):
+    project_code = StringField(required=True)  # This should match with ProjectCreation's project_code
+    input_field = StringField(required=True)
+    country = StringField(required=True)
+    country_code = StringField(required=True)
+    scope = StringField(required=True)
+    test_link = URLField(required=True)
+    live_link = URLField(required=True)
+    check_country = BooleanField(required=True)
+    # Add a reference to the ProjectCreationModel
+    project_id = ReferenceField(ProjectCreationModel, reverse_delete_rule=CASCADE)
 
-    @staticmethod
-    def index_key() -> str:
-        return "ProjectCode"
+    @classmethod
+    def index_key(cls):
+        return "project_code"
+
+ProjectClient = mongoengine_to_pydantic(ProjectClientModel)

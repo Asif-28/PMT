@@ -2,7 +2,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .routes import countries, project, project_clients, survey
-
+from .constants import DB_NAME, MONGO_URI
+import mongoengine
 
 app = FastAPI()
 
@@ -10,6 +11,7 @@ origins = [
     "*",
 ]
 
+mongoengine.connect(DB_NAME, host=MONGO_URI)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,

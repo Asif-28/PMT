@@ -1,3 +1,6 @@
+from typing import Type
+from pydantic import BaseModel, create_model
+from mongoengine.fields import StringField, IntField, EmailField, BooleanField, Document, ListField, DictField, FloatField
 from bson.objectid import ObjectId
 from fastapi import status
 from fastapi.responses import JSONResponse
@@ -44,3 +47,27 @@ class Message:
 
 
 message = Message()
+
+
+def mongoengine_to_pydantic(db_model: Type[Document]) -> Type[BaseModel]:
+    annotations = {}
+    for field_name, field in db_model._fields.items():
+        if isinstance(field, StringField):
+            field_type = (str, ...)
+        elif isinstance(field, IntField):
+            field_type = (int, ...)
+        elif isinstance(field, EmailField):
+            field_type = (str, ...)
+        elif isinstance(field, BooleanField):
+            field_type = (bool, ...)
+        elif isinstance(field, ListField):
+            field_type = (list, ...)
+        elif isinstance(field, DictField):
+            field_type = (dict, ...)
+        # Add more field types here as needed
+        else:
+            continue
+        annotations[field_name] = field_type
+
+    pydantic_model = create_model(db_model.__name__ + 'Pydantic', **annotations)
+    return pydantic_model

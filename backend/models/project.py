@@ -1,39 +1,48 @@
-from pydantic import BaseModel, validator
+from fastapi import HTTPException
+from mongoengine import Document, StringField, IntField
 
-class Project(BaseModel):
+from ..utils import mongoengine_to_pydantic
+
+class ProjectCreationModel(Document):
     """
-    Description: Project
+    Create a new Project model.
     """
+    project_name = StringField(required=True)
+    project_code = StringField(required=True, unique=True, index=True)
+    project_manager = StringField(required=True)
+    client_project_manager = StringField(required=True)
+    incidence_rate = StringField(required=True)
+    loi = StringField(required=True)
+    scope = IntField(required=True)
+    target = StringField(required=True)
+    target_description = StringField(required=True)
+    selected_country = StringField(required=True)
+    online = StringField(required=True)
+    selected_div = StringField(required=True)
+    billing_comments = StringField(required=True)
+    # Define the meta dictionary
+    
 
-    ProjectName: str
-    ProjectCode: str
-    ProjectManager: str
-    ClientProjectManager: str
-    IncidenceRate: str
-    Loi: str
-    Scope: int
-    Target: str
-    TargetDescription: str
-    SelectedCountry: str
-    Online: str
-    SelectedDiv: str
-    BillingComments: str
+    def clean(self):
+        """
+        Clean the data before saving it to the database.
+        """
+        # Validate incidence_rate
+        if not self.incidence_rate.endswith('%'):
+            self.incidence_rate = f"{self.incidence_rate}%"
 
-    @validator("IncidenceRate", pre=True, always=True)
-    def append_percentage(cls, v):
-        return f"{v}%"
+        # Validate loi
+        if not self.loi.endswith(' Min'):
+            self.loi = f"{self.loi} Min"
 
-    @validator("Loi", pre=True, always=True)
-    def append_min(cls, v):
-        return f"{v} Min"
+        # Validate target
+        if self.target not in ["HCP", "B2B", "B2C"]:
+            raise HTTPException(status_code=400, detail="'target' must be one of HCP, B2B, B2C")
 
-    @validator("Target", pre=True, always=True)
-    def validate_target(cls, v):
-        # check if Target is one of those values
-        if v not in ["HCP", "B2B", "B2C"]:
-            raise ValueError("Target must be one of GenPop, B2B, B2C")
-        return v
+    @classmethod
+    def index_key(cls):
+        return "project_code"
 
-    @staticmethod
-    def index_key() -> str:
-        return "ProjectCode"
+
+Project = mongoengine_to_pydantic(ProjectCreationModel)
+
