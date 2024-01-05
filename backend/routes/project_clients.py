@@ -13,7 +13,7 @@ Client
 """
 
 @router.post("/project_client/create")
-async def create_client(project_client: ProjectClient) -> JSONResponse:
+def create_client(project_client: ProjectClient) -> JSONResponse:
     """
     Create a new client
     """
@@ -21,14 +21,16 @@ async def create_client(project_client: ProjectClient) -> JSONResponse:
     db_project_clients.create_index(project_client.index_key(), unique=True)
 
     try:
-        db_project_clients.insert_one(project_client.model_dump())
+        model = project_client.model_dump()
+        # add one to 
+        db_project_clients.insert_one()
         return message.success(text="Client created")
     except pymongo.errors.DuplicateKeyError:
         return message.error(text="Client already exists")
 
 
 @router.get("/project_client/list/")
-async def list_clients() -> list[ProjectClient]:
+def list_clients() -> list[ProjectClient]:
     """
     List all clients
     """

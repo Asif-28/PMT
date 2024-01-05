@@ -11,7 +11,7 @@ from ..database import db_projects
 router = APIRouter()
 
 @router.post("/project/create")
-async def create_project(project: Project) -> JSONResponse:
+def create_project(project: Project) -> JSONResponse:
     """
     Create a new project
     """
@@ -26,7 +26,7 @@ async def create_project(project: Project) -> JSONResponse:
 
 
 @router.get("/project/list")
-async def list_projects() -> list[Project]:
+def list_projects() -> list[Project]:
     """
     List all projects
     """

@@ -13,7 +13,7 @@ Countries Code details
 
 
 @router.get("/countries_code/get")
-async def get_countries_code():
+def get_countries_code():
     """
     list of names of all countries with their 2 letter code
     """
