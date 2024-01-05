@@ -236,11 +236,11 @@ export const data = [
     title: "Project Allocation",
     img: "flag.png",
   },
-  {
-    id: 9,
-    title: "Reject",
-    img: "tag-cross.png",
-  },
+  // {
+  //   id: 9,
+  //   title: "Reject",
+  //   img: "tag-cross.png",
+  // },
 ];
 
 export const clientData = [

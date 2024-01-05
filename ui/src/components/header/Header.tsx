@@ -82,61 +82,13 @@ const Header: React.FC = () => {
         return 1;
     }
   };
+
   return (
     <main className="py-3 ">
-      <div className="hidden section sm:flex  items-center gap-6 sm:justify-between md:justify-around  ">
-        <div className="left flex items-center gap-3 sm:gap-6 ml-1 sm:ml-0">
-          <div
-            onClick={toggleMenu}
-            className="rounded-full px-5 py-5 bg-white w-[4rem] flex justify-center items-center cursor-pointer relative  z-100"
-          >
+      <div className="hidden sm:flex items-center justify-evenly  gap-6  ">
+        <div className=" flex items-center sm:ml-0">
+          <div className="rounded-full px-5 py-5 bg-white w-[4rem] flex cursor-pointer z-100">
             <Image src={`/category.png`} alt="header" height={30} width={30} />
-            <div
-              className="absolute -top-16 left-0 xl:-left-[2.6rem] 2xl:-left-[6.8rem] "
-              style={{
-                transform: isOpen ? "translateX(0)" : "translateX(-100%)",
-                transition: "all 0.3s ease-out",
-              }}
-            >
-              {isOpen && (
-                <div className="hidden sm:block bg-[rgb(255,255,255)] w-72 rounded-3xl py-6 mt-12 h-[100vh]   ">
-                  <div className="flex items-center justify-center pb-10 mt-3">
-                    <Image
-                      src={`/category.png`}
-                      alt="header"
-                      height={30}
-                      width={26}
-                    />
-                  </div>
-                  {data.map((item) => (
-                    <div
-                      className={`cursor-pointer flex gap-3 mb-3 items-center py-3 pl-8 mx-auto w-56   ${
-                        item.id === selectedItemId
-                          ? "bg-[#392467] rounded-full text-white "
-                          : ""
-                      }`}
-                      key={item.id}
-                      onClick={() => setSelectedItemId(item.id)}
-                    >
-                      <Image
-                        height={30}
-                        width={30}
-                        src={`/${item.img}`}
-                        alt="image-portfolio"
-                        className=""
-                      />
-                      <h3
-                        className={`text-[14px] text-gray-600 ${
-                          item.id === selectedItemId ? " text-white" : ""
-                        }`}
-                      >
-                        {item.title}
-                      </h3>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
           </div>
         </div>
         <div className="hidden sm:flex items-center relative">
@@ -181,7 +133,6 @@ const Header: React.FC = () => {
           </div>
         </div>
       </div>
-
       {/* mobile */}
       <div className="">
         <div className="sm:hidden flex justify-between py-1 px-2 ">
@@ -282,18 +233,6 @@ const Header: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
-
-      <div>
-        {selectedItemId === 1 && <Form />}
-        {selectedItemId === 2 && <ClientSetup />}
-        {selectedItemId === 3 && <VendorSetup />}
-        {selectedItemId === 4 && <AddNewClient />}
-        {selectedItemId === 5 && <AddNewVendor />}
-        {selectedItemId === 6 && <IdReconciliation />}
-        {selectedItemId === 7 && <DataExport />}
-        {selectedItemId === 8 && <ProjectAllocation />}
-        {selectedItemId === 9 && <Rejects />}
       </div>
     </main>
   );
