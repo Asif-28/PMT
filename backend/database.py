@@ -7,4 +7,5 @@ client = pymongo.MongoClient(MONGO_URI)
 db = client[DB_NAME]
 
 db_projects = db["Projects"]
+db_project_clients = db["ProjectClients"]
 db_clients = db["Clients"]

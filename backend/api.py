@@ -1,7 +1,7 @@
 # third prarty
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routes import client, countries, project, survey
+from .routes import countries, project, project_clients, survey
 
 
 app = FastAPI()
@@ -19,10 +19,10 @@ app.add_middleware(
 )
 
 
-app.include_router(client.router)
-app.include_router(countries.router)
 app.include_router(project.router)
+app.include_router(project_clients.router)
 app.include_router(survey.router)
+app.include_router(countries.router)
 
 
 # &name=dgdg&api=436346&country=India&country_code=IN&project_code=436346&scope=1&loi=10&ip=
