@@ -6,10 +6,7 @@ class ProjectClient(BaseModel):
     ProjectCode relates to -> class Project
     """
 
-    Project: Optional[str] = Field(
-        default=None,
-        description="Relation with Project class its the mongo objectid of project collection, ignore this filed in UI.",
-    )
+    ProjectCode: str
     InputField: str
     Country: str
     CountryCode: str
