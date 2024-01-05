@@ -19,34 +19,37 @@ const passwordSchema = z
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordError, setPasswordError] = useState(
-    "Password must contain  8 characters at least one uppercase, lowercase, number, and special character"
-  );
-  console.log(email, password, passwordError);
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+  const [passwordError, setPasswordError] = useState("");
+
+  useEffect(() => {
+    // Immediately display password error if it exists on initial render
+    if (passwordError) {
+      toast.error(passwordError);
+    }
+  }, [passwordError]);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
 
     if (name === "email") {
       setEmail(value);
     } else if (name === "password") {
       setPassword(value);
-      //   setPasswordError("");
+      setPasswordError("");
     }
-  }
+  };
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
 
     try {
-      passwordSchema.parse(password); // Validate password
+      passwordSchema.parse(password);
+      // Assuming successful login logic would follow here
     } catch (error: any) {
-      //   setPasswordError(error.issues[0].message);
-      console.log(passwordError);
-      // Display validation error
-      toast.error(passwordError);
-      return;
+      setPasswordError(error.issues[0].message);
     }
   };
+
   return (
     <main className="h-[100vh] bg-white ">
       <ToastContainer
