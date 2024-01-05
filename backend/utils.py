@@ -8,10 +8,10 @@ class BsonObjectId(ObjectId):
         yield cls.validate
 
     @classmethod
-    def validate(cls, v):
+    def validate(cls, v) -> str:
         if not ObjectId.is_valid(v):
             raise ValueError("ObjectId is not valid")
-        return v
+        return str(v)
 
 
 class Message:
