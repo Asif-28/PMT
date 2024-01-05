@@ -6,7 +6,7 @@ import pymongo
 # locals
 from models import Project, ProjectClient, GetSurvey, PostSurvey
 from database import db_projects, db_clients
-from constants import message, JSONResponse
+from utils import message, JSONResponse
 from _country_codes import countries
 from views import check_ip
 
