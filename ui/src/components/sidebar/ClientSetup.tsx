@@ -27,7 +27,7 @@ const ClientSetup: React.FC = () => {
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [isOpenCountry, setIsOpenCountry] = useState(false);
 
-  console.log(formData.checkcountry);
+  // console.log(formData.checkcountry);
   // console.log(formData.projectCode);
   // console.log(formData.inputField);
   // console.log(formData.countryCode);
@@ -103,7 +103,7 @@ const ClientSetup: React.FC = () => {
             },
           }
         );
-        console.log(data.level, "success");
+        // console.log(data.level, "success");
         toast.success("Form submitted successfully");
         if (data.level === "SUCESS") {
           setFormData({
@@ -138,7 +138,7 @@ const ClientSetup: React.FC = () => {
   //   }
   //   getAllList();
   // }, []);
-  console.log(clientData);
+  // console.log(clientData);
   return (
     <main className="section">
       <ToastContainer

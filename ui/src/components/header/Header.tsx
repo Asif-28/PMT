@@ -2,16 +2,8 @@
 import Image from "next/image";
 import { useMenu } from "../context/MenuContext";
 import { useEffect, useRef, useState } from "react";
-import Form from "../sidebar/Project";
-import ClientSetup from "../sidebar/ClientSetup";
-import VendorSetup from "../sidebar/VendorSetup";
-import AddNewClient from "../sidebar/AddNewClient";
-import AddNewVendor from "../sidebar/AddNewVendor";
-import IdReconciliation from "../sidebar/IdReconciliation";
-import DataExport from "../sidebar/DataExport";
-import ProjectAllocation from "../sidebar/ProjectAllocation";
-import Rejects from "../sidebar/Rejects";
 import { data } from "../data/data";
+import { useSearch } from "../context/SearchContext";
 
 interface DataItem {
   id: number;
@@ -19,24 +11,33 @@ interface DataItem {
   img: string;
 }
 
-// Assuming useMenu returns an object with isOpen and toggleMenu properties.
 interface MenuContext {
   isOpen: boolean;
   toggleMenu: () => void;
+}
+
+interface SearchContextProps {
+  searchResult: number | undefined;
+  setSearchResult: React.Dispatch<React.SetStateAction<number | undefined>>;
 }
 
 const Header: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [searchResults, setSearchResults] = useState<DataItem[]>([]);
   const prevSelectedItemIdRef = useRef<number | null>(null);
+  const { searchResult, setSearchResult }: SearchContextProps = useSearch();
+  const { isOpen, toggleMenu }: MenuContext = useMenu();
+
+  const [selectedItemId, setSelectedItemId] = useState<number>(1);
 
   const handleSection = (i: any) => {
     const newSelectedItemId = getSelectedItemId(i);
-    setSelectedItemId(newSelectedItemId);
+    // setSelectedItemId(newSelectedItemId);
+    setSearchResult(newSelectedItemId);
+
     setSearchResults([]);
     setSearchTerm("");
   };
-  console.log(searchTerm);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value;
@@ -51,8 +52,6 @@ const Header: React.FC = () => {
     setSearchResults(term ? filteredResults : []);
   };
 
-  const { isOpen, toggleMenu }: MenuContext = useMenu();
-  const [selectedItemId, setSelectedItemId] = useState<number>(1);
   useEffect(() => {
     // Update the previous state when selectedItemId changes
     prevSelectedItemIdRef.current = selectedItemId;
@@ -85,7 +84,7 @@ const Header: React.FC = () => {
 
   return (
     <main className="py-3 ">
-      <div className="hidden sm:flex items-center justify-evenly  gap-6  ">
+      <div className="hidden sm:flex items-center justify-evenly gap-8 max-w-[1500px] mx-auto">
         <div className=" flex items-center sm:ml-0">
           <div className="rounded-full px-5 py-5 bg-white w-[4rem] flex cursor-pointer z-100">
             <Image src={`/category.png`} alt="header" height={30} width={30} />
@@ -133,9 +132,11 @@ const Header: React.FC = () => {
           </div>
         </div>
       </div>
-      {/* mobile */}
+
+      {/* Mobile View for the sidebar menu options */}
+
       <div className="">
-        <div className="sm:hidden flex justify-between py-1 px-2 ">
+        <div className="sm:hidden flex justify-between py-1 px-3 ">
           <div
             onClick={toggleMenu}
             className="rounded-full  flex flex-col justify-center items-center cursor-pointer relative z-100 "
@@ -162,11 +163,11 @@ const Header: React.FC = () => {
                     <div
                       className={`cursor-pointer mb-3 py-3 `}
                       key={item.id}
-                      onClick={() => setSelectedItemId(item.id)}
+                      onClick={() => setSearchResult(item.id)}
                     >
                       <div
                         className={`cursor-pointer rounded-full  ${
-                          item.id === selectedItemId
+                          item.id === searchResult
                             ? "bg-[#392467] rounded-full text-white px-3 py-[.7rem]"
                             : ""
                         }`}
@@ -194,14 +195,14 @@ const Header: React.FC = () => {
               <Image
                 src={`/Ellipse 2.png`}
                 alt="image"
-                height={70}
-                width={70}
+                height={60}
+                width={60}
               />
             </div>
           </div>
         </div>
         <div className="flex items-center justify-center mb-4">
-          <div className="sm:hidden flex items-center mx-auto relative px-3">
+          <div className="sm:hidden flex items-center mx-auto relative px-3 mt-2">
             <input
               placeholder="search"
               className="text-[15px] border-none w-full px-14 py-3 sm:px-16 sm:py-4 rounded-full focus:outline-[#392467] focus:shadow-outline"
