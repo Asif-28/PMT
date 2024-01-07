@@ -145,6 +145,7 @@ const Form: React.FC = () => {
       targetDescription,
       onlineOffline,
       billingComments,
+      securityCheck,
     } = formData;
     try {
       if (validateForm()) {
@@ -165,6 +166,7 @@ const Form: React.FC = () => {
             Online: onlineOffline,
             SelectedDiv: selectedDiv,
             BillingComments: billingComments,
+            SecurityCheck: securityCheck,
           },
           {
             headers: {

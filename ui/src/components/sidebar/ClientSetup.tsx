@@ -90,6 +90,7 @@ const ClientSetup: React.FC = () => {
       testLink,
       liveLink,
       checkcountry,
+      checkQuota,
     } = formData;
     try {
       if (validateForm()) {
@@ -104,6 +105,7 @@ const ClientSetup: React.FC = () => {
             TestLink: testLink,
             LiveLink: liveLink,
             CheckCountry: checkcountry,
+            CheckQuota: checkQuota,
           },
           {
             headers: {

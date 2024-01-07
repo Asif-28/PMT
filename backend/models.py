@@ -15,10 +15,11 @@ class Project(BaseModel):
     Scope: int
     Target: str
     TargetDescription: str
-    SelectedCountry: str
+    SelectedProjectStatus:str
     Online: str
     SelectedDiv:str
     BillingComments: str
+    SecurityCheck: bool
 
     @validator("IncidenceRate", pre=True, always=True)
     def append_percentage(cls, v):
@@ -53,6 +54,7 @@ class Client(BaseModel):
     TestLink: str
     LiveLink: str
     CheckCountry:bool
+    CheckQuota:bool
 
     @staticmethod
     def index_key() -> str:
