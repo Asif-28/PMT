@@ -40,8 +40,8 @@ const VendorSetup: React.FC = () => {
 
   const [selectedVendor, setSelectedVendor] = useState<string | null>(null);
   const [isOpenVendor, setIsOpenVendor] = useState(false);
-  const handleOptionVendor = (country: string) => {
-    setSelectedVendor(country);
+  const handleOptionVendor = (i: string) => {
+    setSelectedVendor(i);
     setIsOpenVendor(false);
   };
   const handleToggleVendor = () => {

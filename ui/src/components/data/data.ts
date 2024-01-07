@@ -272,3 +272,5 @@ export const clientData = [
     liveLink: "http://localhost",
   },
 ];
+
+export const projectStatusList = ["live", "add"];
