@@ -61,7 +61,7 @@ const DataExport: React.FC = () => {
                 htmlFor="selectGroup"
                 className="block text-gray-500 font-medium mb-4"
               >
-                Select Group *
+                Select Vendor *
               </label>
               <div>
                 <span className="rounded-md shadow-sm">

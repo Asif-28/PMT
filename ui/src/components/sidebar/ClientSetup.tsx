@@ -12,6 +12,7 @@ interface FormData {
   testLink: string;
   liveLink: string;
   checkcountry: boolean;
+  checkQuota: boolean;
 }
 const ClientSetup: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
@@ -22,6 +23,7 @@ const ClientSetup: React.FC = () => {
     testLink: "",
     liveLink: "",
     checkcountry: false,
+    checkQuota: false,
   });
 
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
@@ -71,6 +73,12 @@ const ClientSetup: React.FC = () => {
       checkcountry: !prevFormData.checkcountry,
     }));
   };
+  const handleCheckQuotaClick = () => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      checkQuota: !prevFormData.checkQuota,
+    }));
+  };
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -114,6 +122,7 @@ const ClientSetup: React.FC = () => {
             testLink: "",
             liveLink: "",
             checkcountry: false,
+            checkQuota: false,
           });
           setSelectedCountry(null);
         }
@@ -207,7 +216,7 @@ const ClientSetup: React.FC = () => {
                   <button
                     onClick={handleToggleCountry}
                     type="button"
-                    className="inline-flex justify-center min-w-[15.5rem] w-full  text-sm appearance-none  xl:min-w-[480px] border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                    className="inline-flex justify-center w-full  text-sm appearance-none  xl:min-w-[480px] border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
                   >
                     {selectedCountry ? selectedCountry : "Select a Country"}
                   </button>
@@ -317,7 +326,7 @@ const ClientSetup: React.FC = () => {
               <label className="block text-gray-500 font-medium mb-4">
                 Quick Action *
               </label>
-              <div className="mt-2">
+              <div className="mt-2 md:flex gap-3">
                 <div
                   onClick={handleCheckCountryClick}
                   className={`${
@@ -327,6 +336,16 @@ const ClientSetup: React.FC = () => {
                   } border border-gray-500 w-48 px-10 py-5 mt-2 rounded-2xl flex items-center justify-center cursor-pointer`}
                 >
                   Country Check
+                </div>
+                <div
+                  onClick={handleCheckQuotaClick}
+                  className={`${
+                    formData.checkQuota === true
+                      ? "bg-[#a367b1] text-[#392467]"
+                      : "bg-white text-gray-500"
+                  } border border-gray-500 w-48 px-10 py-5 mt-2 rounded-2xl flex items-center justify-center cursor-pointer`}
+                >
+                  Quota Stop
                 </div>
               </div>
             </div>
@@ -345,7 +364,7 @@ const ClientSetup: React.FC = () => {
         </form>
       </div>
       {/* For The Desktop Screen view  */}
-      <div className="bg-[#fff] px-8 py-6 rounded-3xl mt-6 hidden sm:block ">
+      <div className="bg-[#fff] px-8 py-6 rounded-3xl mt-6 hidden md:block ">
         <div className="flex items-center justify-between mb-4"></div>
 
         <table className="table-auto w-full">
@@ -359,6 +378,7 @@ const ClientSetup: React.FC = () => {
               <th className="px-4 py-4">Live Link</th>
             </tr>
           </thead>
+
           <tbody>
             {clientData.map((item) => (
               <tr key={item.id} className="border-b border-gray-200 ">
@@ -379,7 +399,7 @@ const ClientSetup: React.FC = () => {
       </div>
 
       {/* Moblie  */}
-      <div className="bg-[#fff] px-2 py-4 rounded-3xl mt-4 sm:hidden ">
+      <div className="bg-[#fff] px-2 py-4 rounded-3xl mt-4 md:hidden ">
         <div className="flex items-center justify-between mb-4"></div>
 
         <table className="table-auto w-full">
