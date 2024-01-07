@@ -18,10 +18,6 @@ interface SidebarItem {
   title: string;
 }
 
-interface SearchHookReturnValue {
-  searchResult: number | undefined;
-}
-
 interface SearchContextProps {
   searchResult: number | undefined;
   setSearchResult: React.Dispatch<React.SetStateAction<number | undefined>>;
