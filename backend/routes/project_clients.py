@@ -1,8 +1,6 @@
-import mongoengine
 from fastapi import APIRouter
 from ..utils import message, JSONResponse
 from ..models.project_client import ProjectClient, ProjectClientModel
-import pymongo
 
 
 router = APIRouter()
