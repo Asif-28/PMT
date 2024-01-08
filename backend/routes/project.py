@@ -3,7 +3,6 @@ from fastapi import APIRouter
 
 from ..utils import message, JSONResponse
 from ..models.project import Project, ProjectCreationModel
-from ..database import db_projects
 
 router = APIRouter()
 
