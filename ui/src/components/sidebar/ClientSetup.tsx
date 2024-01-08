@@ -29,14 +29,6 @@ const ClientSetup: React.FC = () => {
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [isOpenCountry, setIsOpenCountry] = useState(false);
 
-  // console.log(formData.checkcountry);
-  // console.log(formData.projectCode);
-  // console.log(formData.inputField);
-  // console.log(formData.countryCode);
-  // console.log(formData.scope);
-  // console.log(formData.testLink);
-  // console.log(formData.liveLink);
-
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLInputElement>
   ) => {
@@ -95,17 +87,17 @@ const ClientSetup: React.FC = () => {
     try {
       if (validateForm()) {
         const { data } = await axios.post(
-          "http://0.0.0.0:8001/client/create",
+          "http://0.0.0.0:8001/project_client/create",
           {
-            ProjectCode: projectCode,
-            InputField: inputField,
-            Country: selectedCountry,
-            CountryCode: countryCode,
-            Scope: scope,
-            TestLink: testLink,
-            LiveLink: liveLink,
-            CheckCountry: checkcountry,
-            CheckQuota: checkQuota,
+            project_code: projectCode,
+            input_field: inputField,
+            country: selectedCountry,
+            country_code: countryCode,
+            scope: scope,
+            test_link: testLink,
+            live_link: liveLink,
+            check_country: checkcountry,
+            check_quota: checkQuota,
           },
           {
             headers: {
