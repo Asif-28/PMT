@@ -3,8 +3,7 @@ import React, { useState } from "react";
 import "../../app/globals.css";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import ClientSetup from "./ClientSetup";
-import { countrys } from "../data/data";
+import { countrys, projectStatusList } from "../data/data";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -19,6 +18,7 @@ interface FormData {
   targetDescription: string;
   onlineOffline: string;
   billingComments: string;
+  securityCheck: boolean;
 }
 
 const Form: React.FC = () => {
@@ -34,6 +34,7 @@ const Form: React.FC = () => {
     targetDescription: "",
     onlineOffline: "",
     billingComments: "",
+    securityCheck: false,
   });
 
   const handleChange = (event: any) => {
@@ -52,21 +53,37 @@ const Form: React.FC = () => {
     setSelectedOption(option);
     setIsOpen(false);
   };
-  const [selectedCountry, setSelectedCountry] = useState<String | null>(null);
-  const [isOpenCountry, setIsOpenCountry] = useState(false);
-  const handleOptionCountry = (countrys: any) => {
-    setSelectedCountry(countrys);
-    setIsOpenCountry(false);
-  };
-  const handleToggleCountry = () => {
-    setIsOpenCountry(!isOpenCountry);
-  };
+
+  // const [selectedCountry, setSelectedCountry] = useState<String | null>(null);
+  // const [isOpenCountry, setIsOpenCountry] = useState(false);
+  // const handleOptionCountry = (countrys: any) => {
+  //   setSelectedCountry(countrys);
+  //   setIsOpenCountry(false);
+  // };
+  // const handleToggleCountry = () => {
+  //   setIsOpenCountry(!isOpenCountry);
+  // };
 
   const [selectedDiv, setSelectedDiv] = useState(null);
   const handleDivClick = (divName: any) => {
     setSelectedDiv(divName);
   };
 
+  const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
+  const [isOpenStatus, setIsOpenStatus] = useState(false);
+  const handleOptionProjectStatus = (i: string) => {
+    setSelectedStatus(i);
+    setIsOpenStatus(false);
+  };
+  const handleToggleProjectStatus = () => {
+    setIsOpenStatus(!isOpenStatus);
+  };
+  const handleCheckSecurityClick = () => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      securityCheck: !prevFormData.securityCheck,
+    }));
+  };
   const validateForm = () => {
     // Check if any field is empty
     if (
@@ -79,7 +96,8 @@ const Form: React.FC = () => {
       !formData.scope ||
       !selectedOption ||
       !formData.targetDescription ||
-      !selectedCountry ||
+      // !selectedCountry ||
+      !selectedStatus ||
       !formData.onlineOffline ||
       !formData.billingComments
     ) {
@@ -113,6 +131,7 @@ const Form: React.FC = () => {
 
     return true;
   };
+  console.log(formData.securityCheck);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const {
@@ -126,6 +145,7 @@ const Form: React.FC = () => {
       targetDescription,
       onlineOffline,
       billingComments,
+      securityCheck,
     } = formData;
     try {
       if (validateForm()) {
@@ -141,10 +161,12 @@ const Form: React.FC = () => {
             Scope: scope,
             Target: selectedOption,
             TargetDescription: targetDescription,
-            SelectedCountry: selectedCountry,
+            // SelectedCountry: selectedCountry,
+            SelectedProjectStatus: selectedStatus,
             Online: onlineOffline,
             SelectedDiv: selectedDiv,
             BillingComments: billingComments,
+            SecurityCheck: securityCheck,
           },
           {
             headers: {
@@ -166,8 +188,10 @@ const Form: React.FC = () => {
             targetDescription: "",
             onlineOffline: "",
             billingComments: "",
+            securityCheck: false,
           });
-          setSelectedCountry(null);
+          // setSelectedCountry(null);
+          setSelectedStatus(null);
           setSelectedDiv(null);
           setSelectedOption(null);
         }
@@ -197,7 +221,7 @@ const Form: React.FC = () => {
       <div className=" bg-white pl-5 pr-2 sm:pl-6 sm:pr-16 py-12 rounded-3xl mt-2 sm:mt-4  ">
         <form className="text-[14px] sm:text-[15px]" onSubmit={handleSubmit}>
           <h2 className="mb-10">Enter the following details</h2>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="mb-4">
               <label
                 htmlFor="projectName"
@@ -342,7 +366,7 @@ const Form: React.FC = () => {
                   <button
                     onClick={handleToggle}
                     type="button"
-                    className=" bg-white inline-flex justify-center min-w-[15.5rem] w-full  text-sm appearance-none  xl:min-w-[480px] border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                    className=" bg-white inline-flex justify-center w-full  text-sm appearance-none  xl:min-w-[480px] border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
                   >
                     {selectedOption ? selectedOption : "B2B"}
                   </button>
@@ -389,7 +413,7 @@ const Form: React.FC = () => {
               />
             </div>
 
-            <div className="relative inline-block text-left z-30">
+            {/* <div className="relative inline-block text-left z-30">
               <label
                 htmlFor="country"
                 className="block text-gray-500 font-medium mb-4"
@@ -429,13 +453,54 @@ const Form: React.FC = () => {
                   </div>
                 </div>
               )}
+            </div> */}
+            <div className="relative inline-block text-left z-30">
+              <label
+                htmlFor="selectVendor"
+                className="block text-gray-500 font-medium mb-4"
+              >
+                Project Status *
+              </label>
+              <div>
+                <span className="rounded-md shadow-sm">
+                  <button
+                    onClick={handleToggleProjectStatus}
+                    type="button"
+                    className="inline-flex justify-center  w-full  text-sm appearance-none  xl:min-w-[480px] border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                  >
+                    {selectedStatus ? selectedStatus : "Choose from dropdown"}
+                  </button>
+                </span>
+              </div>
+
+              {isOpenStatus && (
+                <div className="absolute mt-2 w-full rounded-3xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-y-auto max-h-60">
+                  <div
+                    className="py-1 w-full px-3 bg-white"
+                    role="menu"
+                    aria-orientation="vertical"
+                    aria-labelledby="options-menu"
+                  >
+                    {projectStatusList.map((list, index) => (
+                      <div
+                        key={index}
+                        onClick={() => handleOptionProjectStatus(list)}
+                        className="block px-4 py-4 text-sm text-gray-700 w-full hover:bg-[#a367b1] hover:text-[#392467] font-semibold  text-left  my-2 rounded-xl"
+                        role="menuitem"
+                      >
+                        {list}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
             <div className="mb-4">
               <label className="block text-gray-500 font-medium mb-4">
                 Methodology
               </label>
               <div className="mt-2">
-                <label className="inline-flex items-center border border-gray-500 px-20 py-6 rounded-2xl lg:ml-1">
+                <label className="inline-flex items-center border border-gray-500 px-[3.8rem] py-5 lg:px-20  lg:py-6 rounded-2xl lg:ml-1">
                   <input
                     required
                     type="radio"
@@ -447,7 +512,7 @@ const Form: React.FC = () => {
                   />
                   <span className="ml-2">Online</span>
                 </label>
-                <label className="inline-flex items-center  mt-2 xl:mt-0 lg:ml-1 xl:ml-4 border border-gray-500 px-20 py-6 rounded-2xl">
+                <label className="inline-flex items-center  mt-2 xl:mt-0 lg:ml-1 xl:ml-4 border border-gray-500 px-[3.8rem] py-5 lg:px-20  lg:py-6 rounded-2xl">
                   <input
                     type="radio"
                     name="onlineOffline"
@@ -512,6 +577,18 @@ const Form: React.FC = () => {
                 placeholder="Enter your billing comments"
                 className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
+            </div>
+            <div className="mb-4">
+              <div
+                onClick={handleCheckSecurityClick}
+                className={`${
+                  formData.securityCheck === true
+                    ? "bg-[#a367b1] text-[#392467]"
+                    : "bg-white text-gray-500"
+                } border border-gray-500 w-48 px-10 py-5 mt-2 rounded-2xl flex items-center justify-center cursor-pointer`}
+              >
+                Security Check
+              </div>
             </div>
           </div>
 

@@ -2,16 +2,8 @@
 import Image from "next/image";
 import { useMenu } from "../context/MenuContext";
 import { useEffect, useRef, useState } from "react";
-import Form from "../sidebar/Project";
-import ClientSetup from "../sidebar/ClientSetup";
-import VendorSetup from "../sidebar/VendorSetup";
-import AddNewClient from "../sidebar/AddNewClient";
-import AddNewVendor from "../sidebar/AddNewVendor";
-import IdReconciliation from "../sidebar/IdReconciliation";
-import DataExport from "../sidebar/DataExport";
-import ProjectAllocation from "../sidebar/ProjectAllocation";
-import Rejects from "../sidebar/Rejects";
 import { data } from "../data/data";
+import { useSearch } from "../context/SearchContext";
 
 interface DataItem {
   id: number;
@@ -19,24 +11,33 @@ interface DataItem {
   img: string;
 }
 
-// Assuming useMenu returns an object with isOpen and toggleMenu properties.
 interface MenuContext {
   isOpen: boolean;
   toggleMenu: () => void;
+}
+
+interface SearchContextProps {
+  searchResult: number | undefined;
+  setSearchResult: React.Dispatch<React.SetStateAction<number | undefined>>;
 }
 
 const Header: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [searchResults, setSearchResults] = useState<DataItem[]>([]);
   const prevSelectedItemIdRef = useRef<number | null>(null);
+  const { searchResult, setSearchResult }: SearchContextProps = useSearch();
+  const { isOpen, toggleMenu }: MenuContext = useMenu();
+
+  const [selectedItemId, setSelectedItemId] = useState<number>(1);
 
   const handleSection = (i: any) => {
     const newSelectedItemId = getSelectedItemId(i);
-    setSelectedItemId(newSelectedItemId);
+    // setSelectedItemId(newSelectedItemId);
+    setSearchResult(newSelectedItemId);
+
     setSearchResults([]);
     setSearchTerm("");
   };
-  console.log(searchTerm);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value;
@@ -51,8 +52,6 @@ const Header: React.FC = () => {
     setSearchResults(term ? filteredResults : []);
   };
 
-  const { isOpen, toggleMenu }: MenuContext = useMenu();
-  const [selectedItemId, setSelectedItemId] = useState<number>(1);
   useEffect(() => {
     // Update the previous state when selectedItemId changes
     prevSelectedItemIdRef.current = selectedItemId;
@@ -82,61 +81,13 @@ const Header: React.FC = () => {
         return 1;
     }
   };
+
   return (
     <main className="py-3 ">
-      <div className="hidden section sm:flex  items-center gap-6 sm:justify-between md:justify-around  ">
-        <div className="left flex items-center gap-3 sm:gap-6 ml-1 sm:ml-0">
-          <div
-            onClick={toggleMenu}
-            className="rounded-full px-5 py-5 bg-white w-[4rem] flex justify-center items-center cursor-pointer relative  z-100"
-          >
+      <div className="hidden sm:flex items-center justify-evenly gap-8 max-w-[1500px] mx-auto">
+        <div className=" flex items-center sm:ml-0">
+          <div className="rounded-full px-5 py-5 bg-white w-[4rem] flex cursor-pointer z-100">
             <Image src={`/category.png`} alt="header" height={30} width={30} />
-            <div
-              className="absolute -top-16 left-0 xl:-left-[2.6rem] 2xl:-left-[6.8rem] "
-              style={{
-                transform: isOpen ? "translateX(0)" : "translateX(-100%)",
-                transition: "all 0.3s ease-out",
-              }}
-            >
-              {isOpen && (
-                <div className="hidden sm:block bg-[rgb(255,255,255)] w-72 rounded-3xl py-6 mt-12 h-[100vh]   ">
-                  <div className="flex items-center justify-center pb-10 mt-3">
-                    <Image
-                      src={`/category.png`}
-                      alt="header"
-                      height={30}
-                      width={26}
-                    />
-                  </div>
-                  {data.map((item) => (
-                    <div
-                      className={`cursor-pointer flex gap-3 mb-3 items-center py-3 pl-8 mx-auto w-56   ${
-                        item.id === selectedItemId
-                          ? "bg-[#392467] rounded-full text-white "
-                          : ""
-                      }`}
-                      key={item.id}
-                      onClick={() => setSelectedItemId(item.id)}
-                    >
-                      <Image
-                        height={30}
-                        width={30}
-                        src={`/${item.img}`}
-                        alt="image-portfolio"
-                        className=""
-                      />
-                      <h3
-                        className={`text-[14px] text-gray-600 ${
-                          item.id === selectedItemId ? " text-white" : ""
-                        }`}
-                      >
-                        {item.title}
-                      </h3>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
           </div>
         </div>
         <div className="hidden sm:flex items-center relative">
@@ -182,9 +133,10 @@ const Header: React.FC = () => {
         </div>
       </div>
 
-      {/* mobile */}
+      {/* Mobile View for the sidebar menu options */}
+
       <div className="">
-        <div className="sm:hidden flex justify-between py-1 px-2 ">
+        <div className="sm:hidden flex justify-between py-1 px-3 ">
           <div
             onClick={toggleMenu}
             className="rounded-full  flex flex-col justify-center items-center cursor-pointer relative z-100 "
@@ -211,11 +163,11 @@ const Header: React.FC = () => {
                     <div
                       className={`cursor-pointer mb-3 py-3 `}
                       key={item.id}
-                      onClick={() => setSelectedItemId(item.id)}
+                      onClick={() => setSearchResult(item.id)}
                     >
                       <div
                         className={`cursor-pointer rounded-full  ${
-                          item.id === selectedItemId
+                          item.id === searchResult
                             ? "bg-[#392467] rounded-full text-white px-3 py-[.7rem]"
                             : ""
                         }`}
@@ -243,14 +195,14 @@ const Header: React.FC = () => {
               <Image
                 src={`/Ellipse 2.png`}
                 alt="image"
-                height={70}
-                width={70}
+                height={60}
+                width={60}
               />
             </div>
           </div>
         </div>
         <div className="flex items-center justify-center mb-4">
-          <div className="sm:hidden flex items-center mx-auto relative px-3">
+          <div className="sm:hidden flex items-center mx-auto relative px-3 mt-2">
             <input
               placeholder="search"
               className="text-[15px] border-none w-full px-14 py-3 sm:px-16 sm:py-4 rounded-full focus:outline-[#392467] focus:shadow-outline"
@@ -282,18 +234,6 @@ const Header: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
-
-      <div>
-        {selectedItemId === 1 && <Form />}
-        {selectedItemId === 2 && <ClientSetup />}
-        {selectedItemId === 3 && <VendorSetup />}
-        {selectedItemId === 4 && <AddNewClient />}
-        {selectedItemId === 5 && <AddNewVendor />}
-        {selectedItemId === 6 && <IdReconciliation />}
-        {selectedItemId === 7 && <DataExport />}
-        {selectedItemId === 8 && <ProjectAllocation />}
-        {selectedItemId === 9 && <Rejects />}
       </div>
     </main>
   );

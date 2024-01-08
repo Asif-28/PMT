@@ -40,8 +40,8 @@ const VendorSetup: React.FC = () => {
 
   const [selectedVendor, setSelectedVendor] = useState<string | null>(null);
   const [isOpenVendor, setIsOpenVendor] = useState(false);
-  const handleOptionVendor = (country: string) => {
-    setSelectedVendor(country);
+  const handleOptionVendor = (i: string) => {
+    setSelectedVendor(i);
     setIsOpenVendor(false);
   };
   const handleToggleVendor = () => {
@@ -55,7 +55,7 @@ const VendorSetup: React.FC = () => {
       <div className="section bg-white pl-5 pr-2 sm:pl-6 sm:pr-16 py-12 rounded-3xl mt-2 sm:mt-4  ">
         <form className="text-[14px] sm:text-[15px] " onSubmit={handleSubmit}>
           <h2 className="mb-10">Enter the following details</h2>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="mb-4">
               <label
                 htmlFor="projectCode"
