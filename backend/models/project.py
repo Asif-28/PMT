@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from mongoengine import Document, StringField, IntField
+from mongoengine import Document, StringField, IntField, BooleanField
 
 from ..utils import mongoengine_to_pydantic
 
@@ -16,10 +16,11 @@ class ProjectCreationModel(Document):
     scope = IntField(required=True)
     target = StringField(required=True)
     target_description = StringField(required=True)
-    selected_country = StringField(required=True)
+    selected_project_status = StringField(required=True)
     online = StringField(required=True)
     selected_div = StringField(required=True)
     billing_comments = StringField(required=True)
+    security_check = BooleanField(required=True)
     # Define the meta dictionary
     
 

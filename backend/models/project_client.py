@@ -14,6 +14,7 @@ class ProjectClientModel(Document):
     test_link = URLField(required=True)
     live_link = URLField(required=True)
     check_country = BooleanField(required=True)
+    check_quota = BooleanField(required=True)
     # Add a reference to the ProjectCreationModel
     project_id = ReferenceField(ProjectCreationModel, reverse_delete_rule=CASCADE)
 
