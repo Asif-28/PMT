@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import Optional
-from mongoengine import Document, StringField, URLField, ReferenceField, CASCADE, BooleanField
+from mongoengine import Document, StringField, URLField, ReferenceField, CASCADE, BooleanField ,IntField 
 
 from .project import ProjectCreationModel
 from ..utils import mongoengine_to_pydantic
@@ -10,7 +10,7 @@ class ProjectClientModel(Document):
     input_field = StringField(required=True)
     country = StringField(required=True)
     country_code = StringField(required=True)
-    scope = StringField(required=True)
+    scope = IntField(required=True)
     test_link = URLField(required=True)
     live_link = URLField(required=True)
     check_country = BooleanField(required=True)

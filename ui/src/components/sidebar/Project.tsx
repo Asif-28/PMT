@@ -22,6 +22,7 @@ interface FormData {
 }
 
 const Form: React.FC = () => {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const router = useRouter();
   const [formData, setFormData] = useState<FormData>({
     projectName: "",
@@ -150,7 +151,7 @@ const Form: React.FC = () => {
     try {
       if (validateForm()) {
         const { data } = await axios.post(
-          "http://0.0.0.0:8001/project/create",
+          `${baseUrl}project/create`,
           {
             project_name: projectName,
             project_code: projectCode,

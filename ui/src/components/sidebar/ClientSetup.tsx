@@ -15,6 +15,7 @@ interface FormData {
   checkQuota: boolean;
 }
 const ClientSetup: React.FC = () => {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const [formData, setFormData] = useState<FormData>({
     projectCode: "",
     inputField: "",
@@ -87,7 +88,7 @@ const ClientSetup: React.FC = () => {
     try {
       if (validateForm()) {
         const { data } = await axios.post(
-          "http://0.0.0.0:8001/project_client/create",
+          `${baseUrl}project_client/create`,
           {
             project_code: projectCode,
             input_field: inputField,
@@ -128,20 +129,22 @@ const ClientSetup: React.FC = () => {
       toast.error(error);
     }
   };
-  // const [clientData, setClientData] = useState([{}]);
-  // console.log(selectedCountry);
+  // const [apiClientData, setApiClientData] = useState([]);
   // useEffect(() => {
   //   async function getAllList() {
-  //     const response = await fetch("", {
-  //       method: "GET",
-  //     });
+  //     const response = await fetch(
+  //       "http://localhost:8001/project_client/list/",
+  //       {
+  //         method: "GET",
+  //       }
+  //     );
 
   //     const data = await response.json();
-  //     setClientData(data);
+  //     setApiClientData(data);
   //   }
   //   getAllList();
   // }, []);
-  // console.log(clientData);
+  // console.log(apiClientData);
   return (
     <main className="section">
       <ToastContainer
