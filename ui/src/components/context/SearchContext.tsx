@@ -11,7 +11,7 @@ const SearchContext = createContext<SearchContextProps | undefined>(undefined);
 export const SearchProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [searchResult, setSearchResult] = useState<number | undefined>();
+  const [searchResult, setSearchResult] = useState<number | undefined>(1);
 
   return (
     <SearchContext.Provider value={{ searchResult, setSearchResult }}>
