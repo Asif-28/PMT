@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from .project import ProjectCreation
 from .vendor import Vendor
+from ..validators import scope_limit
 
 """
 Project Code(Str)
@@ -29,6 +30,11 @@ class Vendor(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        scope_limit(self.scope)
+
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse("projectclient_detail", kwargs={"pk": self.pk})
