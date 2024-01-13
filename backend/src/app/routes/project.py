@@ -1,6 +1,4 @@
 from ninja import Router
-from ninja.errors import HttpError
-
 from typing import List
 
 from ..utils import JSONResponse, message

@@ -129,13 +129,21 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CACHES = {
     "default": {
-        "BACKEND": "django.core.cache.backends.memcached.PyMemcacheCache",
-        "LOCATION": "127.0.0.1:11211",
-        "OPTIONS": {
-            "no_delay": True,
-            "ignore_exc": True,
-            "max_pool_size": 4,
-            "use_pooling": True,
-        },
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
     }
+
+    # "default": {
+    #     "BACKEND": "django.core.cache.backends.memcached.PyMemcacheCache",
+    #     "LOCATION": "127.0.0.1:11211",
+    #     "OPTIONS": {
+    #         "no_delay": True,
+    #         "ignore_exc": True,
+    #         "max_pool_size": 4,
+    #         "use_pooling": True,
+    #     },
+    # }
 }
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
