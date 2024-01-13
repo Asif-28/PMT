@@ -26,6 +26,7 @@ def create_client(project_client: ProjectClientSchema):
 
     try:
         ProjectClient(**data).save()
+        return message.success(text="Project Client created successfully")
     except Exception as e:
         message.error(text=str(e))
 

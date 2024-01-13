@@ -10,7 +10,7 @@ router = Router()
 def create_client(request, client: ClientSchema):
     try:
         Client(**client.dict()).save()
-        message.success(text="Client created successfully")
+        return message.success(text="Client created successfully")
     except Exception as e:
         message.error(text=str(e))
 

@@ -10,7 +10,7 @@ router = Router()
 def create_client(request, vendor: VendorSchema):
     try:
         Vendor(**vendor.dict()).save()
-        message.success(text="Vendor created successfully")
+        return message.success(text="Vendor created successfully")
     except Exception as e:
         message.error(text=str(e))
 
