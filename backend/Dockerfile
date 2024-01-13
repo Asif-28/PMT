@@ -9,6 +9,6 @@ COPY pyproject.toml poetry.lock ./
 
 RUN poetry config virtualenvs.create false; poetry install --no-dev
 
-COPY ptm .
+COPY src .
 
 ENTRYPOINT ["bash", "start.sh"]
