@@ -4,4 +4,4 @@ from ninja import Router
 
 router = Router()
 
-router.add_router("/", project_router)
+router.add_router("project", project_router)
