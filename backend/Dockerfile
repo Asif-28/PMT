@@ -11,4 +11,4 @@ RUN poetry config virtualenvs.create false; poetry install --no-dev
 
 COPY src .
 
-ENTRYPOINT ["bash", "start.sh"]
+ENTRYPOINT ["bash", "entrypoint.sh"]
