@@ -4,15 +4,10 @@ from django.db import models
 ProjectCreation model has a OneToOne relationship with Client model.
 """
 
-
-class ProjectCode(models.Model):
-    project_code = models.CharField(max_length=255, unique=True)
-
-
 class ProjectCreation(models.Model):
     project_name = models.CharField(max_length=255, unique=False)
     # Project creation can be many to one project code
-    project_code = models.ForeignKey(ProjectCode, on_delete=models.CASCADE)
+    project_code = models.CharField(max_length=255, unique=True)
 
     project_manager = models.CharField(max_length=255)
     client_project_manager = models.CharField(max_length=255)
