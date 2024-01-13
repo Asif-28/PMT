@@ -5,11 +5,15 @@ ProjectCreation model has a OneToOne relationship with Client model.
 """
 
 
+class ProjectCode(models.Model):
+    project_code = models.CharField(max_length=255, unique=True)
+
+
 class ProjectCreation(models.Model):
     project_name = models.CharField(max_length=255, unique=False)
-    project_code = models.CharField(
-        max_length=255, unique=True
-    )  # Ensuring uniqueness and indexing
+    # Project creation can be many to one project code
+    project_code = models.ForeignKey(ProjectCode, on_delete=models.CASCADE)
+
     project_manager = models.CharField(max_length=255)
     client_project_manager = models.CharField(max_length=255)
     incidence_rate = models.CharField(max_length=50)  # Adjust max_length as needed
