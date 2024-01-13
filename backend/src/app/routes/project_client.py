@@ -12,7 +12,7 @@ Client
 """
 
 
-@router.post("/create", response=JSONResponse)
+@router.put("/create", response=JSONResponse)
 def create_client(project_client: ProjectClientSchema):
     """
     Create a new client
