@@ -20,5 +20,8 @@ class ProjectClient(models.Model):
     # ForeignKey relationship with ProjectCreation
     project = models.ForeignKey(ProjectCreation, on_delete=models.CASCADE)
 
+    class Meta:
+        unique_together = (('project_code', 'country_code'),)
+
     def get_absolute_url(self):
         return reverse("projectclient_detail", kwargs={"pk": self.pk})
