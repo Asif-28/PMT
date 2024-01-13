@@ -14,6 +14,7 @@ Over-quota(Str)
 Pause Vendor(Bool)
 """
 
+
 class Vendor(models.Model):
     project_code = models.CharField(max_length=255)
     vendor_code = models.CharField(max_length=255)
