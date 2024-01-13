@@ -13,3 +13,14 @@ def create_client(request, vendor: VendorSchema):
         message.success(text="Vendor created successfully")
     except Exception as e:
         message.error(text=str(e))
+
+
+@router.get("/list")
+def list_clients() -> list[VendorSchema]:
+    """
+    List all clients
+    """
+
+    vendors: list[VendorSchema] = Vendor.objects.exclude("id").all()
+
+    return [VendorSchema(**vendor) for vendor in vendors]

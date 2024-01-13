@@ -13,3 +13,14 @@ def create_client(request, client: ClientSchema):
         message.success(text="Client created successfully")
     except Exception as e:
         message.error(text=str(e))
+
+
+@router.get("/list")
+def list_clients() -> list[ClientSchema]:
+    """
+    List all clients
+    """
+
+    clients: list[ClientSchema] = Client.objects.exclude("id").all()
+
+    return [ClientSchema(**client) for client in clients]
