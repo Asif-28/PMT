@@ -1,6 +1,7 @@
 from ..modules.project_client import ProjectClient
+from ..modules.project import ProjectCreation
 from ..modules._schemas import ProjectClientSchema
-from ..utils import JSONResponse
+from ..utils import JSONResponse, message
 
 from ninja import Router
 
@@ -15,14 +16,17 @@ def create_client(project_client: ProjectClientSchema):
     """
     Create a new client
     """
-
-    try:
-        ProjectClient(**project_client.dict()).save()
-        # return {"message": "project client created"}
-        return 
+    project_code = project_client.project_code
+    project = ProjectCreation.objects.get(project_code=project_code)
+    if not project:
+        message.error(text="Project not found")
+    data = project_client.dict()
+    data["project"] = project
+    
+    try:    
+        ProjectClient(**data).save()
     except Exception as e:
-        return ProjectClientSchema()
-        # raise HttpError(status_code=404,  message=str(e))
+        message.error(text=str(e))
 
 
 
