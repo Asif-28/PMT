@@ -126,3 +126,16 @@ STATIC_ROOT = BASE_DIR / "assets/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.memcached.PyMemcacheCache",
+        "LOCATION": "127.0.0.1:11211",
+        "OPTIONS": {
+            "no_delay": True,
+            "ignore_exc": True,
+            "max_pool_size": 4,
+            "use_pooling": True,
+        },
+    }
+}
