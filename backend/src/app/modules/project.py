@@ -10,7 +10,7 @@ class ProjectCreation(models.Model):
     project_manager = models.CharField(max_length=255)
     client_project_manager = models.CharField(max_length=255)
     incidence_rate = models.CharField(max_length=50)  # Adjust max_length as needed
-    loi = models.CharField(max_length=5)           # LOI field with max_length
+    loi = models.CharField(max_length=10)           # LOI field with max_length
     scope = models.IntegerField()
     target = models.CharField(max_length=100)         # Adjust max_length based on expected values
     target_description = models.CharField(max_length=500)

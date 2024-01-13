@@ -1,8 +1,9 @@
-from ninja import Router, Schema
+from ninja import Router
 from ninja.errors import HttpError
-# from fastapi.responses import JSONResponse
-from typing import List, Dict
 
+from typing import List
+
+from ..utils import JSONResponse, message
 from ..modules.project import ProjectCreation
 from ..modules._schemas import ProjectCreationSchema
 
@@ -10,13 +11,13 @@ from ..modules._schemas import ProjectCreationSchema
 router = Router()
 
 
-@router.post("/create")
+@router.post("/create", response=JSONResponse)
 def create_project(request, project: ProjectCreationSchema):
     try:
         project_obj = ProjectCreation.objects.create(**project.dict())
-        return {"message": "Project created successfully"}
+        return message.success(text="project created", data=ProjectCreationSchema.from_orm(project_obj))
     except Exception as e:  # Assuming IntegrityError is imported
-        raise HttpError(status_code=404,  message=str(e))
+        return message.error(text=str(e))
 
 @router.get("/list", response=List[ProjectCreationSchema])
 def list_projects(request):
