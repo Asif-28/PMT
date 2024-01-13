@@ -6,7 +6,7 @@ from ..utils import JSONResponse, message
 router = Router()
 
 
-@router.get("/create", response=JSONResponse)
+@router.post("/create", response=JSONResponse)
 def create_client(request, vendor: VendorSchema):
     try:
         Vendor(**vendor.dict()).save()
