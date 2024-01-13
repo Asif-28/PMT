@@ -19,11 +19,10 @@ from django.urls import path
 
 from ninja import NinjaAPI
 
-from app.api import router as app_router
 
 api = NinjaAPI()
 
-api.add_router("/", app_router)
+api.add_router("/", "app.urls.router")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
