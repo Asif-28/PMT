@@ -5,6 +5,8 @@ from .project import ProjectCreation
 """
 ProjectClient model has a ForeignKey relationship with ProjectCreation model.
 """
+
+
 class ProjectClient(models.Model):
     project_code = models.CharField(max_length=255)
     input_field = models.CharField(max_length=255)
@@ -19,4 +21,4 @@ class ProjectClient(models.Model):
     project = models.ForeignKey(ProjectCreation, on_delete=models.CASCADE)
 
     def get_absolute_url(self):
-        return reverse('projectclient_detail', kwargs={'pk': self.pk})
+        return reverse("projectclient_detail", kwargs={"pk": self.pk})

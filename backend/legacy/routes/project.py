@@ -6,6 +6,7 @@ from ..models.project import Project, ProjectCreationModel
 
 router = APIRouter()
 
+
 @router.post("/project/create")
 def create_project(project: Project) -> JSONResponse:
     """
@@ -25,9 +26,11 @@ def list_projects() -> list[Project]:
     """
     List all projects
     """
-    
+
     # Fetching documents without the '_id' field
-    projects: list[ProjectCreationModel] = ProjectCreationModel.objects.exclude("id").all()
+    projects: list[ProjectCreationModel] = ProjectCreationModel.objects.exclude(
+        "id"
+    ).all()
 
     # Using list comprehension for efficient conversion
     return [Project(**project.to_mongo().to_dict()) for project in projects]

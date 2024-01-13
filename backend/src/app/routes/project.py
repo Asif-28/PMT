@@ -15,9 +15,12 @@ router = Router()
 def create_project(request, project: ProjectCreationSchema):
     try:
         project_obj = ProjectCreation.objects.create(**project.dict())
-        return message.success(text="project created", data=ProjectCreationSchema.from_orm(project_obj))
+        return message.success(
+            text="project created", data=ProjectCreationSchema.from_orm(project_obj)
+        )
     except Exception as e:  # Assuming IntegrityError is imported
         return message.error(text=str(e))
+
 
 @router.get("/list", response=List[ProjectCreationSchema])
 def list_projects(request):

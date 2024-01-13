@@ -11,6 +11,7 @@ router = Router()
 Client
 """
 
+
 @router.post("/create", response=JSONResponse)
 def create_client(project_client: ProjectClientSchema):
     """
@@ -22,12 +23,11 @@ def create_client(project_client: ProjectClientSchema):
         message.error(text="Project not found")
     data = project_client.dict()
     data["project"] = project
-    
-    try:    
+
+    try:
         ProjectClient(**data).save()
     except Exception as e:
         message.error(text=str(e))
-
 
 
 @router.get("/list")
@@ -36,6 +36,8 @@ def list_clients() -> list[ProjectClientSchema]:
     List all clients
     """
 
-    project_clients: list[ProjectClientSchema] = ProjectClient.objects.exclude("id").all()
+    project_clients: list[ProjectClientSchema] = ProjectClient.objects.exclude(
+        "id"
+    ).all()
 
     return [ProjectClientSchema(**client) for client in project_clients]
