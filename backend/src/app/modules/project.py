@@ -4,12 +4,13 @@ from django.db import models
 ProjectCreation model has a OneToOne relationship with Client model.
 """
 class ProjectCreation(models.Model):
+
     project_name = models.CharField(max_length=255, unique=False)
     project_code = models.CharField(max_length=255, unique=True)  # Ensuring uniqueness and indexing
     project_manager = models.CharField(max_length=255)
     client_project_manager = models.CharField(max_length=255)
     incidence_rate = models.CharField(max_length=50)  # Adjust max_length as needed
-    loi = models.CharField(max_length=50)             # LOI field with max_length
+    loi = models.IntegerField(max_length=100)           # LOI field with max_length
     scope = models.IntegerField()
     target = models.CharField(max_length=100)         # Adjust max_length based on expected values
     target_description = models.CharField(max_length=500)
