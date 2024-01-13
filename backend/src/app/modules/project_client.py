@@ -12,7 +12,7 @@ class ProjectClient(models.Model):
     input_field = models.CharField(max_length=255)
     country = models.CharField(max_length=100)
     country_code = models.CharField(max_length=10)
-    scope = models.CharField(max_length=100)
+    scope = models.IntegerField()
     test_link = models.URLField()
     live_link = models.URLField()
     check_country = models.BooleanField()
@@ -22,6 +22,13 @@ class ProjectClient(models.Model):
 
     class Meta:
         unique_together = (("project_code", "country_code"),)
+
+    # scope should be less than 100
+    def save(self, *args, **kwargs):
+        limit = 100
+        if self.scope > limit:
+            raise ValueError(f"Scope should be less than {limit}")
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse("projectclient_detail", kwargs={"pk": self.pk})
