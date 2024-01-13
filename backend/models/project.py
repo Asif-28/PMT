@@ -18,7 +18,7 @@ class ProjectCreationModel(Document):
     target_description = StringField(required=True)
     selected_project_status = StringField(required=True)
     online = StringField(required=True)
-    selected_div = StringField
+    selected_div = StringField(required=True)
     billing_comments = StringField(required=True)
     security_check = BooleanField(required=True)
     # Define the meta dictionary

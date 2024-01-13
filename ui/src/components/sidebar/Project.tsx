@@ -6,7 +6,7 @@ import axios from "axios";
 import { countrys, projectStatusList } from "../data/data";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { options } from "../data/data";
 interface FormData {
   projectName: string;
   projectCode: string;
@@ -44,7 +44,6 @@ const Form: React.FC = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<String | null>(null);
-  const options = ["B2B", "B2C", "HCP"];
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -112,7 +111,9 @@ const Form: React.FC = () => {
       !incidenceRateRegex.test(formData.incidenceRate) ||
       !loiRegex.test(formData.loi)
     ) {
-      toast.error("Incidence rate and loi should contain numbers only");
+      toast.error(
+        "Incidence rate and loi should contain positive numbers only"
+      );
       return false;
     }
     // Check if incidenceRate is a number in the range 1-100
@@ -132,7 +133,7 @@ const Form: React.FC = () => {
 
     return true;
   };
-  console.log(formData.securityCheck);
+  // console.log(formData.securityCheck);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const {
@@ -174,7 +175,7 @@ const Form: React.FC = () => {
             },
           }
         );
-        console.log(data.level);
+        // console.log(data.level);
         toast.success("Form submitted successfully");
         if (data.level === "SUCESS") {
           setFormData({
@@ -198,8 +199,12 @@ const Form: React.FC = () => {
       }
       // Handle form submission logic here
     } catch (error: any) {
-      console.error("Error submitting form:", error);
-      toast.error("Error in submitting");
+      // console.error("Error submitting form:", error);
+      {
+        error.message === "Request failed with status code 400"
+          ? toast.error("Enter Unique Project Key")
+          : toast.error("Error in Submitting");
+      }
     }
   };
 

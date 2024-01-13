@@ -332,7 +332,7 @@ const ClientSetup: React.FC = () => {
                       : "bg-white text-gray-500"
                   } border border-gray-500 w-48 px-10 py-5 mt-2 rounded-2xl flex items-center justify-center cursor-pointer`}
                 >
-                  Country Check
+                  Country Pause
                 </div>
                 <div
                   onClick={handleCheckQuotaClick}
