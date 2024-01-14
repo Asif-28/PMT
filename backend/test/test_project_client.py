@@ -8,7 +8,7 @@ import json
 fake = Faker()
 
 SOURCE = os.getenv("SOURCE", "http://localhost:8000")
-endpoint = f"{SOURCE}/project_clientproject_client"
+endpoint = f"{SOURCE}/project_client"
 
 data = {
   "project_code": project_data["project_code"],
@@ -27,6 +27,6 @@ def test_create_project_client():
     url = f"{endpoint}/create"  # replace with your actual server URL
     print(json.dumps(data))
     response = requests.post(url, json=data)
-    print(response.text)
+    print(response.json())
     assert response.status_code == 200
     assert "created" in response.json()["message"].lower()
