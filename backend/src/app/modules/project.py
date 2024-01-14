@@ -4,6 +4,7 @@ from django.db import models
 ProjectCreation model has a OneToOne relationship with Client model.
 """
 
+
 class ProjectCreation(models.Model):
     project_name = models.CharField(max_length=255, unique=False)
     # Project creation can be many to one project code
