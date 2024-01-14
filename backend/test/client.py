@@ -27,10 +27,17 @@ def test_list_client():
     assert response.status_code == 200
     assert len(response.json()) > 0
 
+    match = False
+
     # check if data is valid
     for client in response.json():
-        assert client["client_name"]
-        assert client["client_email"]
+        if client["client_name"] == data["client_name"]:
+            if client["client_email"] == data["client_email"]:
+                match = True
+                break
+
+        assert match == True
+
         # add other required fields here
 
 
