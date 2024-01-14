@@ -26,6 +26,6 @@ def test_list_client():
 
     # check if data is valid
     for client in response.json():
-        assert client["name"]
-        assert client["email"]
+        assert client["client_name"]
+        assert client["client_email"]
         # add other required fields here
