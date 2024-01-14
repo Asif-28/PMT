@@ -6,7 +6,7 @@ from ..utils import JSONResponse, message
 router = Router()
 
 
-@router.get("/create", response=JSONResponse)
+@router.post("/create", response=JSONResponse)
 def create_client(request, client: ClientSchema):
     try:
         Client(**client.dict()).save()
@@ -15,12 +15,11 @@ def create_client(request, client: ClientSchema):
         message.error(text=str(e))
 
 
-@router.get("/list")
-def list_clients() -> list[ClientSchema]:
+@router.get("/list", response=list[ClientSchema])
+def list_clients(request):
     """
     List all clients
     """
 
-    clients: list[ClientSchema] = Client.objects.exclude("id").all()
-
-    return [ClientSchema(**client) for client in clients]
+    clients = Client.objects.all()
+    return [ClientSchema.from_orm(client) for client in clients]
