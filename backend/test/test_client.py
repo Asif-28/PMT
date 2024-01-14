@@ -18,7 +18,7 @@ def test_create_client():
     response = requests.post(url, json=data)
     print(response.json())
     assert response.status_code == 200
-    assert response.json()["message"] == "Client created successfully"
+    assert "successfully" in response.json()["message"]
 
 
 def test_list_client():

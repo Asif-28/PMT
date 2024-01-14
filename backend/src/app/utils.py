@@ -25,6 +25,7 @@ class Message:
 
 message = Message()
 
+
 def objects_save(obj, data):
     try:
         obj(**data).save()
