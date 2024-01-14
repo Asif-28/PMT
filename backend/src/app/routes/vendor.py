@@ -16,11 +16,11 @@ def create_client(request, vendor: VendorSchema):
 
 
 @router.get("/list")
-def list_clients() -> list[VendorSchema]:
+def list_clients(request) -> list[VendorSchema]:
     """
     List all clients
     """
 
-    vendors: list[VendorSchema] = Vendor.objects.exclude("id").all()
+    vendors = Vendor.objects.all()
 
-    return [VendorSchema(**vendor) for vendor in vendors]
+    return [VendorSchema.from_orm(vendor) for vendor in vendors]
