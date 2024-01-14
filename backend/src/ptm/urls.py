@@ -17,10 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from ninja import NinjaAPI
+from ninja import NinjaAPI, Redoc, Swagger
 
 
-api = NinjaAPI()
+api = NinjaAPI(docs=Swagger(), docs_url="/docs")
 
 api.add_router("/", "app.urls.router")
 
