@@ -6,7 +6,7 @@ import os
 fake = Faker()
 
 SOURCE = os.getenv("SOURCE", "http://localhost:8000")
-endpoint = "http://localhost:8000/client"
+endpoint = f"{SOURCE}/client"
 
 data = {
     "client_name": fake.name(),
