@@ -13,7 +13,7 @@ Client
 
 
 @router.put("/create", response=JSONResponse)
-def create_client(project_client: ProjectClientSchema):
+def create_client(request, project_client: ProjectClientSchema):
     """
     Create a new client
     """
@@ -32,7 +32,7 @@ def create_client(project_client: ProjectClientSchema):
 
 
 @router.get("/list")
-def list_clients() -> list[ProjectClientSchema]:
+def list_clients(request) -> list[ProjectClientSchema]:
     """
     List all clients
     """
