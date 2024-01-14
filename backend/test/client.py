@@ -38,7 +38,5 @@ def test_list_client():
 
     assert match == True
 
-        # add other required fields here
-
 
 # st run --checks all http://localhost:8000/openapi.json
