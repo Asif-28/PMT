@@ -37,8 +37,6 @@ def list_clients() -> list[ProjectClientSchema]:
     List all clients
     """
 
-    project_clients: list[ProjectClientSchema] = ProjectClient.objects.exclude(
-        "id"
-    ).all()
+    project_clients = ProjectClient.objects.all()
 
-    return [ProjectClientSchema(**client) for client in project_clients]
+    return [ProjectClientSchema.from_orm(p_client) for p_client in project_clients]
