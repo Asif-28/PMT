@@ -36,7 +36,7 @@ def test_list_client():
                 match = True
                 break
 
-        assert match == True
+    assert match == True
 
         # add other required fields here
 
