@@ -24,3 +24,10 @@ class Message:
 
 
 message = Message()
+
+def objects_save(obj, data):
+    try:
+        obj(**data).save()
+        return message.success(text=f"Created {obj.__name__} successfully")
+    except Exception as e:
+        raise message.error(text=str(e))
