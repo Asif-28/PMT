@@ -29,3 +29,6 @@ def test_list_client():
         assert client["client_name"]
         assert client["client_email"]
         # add other required fields here
+
+
+# st run --checks all http://localhost:8000/openapi.json
