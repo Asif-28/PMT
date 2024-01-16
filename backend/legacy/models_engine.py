@@ -1,6 +1,7 @@
 from mongoengine import Document, StringField, IntField, BooleanField
 from mongoengine.errors import ValidationError
 
+
 class Project(Document):
     ProjectName = StringField(required=True)
     ProjectCode = StringField(required=True)
@@ -32,6 +33,7 @@ class ProjectSetup(Document):
     TestLink = StringField(required=True)
     LiveLink = StringField(required=True)
 
+
 class GetSurvey(Document):
     Ip = StringField(required=True)
     CountryCode = StringField(required=True)
@@ -39,6 +41,7 @@ class GetSurvey(Document):
     VendorId = StringField(required=True)
     VendorCode = StringField(required=True)
     Test = BooleanField(default=False)
+
 
 class PostSurvey(Document):
     Ip = StringField(required=True)

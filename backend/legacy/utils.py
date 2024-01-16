@@ -1,9 +1,19 @@
 from typing import Type
 from pydantic import BaseModel, create_model
-from mongoengine.fields import StringField, IntField, EmailField, BooleanField, Document, ListField, DictField, FloatField
+from mongoengine.fields import (
+    StringField,
+    IntField,
+    EmailField,
+    BooleanField,
+    Document,
+    ListField,
+    DictField,
+    FloatField,
+)
 from bson.objectid import ObjectId
 from fastapi import status
 from fastapi.responses import JSONResponse
+
 
 class BsonObjectId(ObjectId):
     @classmethod
@@ -69,5 +79,5 @@ def mongoengine_to_pydantic(db_model: Type[Document]) -> Type[BaseModel]:
             continue
         annotations[field_name] = field_type
 
-    pydantic_model = create_model(db_model.__name__ + 'Pydantic', **annotations)
+    pydantic_model = create_model(db_model.__name__ + "Pydantic", **annotations)
     return pydantic_model

@@ -22,7 +22,9 @@ def get_survey(survey: GetSurvey):
     # Check if project exists
     try:
         project = Project(**db_projects.find_one({"ProjectCode": survey.ProjectCode}))
-        project_client = ProjectClient(**db_clients.find_one({"ProjectCode": survey.ProjectCode}))
+        project_client = ProjectClient(
+            **db_clients.find_one({"ProjectCode": survey.ProjectCode})
+        )
     except Exception as e:
         return message.error(text=f"{e}")
 
@@ -50,6 +52,7 @@ def get_survey(survey: GetSurvey):
         EndTime=None,  # Epoch time
         FraudScore=None,
     )
+
 
 @router.post("/survey/end/{TransId}")
 def end_survey(TransId: str):

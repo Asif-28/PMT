@@ -10,6 +10,7 @@ router = APIRouter()
 Client
 """
 
+
 @router.post("/project_client/create")
 def create_client(project_client: ProjectClient) -> JSONResponse:
     """
@@ -29,6 +30,8 @@ def list_clients() -> list[ProjectClient]:
     List all clients
     """
 
-    project_clients: list[ProjectClientModel] = ProjectClientModel.objects.exclude("id").all()
+    project_clients: list[ProjectClientModel] = ProjectClientModel.objects.exclude(
+        "id"
+    ).all()
 
     return [ProjectClient(**client) for client in project_clients]
