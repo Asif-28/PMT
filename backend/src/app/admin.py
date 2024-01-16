@@ -12,3 +12,5 @@ from .models import (
 admin.site.register(Client)
 admin.site.register(ProjectCreation)
 admin.site.register(ProjectClient)
+admin.site.register(Vendor)
+admin.site.register(ProjectVendor)
