@@ -3,6 +3,8 @@ from .models import (
     Client,
     ProjectCreation,
     ProjectClient,
+    Vendor,
+    ProjectVendor
 )
 
 # Register your models here.
