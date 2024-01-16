@@ -1,4 +1,5 @@
 import sys
+
 sys.path.append("..")
 
 from fastapi import APIRouter
@@ -18,4 +19,3 @@ def get_countries_code():
     list of names of all countries with their 2 letter code
     """
     return countries
-
