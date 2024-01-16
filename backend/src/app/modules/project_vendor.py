@@ -16,7 +16,7 @@ Pause Vendor(Bool)
 """
 
 
-class Vendor(models.Model):
+class ProjectVendor(models.Model):
     project_code = models.CharField(max_length=255)
     vendor_code = models.CharField(max_length=255)
     scope = models.IntegerField()

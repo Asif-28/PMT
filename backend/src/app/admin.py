@@ -3,6 +3,8 @@ from .models import (
     Client,
     ProjectCreation,
     ProjectClient,
+    Vendor,
+    ProjectVendor
 )
 
 # Register your models here.
@@ -10,3 +12,5 @@ from .models import (
 admin.site.register(Client)
 admin.site.register(ProjectCreation)
 admin.site.register(ProjectClient)
+admin.site.register(Vendor)
+admin.site.register(ProjectVendor)
