@@ -108,7 +108,7 @@ const ClientSetup: React.FC = () => {
         );
         // console.log(data.level, "success");
         toast.success("Form submitted successfully");
-        if (data.level === "SUCESS") {
+        if (data.status_code === 200) {
           setFormData({
             projectCode: "",
             inputField: "",
@@ -133,7 +133,7 @@ const ClientSetup: React.FC = () => {
   // useEffect(() => {
   //   async function getAllList() {
   //     const response = await fetch(
-  //       "http://localhost:8001/project_client/list/",
+  //       "http://localhost:8001/project_client/list",
   //       {
   //         method: "GET",
   //       }
