@@ -21,7 +21,7 @@ class ProjectCreation(models.Model):
     target_description = models.CharField(max_length=500)
     selected_project_status = models.CharField(max_length=100)
     online = models.CharField(max_length=100)
-    selected_div = models.CharField(max_length=100)
+    selected_div = models.CharField(max_length=100, blank=True)
     billing_comments = models.CharField(max_length=500)
     security_check = models.BooleanField()
 
