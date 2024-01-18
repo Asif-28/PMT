@@ -16,6 +16,6 @@ class IPResponse(Schema):
 def list_countries(request):
     return countries
 
-@router.get("/ip")
+@router.get("/ip", response=IPResponse)
 def get_ip(request):
     return IPResponse(ip=get_request_ip(request))
