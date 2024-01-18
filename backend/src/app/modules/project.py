@@ -19,9 +19,9 @@ class ProjectCreation(models.Model):
         max_length=100
     )  # Adjust max_length based on expected values
     target_description = models.CharField(max_length=500)
-    selected_project_status = models.CharField(max_length=100)
+    status = models.CharField(max_length=100)
     online = models.CharField(max_length=100)
-    selected_div = models.CharField(max_length=100, blank=True)
+    methodology = models.CharField(max_length=100, blank=True)
     billing_comments = models.CharField(max_length=500)
     security_check = models.BooleanField()
 
