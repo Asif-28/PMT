@@ -18,7 +18,11 @@ def create_client(request, project_client: ProjectClientSchema):
     Create a new client
     """
     project_code = project_client.project_code
-    project = ProjectCreation.objects.get(project_code=project_code)
+    try:
+        project = ProjectCreation.objects.get(project_code=project_code)
+    except Exception as e:
+        raise message.error(text=str(e))
+
     if not project:
         message.error(text="Project not found")
     data = project_client.dict()
