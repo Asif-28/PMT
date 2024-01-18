@@ -32,3 +32,6 @@ class ProjectClient(models.Model):
 
     def get_absolute_url(self):
         return reverse("projectclient_detail", kwargs={"pk": self.pk})
+
+    def __str__(self):
+        return f"{self.project_code} - {self.country_code}"

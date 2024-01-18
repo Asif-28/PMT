@@ -1,7 +1,7 @@
 import pytest
 import requests
 from faker import Faker
-from .const import SOURCE
+from .const import SOURCE, request_post, request_get
 
 fake = Faker()
 
@@ -15,23 +15,16 @@ data = {
 
 
 def test_create_client():
-    url = f"{endpoint}/create"  # replace with your actual server URL
-    response = requests.post(url, json=data)
-    print(response.json())
-    assert response.status_code == 200
-    assert "successfully" in response.json()["message"].lower()
+    request_post(f"{endpoint}/create", data, "created", 200)
 
 
 def test_list_client():
-    url = f"{endpoint}/list"  # replace with your actual server URL
-    response = requests.get(url)
-    assert response.status_code == 200
-    assert len(response.json()) > 0
+    response = request_get(f"{endpoint}/list")
 
     match = False
 
     # check if data is valid
-    for client in response.json():
+    for client in response:
         if client["client_name"] == data["client_name"]:
             if client["client_email"] == data["client_email"]:
                 match = True
