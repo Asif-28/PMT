@@ -1,6 +1,6 @@
 from ninja import Router
 from .._country_codes import countries
-from ..utils import get_request_ip
+from ..utils import get_request_ip, uniq_md5_hash
 from ninja.schema import Schema
 
 router = Router()
@@ -17,6 +17,10 @@ class CountriesSchema(Schema):
     code: str
 
 
+class HashResponse(Schema):
+    hash: str
+
+
 """ Routes """
 
 
@@ -28,3 +32,8 @@ def list_countries(request):
 @router.get("/ip", response=IPResponse)
 def get_ip(request):
     return IPResponse(ip=get_request_ip(request))
+
+
+@router.get("/hash", response=HashResponse)
+def get_hash(request):
+    return HashResponse(hash=uniq_md5_hash())

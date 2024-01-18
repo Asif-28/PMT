@@ -1,6 +1,8 @@
 from typing import Any
 from ninja import Schema
 from ninja.errors import HttpError
+import time
+import hashlib
 
 
 class JSONResponse(Schema):
@@ -46,3 +48,7 @@ def get_request_ip(request):
             "REMOTE_ADDR"
         )  # Otherwise, use the standard 'REMOTE_ADDR'
     return ip
+
+
+def uniq_md5_hash():
+    return hashlib.md5(str(time.time()).encode()).hexdigest()
