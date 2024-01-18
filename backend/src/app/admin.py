@@ -1,11 +1,5 @@
 from django.contrib import admin
-from .models import (
-    Client,
-    ProjectCreation,
-    ProjectClient,
-    Vendor,
-    ProjectVendor
-)
+from .models import Client, ProjectCreation, ProjectClient, Vendor, ProjectVendor
 
 # Register your models here.
 
