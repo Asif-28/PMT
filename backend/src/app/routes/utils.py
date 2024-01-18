@@ -6,15 +6,24 @@ from ninja.schema import Schema
 router = Router()
 
 """ Schemas """
+
+
 class IPResponse(Schema):
     ip: str
 
 
+class CountriesSchema(Schema):
+    name: str
+    code: str
+
+
 """ Routes """
 
-@router.get("/countries")
+
+@router.get("/countries", response=list[CountriesSchema])
 def list_countries(request):
     return countries
+
 
 @router.get("/ip", response=IPResponse)
 def get_ip(request):
