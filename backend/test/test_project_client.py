@@ -20,7 +20,6 @@ data = {
   "live_link": "string",
   "check_country": True,
   "check_quota": True,
-  "project_id": 0
 }
 
 def test_create_project_client():
