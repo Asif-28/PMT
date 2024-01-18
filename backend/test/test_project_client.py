@@ -11,7 +11,7 @@ SOURCE = os.getenv("SOURCE", "http://localhost:8000")
 endpoint = f"{SOURCE}/project_client"
 
 data = {
-  "project_code": "PKD-6499",
+  "project_code": project_data["project_code"],
   "input_field": "string",
   "country": fake.country(),
   "country_code": fake.country_code(),
