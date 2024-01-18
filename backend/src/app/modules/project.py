@@ -34,3 +34,6 @@ class ProjectCreation(models.Model):
         if self.target not in ["HCP", "B2B", "B2C"]:
             raise ValueError("'target' must be one of HCP, B2B, B2C")
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.project_name} - {self.project_code}"
