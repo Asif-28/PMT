@@ -1,8 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import "../../app/globals.css";
+import { useRouter } from "next/navigation";
 import axios from "axios";
-import { projectStatusList } from "../data/data";
+import { countrys, projectStatusList } from "../data/data";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { options } from "../data/data";
@@ -22,6 +23,7 @@ interface FormData {
 
 const Form: React.FC = () => {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const router = useRouter();
   const [formData, setFormData] = useState<FormData>({
     projectName: "",
     projectCode: "",
@@ -35,14 +37,6 @@ const Form: React.FC = () => {
     billingComments: "",
     securityCheck: false,
   });
-  const [projectCodeCounter, setProjectCodeCounter] = useState<number>(3);
-  const generateProjectCode = () => {
-    const currentDate = new Date();
-    const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
-    const year = currentDate.getFullYear().toString().substr(2);
-    const formattedCounter = projectCodeCounter.toString().padStart(3, "0");
-    return `QQ_${month}${year}_${formattedCounter}`;
-  };
 
   const handleChange = (event: any) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -94,7 +88,7 @@ const Form: React.FC = () => {
     // Check if any field is empty
     if (
       !formData.projectName ||
-      // !formData.projectCode ||
+      !formData.projectCode ||
       !formData.projectManager ||
       !formData.clientProjectManager ||
       !formData.incidenceRate ||
@@ -102,6 +96,7 @@ const Form: React.FC = () => {
       !formData.scope ||
       !selectedOption ||
       !formData.targetDescription ||
+      // !selectedCountry ||
       !selectedStatus ||
       !formData.onlineOffline ||
       !formData.billingComments
@@ -138,6 +133,7 @@ const Form: React.FC = () => {
 
     return true;
   };
+  // console.log(formData.securityCheck);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const {
@@ -159,7 +155,7 @@ const Form: React.FC = () => {
           `${baseUrl}project/create`,
           {
             project_name: projectName,
-            project_code: projectCode || generateProjectCode(),
+            project_code: projectCode,
             project_manager: projectManager,
             client_project_manager: clientProjectManager,
             incidence_rate: incidenceRate,
@@ -179,7 +175,7 @@ const Form: React.FC = () => {
             },
           }
         );
-        console.log(data.message);
+        // console.log(data.level);
         toast.success("Form submitted successfully");
         if (data.status_code === 200) {
           setFormData({
@@ -195,10 +191,10 @@ const Form: React.FC = () => {
             billingComments: "",
             securityCheck: false,
           });
+          // setSelectedCountry(null);
           setSelectedStatus(null);
           setSelectedDiv(null);
           setSelectedOption(null);
-          setProjectCodeCounter((prevCounter) => prevCounter + 1);
         }
       }
       // Handle form submission logic here
@@ -246,7 +242,7 @@ const Form: React.FC = () => {
                 value={formData.projectName}
                 onChange={handleChange}
                 placeholder="Enter your project Name "
-                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
@@ -257,15 +253,14 @@ const Form: React.FC = () => {
                 Project Code *
               </label>
               <input
-                disabled
                 required
                 type="text"
                 id="projectCode"
                 name="projectCode"
-                value={formData.projectCode || generateProjectCode()}
+                value={formData.projectCode}
                 onChange={handleChange}
                 placeholder="Enter your project Code "
-                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
@@ -283,7 +278,7 @@ const Form: React.FC = () => {
                 value={formData.projectManager}
                 onChange={handleChange}
                 placeholder="Enter your project Manager "
-                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
@@ -301,7 +296,7 @@ const Form: React.FC = () => {
                 value={formData.clientProjectManager}
                 onChange={handleChange}
                 placeholder="Enter your Client Project Manager "
-                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
@@ -316,10 +311,13 @@ const Form: React.FC = () => {
                 type="text"
                 id="incidenceRate"
                 name="incidenceRate"
+                // min="0"
+                // max="100"
+                // step="1"
                 value={formData.incidenceRate}
                 onChange={handleChange}
                 placeholder="Enter your Incidence Rate "
-                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
@@ -337,7 +335,7 @@ const Form: React.FC = () => {
                 value={formData.loi}
                 onChange={handleChange}
                 placeholder="Enter your LOI "
-                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
 
@@ -357,7 +355,7 @@ const Form: React.FC = () => {
                 value={formData.scope}
                 onChange={handleChange}
                 placeholder="Enter your Scope "
-                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
 
@@ -373,9 +371,9 @@ const Form: React.FC = () => {
                   <button
                     onClick={handleToggle}
                     type="button"
-                    className=" bg-white inline-flex justify-center w-full  text-sm appearance-none border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                    className=" bg-white inline-flex justify-center w-full  text-sm appearance-none  xl:min-w-[480px] border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
                   >
-                    {selectedOption ? selectedOption : "Choose from dropdown"}
+                    {selectedOption ? selectedOption : "B2B"}
                   </button>
                 </span>
               </div>
@@ -416,7 +414,7 @@ const Form: React.FC = () => {
                 value={formData.targetDescription}
                 onChange={handleChange}
                 placeholder="Target Description "
-                className=" appearance-none font-light h-40 border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none font-light  xl:max-w-[480px] h-40 border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
 
@@ -473,7 +471,7 @@ const Form: React.FC = () => {
                   <button
                     onClick={handleToggleProjectStatus}
                     type="button"
-                    className="inline-flex justify-center  w-full  text-sm appearance-none border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                    className="inline-flex justify-center  w-full  text-sm appearance-none  xl:min-w-[480px] border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
                   >
                     {selectedStatus ? selectedStatus : "Choose from dropdown"}
                   </button>
@@ -582,7 +580,7 @@ const Form: React.FC = () => {
                 value={formData.billingComments}
                 onChange={handleChange}
                 placeholder="Enter your billing comments"
-                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
