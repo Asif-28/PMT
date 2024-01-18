@@ -6,7 +6,7 @@ import hashlib
 
 
 class JSONResponse(Schema):
-    message: str
+    detail: str
     status_code: int
     data: Any = None
 
@@ -16,10 +16,10 @@ class Message:
         ...
 
     def success(self, text: str, data: Any = None) -> JSONResponse:
-        return JSONResponse(message=text, status_code=200, data=data)
+        return JSONResponse(detail=text, status_code=200, data=data)
 
     def info(self, text: str, data: Any = None) -> JSONResponse:
-        return JSONResponse(message=text, status_code=200, data=data)
+        return JSONResponse(detail=text, status_code=200, data=data)
 
     def error(self, text: str) -> JSONResponse:
         raise HttpError(status_code=400, message=text)
