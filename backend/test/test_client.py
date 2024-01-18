@@ -1,11 +1,10 @@
 import pytest
 import requests
 from faker import Faker
-import os
+from .const import SOURCE
 
 fake = Faker()
 
-SOURCE = os.getenv("SOURCE", "http://localhost:8000")
 endpoint = f"{SOURCE}/client"
 
 data = {

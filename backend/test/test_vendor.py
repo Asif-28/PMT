@@ -1,17 +1,17 @@
 import pytest
 import requests
 from faker import Faker
-import os
+from .const import SOURCE
 
 fake = Faker()
 
-SOURCE = os.getenv("SOURCE", "http://localhost:8000")
 endpoint = f"{SOURCE}/vendor"
 
 data = {
-  "name": fake.name(),
-  "email": fake.email(),
+    "name": fake.name(),
+    "email": fake.email(),
 }
+
 
 def test_create_vendor():
     url = f"{endpoint}/create"  # replace with your actual server URL
@@ -32,6 +32,6 @@ def test_list_vendor():
     for vendor in response.json():
         if vendor["name"] == data["name"]:
             match = True
-            break    
+            break
 
     assert match == True
