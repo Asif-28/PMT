@@ -2,7 +2,7 @@
 name = "backend"
 version = "0.1.0"
 description = ""
-authors = ["Rishang <>"]
+authors = ["Rishang <rishang@email.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -28,6 +28,7 @@ schemathesis = "^3.23.1"
 # end of to be removed
 django-extensions = "^3.2.3"
 django-cors-headers = "^4.3.1"
+psycopg = {extras = ["binary"], version = "^3.1.17"}
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.4"

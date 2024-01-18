@@ -20,7 +20,7 @@ if os.path.isfile(env_file_name):
     admin_email = env("DJANGO_ADMIN_EMAIL")
     admin_password = env("DJANGO_ADMIN_PASSWORD")
 
-elif os.getenv("STAGE", "") == "PRODUCTION":
+elif os.getenv("STAGE"):
     admin_username = os.getenv("DJANGO_ADMIN_USERNAME")
     admin_email = os.getenv("DJANGO_ADMIN_EMAIL")
     admin_password = os.getenv("DJANGO_ADMIN_PASSWORD")
