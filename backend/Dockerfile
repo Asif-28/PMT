@@ -9,7 +9,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # Set the working directory to /app
 WORKDIR /app
 
-RUN pip install --upgrade pip; pip install poetry
+RUN pip install --no-cache-dir --upgrade pip; pip install --no-cache-dir poetry
 
 COPY pyproject.toml poetry.lock ./
 
