@@ -14,6 +14,15 @@ interface FormData {
   checkcountry: boolean;
   checkQuota: boolean;
 }
+interface ApiResponse {
+  project_code: string;
+  input_field: string;
+  country: string;
+  country_code: string;
+  scope: number;
+  test_link: string;
+  live_link: string;
+}
 const ClientSetup: React.FC = () => {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const [formData, setFormData] = useState<FormData>({
@@ -129,22 +138,37 @@ const ClientSetup: React.FC = () => {
       toast.error(error);
     }
   };
-  // const [apiClientData, setApiClientData] = useState([]);
-  // useEffect(() => {
-  //   async function getAllList() {
-  //     const response = await fetch(
-  //       "http://localhost:8001/project_client/list",
-  //       {
-  //         method: "GET",
-  //       }
-  //     );
+  const [apiClientData, setApiClientData] = useState<ApiResponse | null>(null);
 
-  //     const data = await response.json();
-  //     setApiClientData(data);
-  //   }
-  //   getAllList();
-  // }, []);
-  // console.log(apiClientData);
+  useEffect(() => {
+    async function getAllList() {
+      try {
+        const response = await fetch(
+          "http://127.0.0.1:8000/project_client/list",
+          {
+            method: "GET",
+          }
+        );
+
+        const data = await response.json();
+
+        // Filter data based on the entered projectCode
+        const filteredData = data.filter(
+          (item: any) => item.project_code === formData.projectCode
+        );
+
+        setApiClientData(filteredData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    // Fetch data only if projectCode is not empty
+    if (formData.projectCode) {
+      getAllList();
+    }
+  }, [formData.projectCode]); // Run the effect only when formData.projectCode changes
+  console.log(apiClientData);
   return (
     <main className="section">
       <ToastContainer
@@ -377,17 +401,17 @@ const ClientSetup: React.FC = () => {
           </thead>
 
           <tbody>
-            {clientData.map((item) => (
-              <tr key={item.id} className="border-b border-gray-200 ">
-                <td className="px-4 text-center py-6">{item.input}</td>
+            {apiClientData?.map((item) => (
+              <tr key={item.project_code} className="border-b border-gray-200 ">
+                <td className="px-4 text-center py-6">{item.input_field}</td>
                 <td className="px-4 text-center py-6">{item.country}</td>
-                <td className="px-4 text-center py-6">{item.countryCode}</td>
+                <td className="px-4 text-center py-6">{item.country_code}</td>
                 <td className="px-4 text-center py-6">{item.scope}</td>
                 <td className="px-4 text-center py-6">
-                  <Link href={item.testLink}>Link</Link>
+                  <Link href={item.test_link}>Link</Link>
                 </td>
                 <td className="px-4 text-center py-6">
-                  <Link href={item.liveLink}>Link</Link>
+                  <Link href={item.live_link}>Link</Link>
                 </td>
               </tr>
             ))}
@@ -396,7 +420,7 @@ const ClientSetup: React.FC = () => {
       </div>
 
       {/* Moblie  */}
-      <div className="bg-[#fff] px-2 py-4 rounded-3xl mt-4 md:hidden ">
+      {/* <div className="bg-[#fff] px-2 py-4 rounded-3xl mt-4 md:hidden ">
         <div className="flex items-center justify-between mb-4"></div>
 
         <table className="table-auto w-full">
@@ -439,7 +463,7 @@ const ClientSetup: React.FC = () => {
             ))}
           </tbody>
         </table>
-      </div>
+      </div> */}
     </main>
   );
 };
