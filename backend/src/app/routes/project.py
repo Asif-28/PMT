@@ -21,10 +21,8 @@ def create_project(request, project: ProjectCreationSchema):
         client = Client.objects.get(name=data["client_name"])
         data["client"] = client
 
-        project_obj = ProjectCreation(**data).save()
-        return message.success(
-            text="project created", data=ProjectCreationSchema.from_orm(project_obj)
-        )
+        ProjectCreation(**data).save()
+        return message.success(text=f"Project {data['project_code']} created")
     except Exception as e:  # Assuming IntegrityError is imported
         return message.error(text=str(e))
 

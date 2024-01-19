@@ -2,6 +2,7 @@ import pytest
 import requests
 from faker import Faker
 from .const import SOURCE, request_post, request_get
+from .test_client import data as client_data
 
 fake = Faker()
 
@@ -24,6 +25,7 @@ data = [
             "methodology": "string",
             "billing_comments": fake.text(),
             "security_check": fake.boolean(),
+            "client_name": client_data["name"],
         },
         "message": "created",
         "status": 200,
@@ -44,6 +46,7 @@ data = [
             "methodology": "string",
             "billing_comments": fake.text(),
             "security_check": fake.boolean(),
+            "client_name": client_data["name"],
         },
         "message": "UNIQUE",
         "status": 400,
