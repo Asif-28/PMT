@@ -3,7 +3,7 @@
 function _django_config {
   RUN_PORT=${RUN_PORT:-8000}
  # migrate db and django
-  echo "migrate django , postgres"
+  echo "migrate django , database"
   python3 manage.py makemigrations --noinput
   python3 manage.py migrate --noinput
   python3 manage.py collectstatic --noinput
@@ -22,18 +22,18 @@ function _django_config {
 
 function _django_config_pg {
 
-  if [ "$DATABASE" == "postgres" ]
+  if [ "$DB_HOST" ]
   then
 
-    echo "Waiting for postgres..."
+    echo "Waiting for database..."
 
-    while ! nc -z $POSTGRES_HOSTNAME $DATABASE_PORT; do
+    while ! nc -z $DB_HOST $DB_PORT; do
       sleep 0.1
     done
 
-    echo "PostgreSQL started"
+    echo "Database started"
     # migrate db and django
-    echo "migrate django , postgres"
+    echo "migrate django , database"
     _django_config
     
   fi
@@ -42,8 +42,8 @@ function _django_config_pg {
 if [ "$1" == "init" ]
 then
 
-  if [ "$DATABASE" == "postgres" ];then
-    echo "initializing django , postgres"
+  if [ "$DB_HOST" ];then
+    echo "initializing django , database"
     _django_config_pg
   else
     echo "initializing django , sqlite"

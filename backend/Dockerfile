@@ -1,4 +1,4 @@
-FROM python:3.11-slim-buster
+FROM python:3.11-slim-bullseye
 
 # Prevents Python from buffering stdout and stderr (equivalent to python -u option)
 ENV PYTHONUNBUFFERED=1
@@ -9,7 +9,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # Set the working directory to /app
 WORKDIR /app
 
-RUN apt update && apt install -y python3-dev pkg-config default-libmysqlclient-dev build-essential && \
+RUN apt update && apt install -y python3-dev pkg-config default-libmysqlclient-dev build-essential netcat && \
         pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir poetry && \
         apt clean
 

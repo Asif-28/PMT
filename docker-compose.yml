@@ -32,6 +32,7 @@ services:
       - MYSQL_USER=ptm
       - MYSQL_PASSWORD=ptm
       - MYSQL_DATABASE=ptm
+      - MYSQL_ROOT_PASSWORD=root
     volumes:
       - ptm_db:/var/lib/mysql
       
