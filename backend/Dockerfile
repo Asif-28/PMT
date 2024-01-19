@@ -9,7 +9,10 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # Set the working directory to /app
 WORKDIR /app
 
-RUN pip install --no-cache-dir --upgrade pip; pip install --no-cache-dir poetry
+RUN apt update && apt install -y python3-dev pkg-config default-libmysqlclient-dev build-essential && \
+        pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir poetry && \
+        apt clean
+
 
 COPY pyproject.toml poetry.lock ./
 
