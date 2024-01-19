@@ -8,9 +8,9 @@ fake = Faker()
 endpoint = f"{SOURCE}/client"
 
 data = {
-    "client_name": fake.name(),
-    "client_email": fake.email(),
-    "client_project_manager": fake.name(),
+    "name": fake.name(),
+    "email": fake.email(),
+    "project_manager": fake.name(),
 }
 
 
@@ -25,8 +25,8 @@ def test_list_client():
 
     # check if data is valid
     for client in response:
-        if client["client_name"] == data["client_name"]:
-            if client["client_email"] == data["client_email"]:
+        if client["name"] == data["name"]:
+            if client["email"] == data["email"]:
                 match = True
                 break
 
