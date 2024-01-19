@@ -48,7 +48,7 @@ data = [
             "security_check": fake.boolean(),
             "client_name": client_data["name"],
         },
-        "message": "UNIQUE",
+        "message": "UNIQUE|Duplicate",
         "status": 400,
     },
 ]
