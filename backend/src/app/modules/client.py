@@ -7,10 +7,10 @@ Client model has a OneToMany relationship with ProjectCreation model.
 
 class Client(models.Model):
     client_name = models.CharField(
-        max_length=255
+        max_length=255, unique=True
     )  # Assuming a maximum length for the name
-    client_email = (
-        models.EmailField()
+    client_email = models.EmailField(
+        unique=True
     )  # EmailField is appropriate for storing email addresses
     client_project_manager = models.CharField(max_length=255)
 

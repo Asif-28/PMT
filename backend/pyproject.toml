@@ -20,11 +20,11 @@ django-environ = "^0.11.2"
 pymemcache = "^4.0.0"
 
 # to be removed
-pymongo = "^4.6.1"
-mongoengine = "^0.27.0"
-redis = "^5.0.1"
-hiredis = "^2.3.2"
-schemathesis = "^3.23.1"
+# pymongo = "^4.6.1"
+# mongoengine = "^0.27.0"
+# redis = "^5.0.1"
+# hiredis = "^2.3.2"
+# schemathesis = "^3.23.1"
 # end of to be removed
 django-extensions = "^3.2.3"
 django-cors-headers = "^4.3.1"
