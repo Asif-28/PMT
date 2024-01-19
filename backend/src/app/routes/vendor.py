@@ -16,7 +16,10 @@ class CreateVendorSchema(ModelSchema):
 
 
 @router.post("/create", response=JSONResponse)
-def create_client(request, vendor: CreateVendorSchema):
+def create_vendor(request, vendor: CreateVendorSchema):
+    """
+    Create a new Proejct Vendor -> Depends_on: ProjectCreation
+    """
     try:
         Vendor(**vendor.dict()).save()
         return message.success(text="Vendor created successfully")
@@ -25,9 +28,9 @@ def create_client(request, vendor: CreateVendorSchema):
 
 
 @router.get("/list")
-def list_clients(request) -> list[VendorSchema]:
+def list_vendors(request) -> list[VendorSchema]:
     """
-    List all clients
+    List all Vendors
     """
 
     vendors = Vendor.objects.all()

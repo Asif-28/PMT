@@ -13,6 +13,9 @@ router = Router()
 
 @router.post("/create", response=JSONResponse)
 def create_project(request, project: ProjectCreationSchema):
+    """
+    Create a new project -> Depends_on: Client
+    """
     try:
         data = project.dict()
         client = Client.objects.get(name=data["client_name"])
