@@ -3,6 +3,8 @@ from typing import List
 
 from ..utils import JSONResponse, message
 from ..modules.project import ProjectCreation
+from ..modules.client import Client
+
 from ..modules._schemas import ProjectCreationSchema
 
 
@@ -12,7 +14,11 @@ router = Router()
 @router.post("/create", response=JSONResponse)
 def create_project(request, project: ProjectCreationSchema):
     try:
-        project_obj = ProjectCreation.objects.create(**project.dict())
+        data = project.dict()
+        client = Client.objects.get(name=data["client_name"])
+        data["client"] = client
+
+        project_obj = ProjectCreation(**data).save()
         return message.success(
             text="project created", data=ProjectCreationSchema.from_orm(project_obj)
         )
