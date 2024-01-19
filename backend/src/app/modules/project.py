@@ -19,9 +19,9 @@ class ProjectCreation(models.Model):
         max_length=100
     )  # Adjust max_length based on expected values
     target_description = models.CharField(max_length=500)
-    selected_project_status = models.CharField(max_length=100)
+    status = models.CharField(max_length=100)
     online = models.CharField(max_length=100)
-    selected_div = models.CharField(max_length=100, blank=True)
+    methodology = models.CharField(max_length=100, blank=True)
     billing_comments = models.CharField(max_length=500)
     security_check = models.BooleanField()
 
@@ -34,3 +34,6 @@ class ProjectCreation(models.Model):
         if self.target not in ["HCP", "B2B", "B2C"]:
             raise ValueError("'target' must be one of HCP, B2B, B2C")
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.project_name} - {self.project_code}"

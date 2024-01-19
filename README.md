@@ -5,3 +5,4 @@ Figma: [URL](https://www.figma.com/proto/5OhXz6vf6md9xvbty7vJZN/Final-Dashboard-
 - [Backend](./backend/)
 
 
+- [ER](./ER%20diagram%20V2.pdf)
