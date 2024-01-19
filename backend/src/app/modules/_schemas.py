@@ -11,7 +11,7 @@ class ProjectCreationSchema(ModelSchema):
     class Meta:
         model = ProjectCreation
         fields = "__all__"
-        exclude = ["id"]
+        exclude = ["id", "client"]
 
 
 class ProjectClientSchema(ModelSchema):

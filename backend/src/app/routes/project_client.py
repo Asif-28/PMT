@@ -15,7 +15,7 @@ Client
 @router.post("/create", response=JSONResponse)
 def create_client(request, project_client: ProjectClientSchema):
     """
-    Create a new client
+    Create a project client -> Depends_on: ProjectCreation
     """
     project_code = project_client.project_code
     try:

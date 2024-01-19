@@ -11,6 +11,9 @@ router = Router()
 
 @router.post("/create", response=JSONResponse)
 def create_project_vendor(request, project_vendor: ProjectVendorSchema):
+    """
+    Create a new project vendor -> Depends_on: Project, Vendor
+    """
     try:
         project = ProjectCreation.objects.get(project_code=project_vendor.project_code)
         vendor = Vendor.objects.get(name=project_vendor.vendor_name)
