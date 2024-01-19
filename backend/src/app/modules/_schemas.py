@@ -32,7 +32,6 @@ class VendorSchema(ModelSchema):
     class Meta:
         model = Vendor
         fields = "__all__"
-        exclude = ["id"]
 
 
 class ProjectVendorSchema(ModelSchema):
