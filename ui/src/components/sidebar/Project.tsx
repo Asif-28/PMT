@@ -11,6 +11,7 @@ interface FormData {
   projectName: string;
   projectCode: string;
   projectManager: string;
+  clientName: string;
   clientProjectManager: string;
   incidenceRate: string;
   loi: string;
@@ -28,6 +29,7 @@ const Form: React.FC = () => {
     projectName: "",
     projectCode: "",
     projectManager: "",
+    clientName: "",
     clientProjectManager: "",
     incidenceRate: "",
     loi: "",
@@ -64,9 +66,9 @@ const Form: React.FC = () => {
   //   setIsOpenCountry(!isOpenCountry);
   // };
 
-  const [selectedDiv, setSelectedDiv] = useState(null);
+  const [methodology, setMethodology] = useState<String>("");
   const handleDivClick = (divName: any) => {
-    setSelectedDiv(divName);
+    setMethodology(divName);
   };
 
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
@@ -140,6 +142,7 @@ const Form: React.FC = () => {
       projectName,
       projectCode,
       projectManager,
+      clientName,
       clientProjectManager,
       incidenceRate,
       loi,
@@ -157,15 +160,16 @@ const Form: React.FC = () => {
             project_name: projectName,
             project_code: projectCode,
             project_manager: projectManager,
+            client_name: clientName,
             client_project_manager: clientProjectManager,
             incidence_rate: incidenceRate,
             loi: loi,
             scope: scope,
             target: selectedOption,
             target_description: targetDescription,
-            selected_project_status: selectedStatus,
+            status: selectedStatus,
             online: onlineOffline,
-            selected_div: selectedDiv,
+            methodology: methodology,
             billing_comments: billingComments,
             security_check: securityCheck,
           },
@@ -182,6 +186,7 @@ const Form: React.FC = () => {
             projectName: "",
             projectCode: "",
             projectManager: "",
+            clientName: "",
             clientProjectManager: "",
             incidenceRate: "",
             loi: "",
@@ -193,7 +198,7 @@ const Form: React.FC = () => {
           });
           // setSelectedCountry(null);
           setSelectedStatus(null);
-          setSelectedDiv(null);
+          setMethodology("");
           setSelectedOption(null);
         }
       }
@@ -242,7 +247,7 @@ const Form: React.FC = () => {
                 value={formData.projectName}
                 onChange={handleChange}
                 placeholder="Enter your project Name "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
@@ -260,7 +265,7 @@ const Form: React.FC = () => {
                 value={formData.projectCode}
                 onChange={handleChange}
                 placeholder="Enter your project Code "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
@@ -278,7 +283,25 @@ const Form: React.FC = () => {
                 value={formData.projectManager}
                 onChange={handleChange}
                 placeholder="Enter your project Manager "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="clientName"
+                className="block text-gray-500 font-medium mb-4"
+              >
+                Client Name *
+              </label>
+              <input
+                required
+                type="text"
+                id="clientName"
+                name="clientName"
+                value={formData.clientName}
+                onChange={handleChange}
+                placeholder="Enter your project Name "
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
@@ -296,7 +319,7 @@ const Form: React.FC = () => {
                 value={formData.clientProjectManager}
                 onChange={handleChange}
                 placeholder="Enter your Client Project Manager "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
@@ -317,7 +340,7 @@ const Form: React.FC = () => {
                 value={formData.incidenceRate}
                 onChange={handleChange}
                 placeholder="Enter your Incidence Rate "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
@@ -335,7 +358,7 @@ const Form: React.FC = () => {
                 value={formData.loi}
                 onChange={handleChange}
                 placeholder="Enter your LOI "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
 
@@ -355,11 +378,11 @@ const Form: React.FC = () => {
                 value={formData.scope}
                 onChange={handleChange}
                 placeholder="Enter your Scope "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
 
-            <div className="relative inline-block text-left z-40">
+            <div className="relative inline-block text-left z-40 mb-4">
               <label
                 htmlFor="target"
                 className="block text-gray-500 font-medium mb-4"
@@ -371,7 +394,7 @@ const Form: React.FC = () => {
                   <button
                     onClick={handleToggle}
                     type="button"
-                    className=" bg-white inline-flex justify-center w-full  text-sm appearance-none  xl:min-w-[480px] border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                    className=" bg-white inline-flex justify-center w-full  text-sm appearance-none border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
                   >
                     {selectedOption ? selectedOption : "B2B"}
                   </button>
@@ -400,66 +423,7 @@ const Form: React.FC = () => {
                 </div>
               )}
             </div>
-            <div className="mb-4">
-              <label
-                htmlFor="targetDescription"
-                className="block text-gray-500 font-medium mb-4"
-              >
-                Target Description *
-              </label>
-              <textarea
-                required
-                id="targetDescription"
-                name="targetDescription"
-                value={formData.targetDescription}
-                onChange={handleChange}
-                placeholder="Target Description "
-                className=" appearance-none font-light  xl:max-w-[480px] h-40 border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
-              />
-            </div>
-
-            {/* <div className="relative inline-block text-left z-30">
-              <label
-                htmlFor="country"
-                className="block text-gray-500 font-medium mb-4"
-              >
-                Country *
-              </label>
-              <div>
-                <span className="rounded-md shadow-sm">
-                  <button
-                    onClick={handleToggleCountry}
-                    type="button"
-                    className="inline-flex justify-center min-w-[15.5rem] w-full  text-sm appearance-none  xl:min-w-[480px] border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
-                  >
-                    {selectedCountry ? selectedCountry : "Select a Country"}
-                  </button>
-                </span>
-              </div>
-
-              {isOpenCountry && (
-                <div className="absolute mt-2 sm:w-full rounded-3xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-y-auto max-h-60">
-                  <div
-                    className="py-1 w-full px-3 bg-white"
-                    role="menu"
-                    aria-orientation="vertical"
-                    aria-labelledby="options-menu"
-                  >
-                    {countrys.map((country, index) => (
-                      <div
-                        key={index}
-                        onClick={() => handleOptionCountry(country)}
-                        className="block px-4 py-4 text-sm text-gray-700 w-full hover:bg-[#a367b1] hover:text-[#392467] font-semibold  text-left  my-2 rounded-xl"
-                        role="menuitem"
-                      >
-                        {country}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div> */}
-            <div className="relative inline-block text-left z-30">
+            <div className="relative inline-block text-left z-40 mb-4">
               <label
                 htmlFor="selectVendor"
                 className="block text-gray-500 font-medium mb-4"
@@ -471,7 +435,7 @@ const Form: React.FC = () => {
                   <button
                     onClick={handleToggleProjectStatus}
                     type="button"
-                    className="inline-flex justify-center  w-full  text-sm appearance-none  xl:min-w-[480px] border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                    className="inline-flex justify-center  w-full  text-sm appearance-none border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
                   >
                     {selectedStatus ? selectedStatus : "Choose from dropdown"}
                   </button>
@@ -500,6 +464,24 @@ const Form: React.FC = () => {
                 </div>
               )}
             </div>
+            <div className="mb-4">
+              <label
+                htmlFor="targetDescription"
+                className="block text-gray-500 font-medium mb-4"
+              >
+                Target Description *
+              </label>
+              <textarea
+                required
+                id="targetDescription"
+                name="targetDescription"
+                value={formData.targetDescription}
+                onChange={handleChange}
+                placeholder="Target Description "
+                className=" appearance-none font-light h-40 border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+              />
+            </div>
+
             <div className="mb-4">
               <label className="block text-gray-500 font-medium mb-4">
                 Methodology
@@ -534,7 +516,7 @@ const Form: React.FC = () => {
                   <div
                     onClick={() => handleDivClick("CATI")}
                     className={`${
-                      selectedDiv === "CATI"
+                      methodology === "CATI"
                         ? "bg-[#a367b1] text-[#392467]"
                         : "bg-white text-gray-500"
                     } border border-gray-500 w-36 px-10 py-5 mt-2 rounded-2xl flex items-center justify-center cursor-pointer`}
@@ -544,7 +526,7 @@ const Form: React.FC = () => {
                   <div
                     onClick={() => handleDivClick("Recruitment")}
                     className={`${
-                      selectedDiv === "Recruitment"
+                      methodology === "Recruitment"
                         ? "bg-[#a367b1] text-[#392467]"
                         : "bg-white text-gray-500"
                     } border border-gray-500 w-36 px-10 py-5 mt-2 rounded-2xl flex items-center justify-center cursor-pointer`}
@@ -554,7 +536,7 @@ const Form: React.FC = () => {
                   <div
                     onClick={() => handleDivClick("IGD/IDI")}
                     className={`${
-                      selectedDiv === "IGD/IDI"
+                      methodology === "IGD/IDI"
                         ? "bg-[#a367b1] text-[#392467]"
                         : "bg-white text-gray-500"
                     } border border-gray-500 w-36 px-10 py-5 mt-2 rounded-2xl flex items-center justify-center cursor-pointer`}
@@ -580,17 +562,17 @@ const Form: React.FC = () => {
                 value={formData.billingComments}
                 onChange={handleChange}
                 placeholder="Enter your billing comments"
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
-            <div className="mb-4">
+            <div className="mb-4 mt-6 ">
               <div
                 onClick={handleCheckSecurityClick}
                 className={`${
                   formData.securityCheck === true
                     ? "bg-[#a367b1] text-[#392467]"
                     : "bg-white text-gray-500"
-                } border border-gray-500 w-48 px-10 py-5 mt-2 rounded-2xl flex items-center justify-center cursor-pointer`}
+                } border border-gray-500 w-48 px-10 py-5 mt-2 rounded-2xl flex items-center justify-center cursor-pointer `}
               >
                 Security Check
               </div>

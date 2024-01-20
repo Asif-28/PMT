@@ -53,6 +53,19 @@ const ClientSetup: React.FC = () => {
   const handleToggleCountry = () => {
     setIsOpenCountry(!isOpenCountry);
   };
+
+  const handleCheckCountryClick = () => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      checkcountry: !prevFormData.checkcountry,
+    }));
+  };
+  const handleCheckQuotaClick = () => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      checkQuota: !prevFormData.checkQuota,
+    }));
+  };
   const validateForm = () => {
     // Check if any field is empty
     if (
@@ -69,19 +82,6 @@ const ClientSetup: React.FC = () => {
     }
     return true;
   };
-  const handleCheckCountryClick = () => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      checkcountry: !prevFormData.checkcountry,
-    }));
-  };
-  const handleCheckQuotaClick = () => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      checkQuota: !prevFormData.checkQuota,
-    }));
-  };
-
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     const {
@@ -401,7 +401,7 @@ const ClientSetup: React.FC = () => {
           </thead>
 
           <tbody>
-            {apiClientData?.map((item) => (
+            {/* {apiClientData?.map((item) => (
               <tr key={item.project_code} className="border-b border-gray-200 ">
                 <td className="px-4 text-center py-6">{item.input_field}</td>
                 <td className="px-4 text-center py-6">{item.country}</td>
@@ -414,7 +414,7 @@ const ClientSetup: React.FC = () => {
                   <Link href={item.live_link}>Link</Link>
                 </td>
               </tr>
-            ))}
+            ))} */}
           </tbody>
         </table>
       </div>
