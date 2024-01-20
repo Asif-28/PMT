@@ -1,22 +1,24 @@
+import axios from "axios";
 import React, { useState, FormEvent, ChangeEvent } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
 interface FormData {
   projectCode: string;
   vendorCode: string;
   pauseVendor: boolean;
-  pauseAll: boolean;
-  scope: string;
+  scope: number;
   complete: string;
   terminate: string;
   overQuota: string;
 }
 const VendorSetup: React.FC = () => {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
   const [formData, setFormData] = useState<FormData>({
     projectCode: "",
     vendorCode: "",
     pauseVendor: false,
-    pauseAll: false,
-    scope: "",
+    scope: 0,
     complete: "",
     terminate: "",
     overQuota: "",
@@ -32,12 +34,6 @@ const VendorSetup: React.FC = () => {
     }
   };
 
-  const handleSubmit = (event: FormEvent) => {
-    event.preventDefault();
-    // Handle form submission logic here
-    console.log(formData); // Replace with actual submission logic
-  };
-
   const [selectedVendor, setSelectedVendor] = useState<string | null>(null);
   const [isOpenVendor, setIsOpenVendor] = useState(false);
   const handleOptionVendor = (i: string) => {
@@ -47,10 +43,91 @@ const VendorSetup: React.FC = () => {
   const handleToggleVendor = () => {
     setIsOpenVendor(!isOpenVendor);
   };
-  // console.log(formData.pauseVendor + " " + formData.pauseAll);
+
   const vendors = ["a", "b", "c", "d"];
+  const validateForm = () => {
+    // Check if any field is empty
+    if (
+      !formData.projectCode ||
+      !formData.vendorCode ||
+      !formData.scope ||
+      !formData.pauseVendor ||
+      !formData.complete ||
+      !formData.terminate ||
+      !formData.overQuota
+    ) {
+      toast.error("Fill the necessary fields");
+      return false;
+    }
+    return true;
+  };
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    event.preventDefault();
+    const {
+      projectCode,
+      vendorCode,
+      pauseVendor,
+      scope,
+      complete,
+      terminate,
+      overQuota,
+    } = formData;
+    try {
+      if (validateForm()) {
+        const { data } = await axios.post(
+          `${baseUrl}project_client/create`,
+          {
+            project_code: projectCode,
+            vendor_code: vendorCode,
+            scope: scope,
+            complete: complete,
+            terminate: terminate,
+            over_quota: overQuota,
+            pause_vendor: pauseVendor,
+            vendor_name: selectedVendor,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        // console.log(data.level, "success");
+        toast.success("Form submitted successfully");
+        if (data.status_code === 200) {
+          setFormData({
+            projectCode,
+            vendorCode,
+            pauseVendor,
+            scope,
+            complete,
+            terminate,
+            overQuota,
+          });
+        }
+      }
+      // Handle form submission logic here
+    } catch (error: any) {
+      // console.error("Error submitting form:", error);
+      // toast.error("Project Code Should be Unique");
+      toast.error(error);
+    }
+  };
   return (
     <main className="section">
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <h2 className="text-2xl font-semibold text-[#000] ">Vendor Setup</h2>
       <div className="section bg-white pl-5 pr-2 sm:pl-6 sm:pr-16 py-12 rounded-3xl mt-2 sm:mt-4  ">
         <form className="text-[14px] sm:text-[15px] " onSubmit={handleSubmit}>
@@ -143,7 +220,7 @@ const VendorSetup: React.FC = () => {
               </label>
               <input
                 required
-                type="text"
+                type="number"
                 id="scope"
                 name="scope"
                 value={formData.scope}
@@ -227,21 +304,6 @@ const VendorSetup: React.FC = () => {
                   } border border-gray-500 w-52 px-10 py-5 mt-2 rounded-2xl flex items-center justify-center cursor-pointer`}
                 >
                   Pause Vendor
-                </div>
-                <div
-                  onClick={() =>
-                    setFormData((prevFormData) => ({
-                      ...prevFormData,
-                      pauseAll: !prevFormData.pauseAll,
-                    }))
-                  }
-                  className={`${
-                    formData.pauseAll === true
-                      ? "bg-[#a367b1] text-[#392467]"
-                      : "bg-white text-gray-500"
-                  } border border-gray-500 w-52 px-10 py-5 mt-2 rounded-2xl flex items-center justify-center cursor-pointer`}
-                >
-                  Pause All Vendor
                 </div>
               </div>
             </div>

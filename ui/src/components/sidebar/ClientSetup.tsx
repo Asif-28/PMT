@@ -138,7 +138,9 @@ const ClientSetup: React.FC = () => {
       toast.error(error);
     }
   };
-  const [apiClientData, setApiClientData] = useState<ApiResponse | null>(null);
+  const [apiClientData, setApiClientData] = useState<ApiResponse[] | null>(
+    null
+  );
 
   useEffect(() => {
     async function getAllList() {
@@ -401,7 +403,7 @@ const ClientSetup: React.FC = () => {
           </thead>
 
           <tbody>
-            {/* {apiClientData?.map((item) => (
+            {apiClientData?.map((item) => (
               <tr key={item.project_code} className="border-b border-gray-200 ">
                 <td className="px-4 text-center py-6">{item.input_field}</td>
                 <td className="px-4 text-center py-6">{item.country}</td>
@@ -414,7 +416,7 @@ const ClientSetup: React.FC = () => {
                   <Link href={item.live_link}>Link</Link>
                 </td>
               </tr>
-            ))} */}
+            ))}
           </tbody>
         </table>
       </div>

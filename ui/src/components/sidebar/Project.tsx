@@ -56,15 +56,6 @@ const Form: React.FC = () => {
     setIsOpen(false);
   };
 
-  // const [selectedCountry, setSelectedCountry] = useState<String | null>(null);
-  // const [isOpenCountry, setIsOpenCountry] = useState(false);
-  // const handleOptionCountry = (countrys: any) => {
-  //   setSelectedCountry(countrys);
-  //   setIsOpenCountry(false);
-  // };
-  // const handleToggleCountry = () => {
-  //   setIsOpenCountry(!isOpenCountry);
-  // };
 
   const [methodology, setMethodology] = useState<String>("");
   const handleDivClick = (divName: any) => {
@@ -98,7 +89,6 @@ const Form: React.FC = () => {
       !formData.scope ||
       !selectedOption ||
       !formData.targetDescription ||
-      // !selectedCountry ||
       !selectedStatus ||
       !formData.onlineOffline ||
       !formData.billingComments
@@ -196,7 +186,6 @@ const Form: React.FC = () => {
             billingComments: "",
             securityCheck: false,
           });
-          // setSelectedCountry(null);
           setSelectedStatus(null);
           setMethodology("");
           setSelectedOption(null);
@@ -204,7 +193,7 @@ const Form: React.FC = () => {
       }
       // Handle form submission logic here
     } catch (error: any) {
-      // console.error("Error submitting form:", error);
+      
       {
         error.message === "Request failed with status code 400"
           ? toast.error("Enter Unique Project Key")
