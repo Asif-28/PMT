@@ -48,7 +48,7 @@ const ClientSetup: React.FC = () => {
   const [suggestedProjectCode, setSuggestedProjectCode] = useState<string[]>(
     []
   );
-
+  //  Filter the list of project_code from the api and input to show the list of available  projectcode
   const filterProjectCodes = (enteredCode: string) => {
     const filteredCodesSet = new Set<string>();
 
@@ -143,7 +143,6 @@ const ClientSetup: React.FC = () => {
             },
           }
         );
-        // console.log(data.level, "success");
         toast.success("Form submitted successfully");
         if (data.status_code === 200) {
           setFormData({
@@ -157,6 +156,8 @@ const ClientSetup: React.FC = () => {
             checkQuota: false,
           });
           setSelectedCountry(null);
+          setApiClientData(null);
+          setProjectCodeData(null);
         }
       }
       // Handle form submission logic here
@@ -199,7 +200,6 @@ const ClientSetup: React.FC = () => {
       setLoading(true);
     }
   }, [formData.projectCode]);
-  // console.log(apiClientData);
 
   return (
     <main className="section">
@@ -234,11 +234,6 @@ const ClientSetup: React.FC = () => {
                 name="projectCode"
                 autoComplete="off"
                 value={formData.projectCode}
-                // onChange={(event) => {
-                //   const { value } = event.target;
-                //   setFormData({ ...formData, projectCode: value });
-                //   filterProjectCodes(value); // Call the function to filter project codes on every keystroke
-                // }}
                 onChange={handleChange}
                 placeholder="Enter your project Code "
                 className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
