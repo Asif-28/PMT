@@ -422,7 +422,7 @@ const ClientSetup: React.FC = () => {
       </div>
 
       {/* Moblie  */}
-      {/* <div className="bg-[#fff] px-2 py-4 rounded-3xl mt-4 md:hidden ">
+      <div className="bg-[#fff] px-2 py-4 rounded-3xl mt-4 md:hidden ">
         <div className="flex items-center justify-between mb-4"></div>
 
         <table className="table-auto w-full">
@@ -434,11 +434,11 @@ const ClientSetup: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {clientData.map((item) => (
-              <tr key={item.id} className="border-b border-gray-200 ">
-                <td className="px-3 text-center py-5">{item.input}</td>
+            {apiClientData?.map((item) => (
+              <tr key={item.project_code} className="border-b border-gray-200 ">
+                <td className="px-3 text-center py-5">{item.input_field}</td>
                 <td className="px-3 text-center py-5">{item.country}</td>
-                <td className="px-3 text-center py-5">{item.countryCode}</td>
+                <td className="px-3 text-center py-5">{item.country_code}</td>
               </tr>
             ))}
           </tbody>
@@ -452,20 +452,20 @@ const ClientSetup: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {clientData.map((item) => (
-              <tr key={item.id} className="border-b border-gray-200 ">
+            {apiClientData?.map((item) => (
+              <tr key={item.project_code} className="border-b border-gray-200 ">
                 <td className="px-3 text-center py-5">{item.scope}</td>
                 <td className="px-3 text-center py-5">
-                  <Link href={item.testLink}>Link </Link>
+                  <Link href={item.test_link}>Link </Link>
                 </td>
                 <td className="px-3 text-center py-5">
-                  <Link href={item.liveLink}>Link</Link>
+                  <Link href={item.live_link}>Link</Link>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-      </div> */}
+      </div>
     </main>
   );
 };
