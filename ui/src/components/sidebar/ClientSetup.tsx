@@ -1,5 +1,5 @@
 import React, { useState, FormEvent, ChangeEvent, useEffect } from "react";
-import { countrys, clientData } from "../data/data";
+import { countrys } from "../data/data";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import Link from "next/link";
@@ -38,11 +38,39 @@ const ClientSetup: React.FC = () => {
 
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [isOpenCountry, setIsOpenCountry] = useState(false);
+  const [apiClientData, setApiClientData] = useState<ApiResponse[] | null>(
+    null
+  );
+  const [projectCodeData, setProjectCodeData] = useState<ApiResponse[] | null>(
+    null
+  );
+  const [loading, setLoading] = useState<boolean>(true);
+  const [suggestedProjectCode, setSuggestedProjectCode] = useState<string[]>(
+    []
+  );
+
+  const filterProjectCodes = (enteredCode: string) => {
+    const filteredCodesSet = new Set<string>();
+
+    projectCodeData?.forEach((item) => {
+      if (item.project_code.includes(enteredCode)) {
+        filteredCodesSet.add(item.project_code);
+      }
+    });
+
+    const filteredCodes = Array.from(filteredCodesSet);
+
+    setSuggestedProjectCode(enteredCode ? filteredCodes : []);
+  };
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLInputElement>
   ) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+
+    // Call the function to filter project codes when projectCode is being changed
+    filterProjectCodes(value);
   };
 
   const handleOptionCountry = (country: string) => {
@@ -138,9 +166,6 @@ const ClientSetup: React.FC = () => {
       toast.error(error);
     }
   };
-  const [apiClientData, setApiClientData] = useState<ApiResponse[] | null>(
-    null
-  );
 
   useEffect(() => {
     async function getAllList() {
@@ -155,11 +180,13 @@ const ClientSetup: React.FC = () => {
         const data = await response.json();
 
         // Filter data based on the entered projectCode
-        const filteredData = data.filter(
-          (item: any) => item.project_code === formData.projectCode
-        );
-
+        const filteredData = data.filter((item: any) => {
+          return item.project_code === formData.projectCode;
+        });
+        // console.log(formData.projectCode);
         setApiClientData(filteredData);
+        setProjectCodeData(data);
+        // setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -168,9 +195,12 @@ const ClientSetup: React.FC = () => {
     // Fetch data only if projectCode is not empty
     if (formData.projectCode) {
       getAllList();
+    } else {
+      setLoading(true);
     }
-  }, [formData.projectCode]); // Run the effect only when formData.projectCode changes
-  console.log(apiClientData);
+  }, [formData.projectCode]);
+  // console.log(apiClientData);
+
   return (
     <main className="section">
       <ToastContainer
@@ -190,10 +220,10 @@ const ClientSetup: React.FC = () => {
         <form className="text-[14px] sm:text-[15px] " onSubmit={handleSubmit}>
           <h2 className="mb-10">Enter the following details</h2>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <div className="mb-4">
+            <div className="mb-4 relative">
               <label
                 htmlFor="projectCode"
-                className="block text-gray-500 font-medium mb-4"
+                className="block text-gray-500 font-medium mb-4 relative"
               >
                 Project Code *
               </label>
@@ -202,11 +232,42 @@ const ClientSetup: React.FC = () => {
                 type="text"
                 id="projectCode"
                 name="projectCode"
+                autoComplete="off"
                 value={formData.projectCode}
+                // onChange={(event) => {
+                //   const { value } = event.target;
+                //   setFormData({ ...formData, projectCode: value });
+                //   filterProjectCodes(value); // Call the function to filter project codes on every keystroke
+                // }}
                 onChange={handleChange}
                 placeholder="Enter your project Code "
                 className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
+
+              {suggestedProjectCode.length > 0 && (
+                <div className="absolute z-50 mt-2 sm:w-full rounded-3xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-y-auto max-h-60">
+                  <div
+                    className="py-1 w-full px-3 bg-white"
+                    role="menu"
+                    aria-orientation="vertical"
+                    aria-labelledby="options-menu"
+                  >
+                    {suggestedProjectCode.map((code, index) => (
+                      <div
+                        key={index}
+                        onClick={() => {
+                          setFormData({ ...formData, projectCode: code });
+                          setSuggestedProjectCode([]); // Clear the suggestion list
+                        }}
+                        className="block px-4 py-4 text-sm text-gray-700 w-full hover:bg-[#a367b1] hover:text-[#392467] font-semibold  text-left  my-2 rounded-xl"
+                        role="menuitem"
+                      >
+                        {code}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
             <div className="mb-4">
               <label
