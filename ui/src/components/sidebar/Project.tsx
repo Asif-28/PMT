@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import "../../app/globals.css";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { countrys, projectStatusList } from "../data/data";
+import { projectStatusList } from "../data/data";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { options } from "../data/data";
@@ -40,12 +40,15 @@ const Form: React.FC = () => {
     securityCheck: false,
   });
 
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState<String | null>(null);
+  const [methodology, setMethodology] = useState<String>("");
+  const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
+  const [isOpenStatus, setIsOpenStatus] = useState(false);
+
   const handleChange = (event: any) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
-
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<String | null>(null);
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -56,14 +59,10 @@ const Form: React.FC = () => {
     setIsOpen(false);
   };
 
-
-  const [methodology, setMethodology] = useState<String>("");
   const handleDivClick = (divName: any) => {
     setMethodology(divName);
   };
 
-  const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
-  const [isOpenStatus, setIsOpenStatus] = useState(false);
   const handleOptionProjectStatus = (i: string) => {
     setSelectedStatus(i);
     setIsOpenStatus(false);
@@ -193,7 +192,6 @@ const Form: React.FC = () => {
       }
       // Handle form submission logic here
     } catch (error: any) {
-      
       {
         error.message === "Request failed with status code 400"
           ? toast.error("Enter Unique Project Key")

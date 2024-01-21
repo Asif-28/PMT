@@ -236,7 +236,7 @@ const ClientSetup: React.FC = () => {
                 value={formData.projectCode}
                 onChange={handleChange}
                 placeholder="Enter your project Code "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
 
               {suggestedProjectCode.length > 0 && (
@@ -279,7 +279,7 @@ const ClientSetup: React.FC = () => {
                 value={formData.inputField}
                 onChange={handleChange}
                 placeholder="Enter your Input Field"
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
 
@@ -295,7 +295,7 @@ const ClientSetup: React.FC = () => {
                   <button
                     onClick={handleToggleCountry}
                     type="button"
-                    className="inline-flex justify-center w-full  text-sm appearance-none  xl:min-w-[480px] border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                    className="inline-flex justify-center w-full  text-sm appearance-none border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
                   >
                     {selectedCountry ? selectedCountry : "Select a Country"}
                   </button>
@@ -340,7 +340,7 @@ const ClientSetup: React.FC = () => {
                 value={formData.countryCode}
                 onChange={handleChange}
                 placeholder="Enter your Country Code"
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
 
@@ -360,7 +360,7 @@ const ClientSetup: React.FC = () => {
                 value={formData.scope}
                 onChange={handleChange}
                 placeholder="Enter your Scope "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
           </div>
@@ -380,7 +380,7 @@ const ClientSetup: React.FC = () => {
                 value={formData.testLink}
                 onChange={handleChange}
                 placeholder="Enter your test Link "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
@@ -398,7 +398,7 @@ const ClientSetup: React.FC = () => {
                 value={formData.liveLink}
                 onChange={handleChange}
                 placeholder="Enter your live Link "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
             <div className="mb-4">

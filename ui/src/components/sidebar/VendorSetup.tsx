@@ -40,27 +40,9 @@ const VendorSetup: React.FC = () => {
     overQuota: "",
   });
 
-  // const handleChange = (
-  //   event: ChangeEvent<HTMLInputElement | HTMLInputElement>
-  // ) => {
-  //   if (event.target.type === "checkbox") {
-  //     setFormData({ ...formData, [event.target.name]: event.target.checked });
-  //   } else {
-  //     setFormData({ ...formData, [event.target.name]: event.target.value });
-  //   }
-  // };
-  const handleChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLInputElement>
-  ) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
-
-    // Call the function to filter project codes when projectCode is being changed
-    filterProjectCodes(value);
-  };
   const [selectedVendor, setSelectedVendor] = useState<string | null>(null);
   const [isOpenVendor, setIsOpenVendor] = useState(false);
-  const [apiClientData, setApiClientData] = useState<ApiResponse[] | null>(
+  const [apiVendorData, setApiVendorData] = useState<ApiResponse[] | null>(
     null
   );
   const [projectCodeData, setProjectCodeData] = useState<ApiResponse[] | null>(
@@ -71,6 +53,16 @@ const VendorSetup: React.FC = () => {
     []
   );
   const [vendors, setVendors] = useState<VendorListApiResponse[] | null>(null);
+
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLInputElement>
+  ) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+
+    // Call the function to filter project codes when projectCode is being changed
+    filterProjectCodes(value);
+  };
 
   const filterProjectCodes = (enteredCode: string) => {
     const filteredCodesSet = new Set<string>();
@@ -154,6 +146,7 @@ const VendorSetup: React.FC = () => {
             terminate: "",
             overQuota: "",
           });
+          setApiVendorData(null);
         }
       }
       // Handle form submission logic here
@@ -163,6 +156,26 @@ const VendorSetup: React.FC = () => {
       toast.error(error);
     }
   };
+  // fetch all the vendor list
+  useEffect(() => {
+    async function getAllVendors() {
+      try {
+        const vendorListResponse = await fetch(
+          "http://127.0.0.1:8000/vendor/list",
+          {
+            method: "GET",
+          }
+        );
+        const vendorListData = await vendorListResponse.json();
+        setVendors(vendorListData);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+    getAllVendors();
+  }, []);
+  // fetch the data for  the  vendor setup and project code
   useEffect(() => {
     async function getAllList() {
       try {
@@ -173,22 +186,12 @@ const VendorSetup: React.FC = () => {
           }
         );
         const data = await response.json();
-        const vendorListResponse = await fetch(
-          "http://127.0.0.1:8000/vendor/list",
-          {
-            method: "GET",
-          }
-        );
-        const vendorListData = await vendorListResponse.json();
-
         // Filter data based on the entered projectCode
         const filteredData = data.filter((item: any) => {
           return item.project_code === formData.projectCode;
         });
-        // console.log(formData.projectCode);
-        setApiClientData(filteredData);
+        setApiVendorData(filteredData);
         setProjectCodeData(data);
-        setVendors(vendorListData);
         // setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -237,7 +240,7 @@ const VendorSetup: React.FC = () => {
                 value={formData.projectCode}
                 onChange={handleChange}
                 placeholder="Enter your project Code "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
               {suggestedProjectCode.length > 0 && (
                 <div className="absolute z-50 mt-2 sm:w-full rounded-3xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-y-auto max-h-60">
@@ -279,7 +282,7 @@ const VendorSetup: React.FC = () => {
                 value={formData.vendorCode}
                 onChange={handleChange}
                 placeholder="Enter your Input Field"
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
             <div className="relative inline-block text-left z-30">
@@ -294,7 +297,7 @@ const VendorSetup: React.FC = () => {
                   <button
                     onClick={handleToggleVendor}
                     type="button"
-                    className="inline-flex justify-center min-w-[15.5rem] w-full  text-sm appearance-none  xl:min-w-[480px] border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                    className="inline-flex justify-center min-w-[15.5rem] w-full  text-sm appearance-none border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
                   >
                     {selectedVendor ? selectedVendor : "Choose from dropdown"}
                   </button>
@@ -309,16 +312,24 @@ const VendorSetup: React.FC = () => {
                     aria-orientation="vertical"
                     aria-labelledby="options-menu"
                   >
-                    {vendors?.map((vendor) => (
-                      <div
-                        key={vendor.id}
-                        onClick={() => handleOptionVendor(vendor.name)}
-                        className="block px-4 py-4 text-sm text-gray-700 w-full hover:bg-[#a367b1] hover:text-[#392467] font-semibold  text-left  my-2 rounded-xl"
-                        role="menuitem"
-                      >
-                        {vendor.name}
+                    {loading ? (
+                      // Show loading state if loading is true
+                      <div className="block px-4 py-4 text-sm text-gray-700 w-full my-2 rounded-xl">
+                        Loading...
                       </div>
-                    ))}
+                    ) : (
+                      // Show the options if loading is false
+                      vendors?.map((vendor) => (
+                        <div
+                          key={vendor.id}
+                          onClick={() => handleOptionVendor(vendor.name)}
+                          className="block px-4 py-4 text-sm text-gray-700 w-full hover:bg-[#a367b1] hover:text-[#392467] font-semibold text-left my-2 rounded-xl"
+                          role="menuitem"
+                        >
+                          {vendor.name}
+                        </div>
+                      ))
+                    )}
                   </div>
                 </div>
               )}
@@ -339,7 +350,7 @@ const VendorSetup: React.FC = () => {
                 value={formData.scope}
                 onChange={handleChange}
                 placeholder="Enter your Scope "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
           </div>
@@ -359,7 +370,7 @@ const VendorSetup: React.FC = () => {
                 value={formData.complete}
                 onChange={handleChange}
                 placeholder="Enter your status "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
@@ -377,7 +388,7 @@ const VendorSetup: React.FC = () => {
                 value={formData.terminate}
                 onChange={handleChange}
                 placeholder="Enter your status"
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
@@ -395,7 +406,7 @@ const VendorSetup: React.FC = () => {
                 value={formData.overQuota}
                 onChange={handleChange}
                 placeholder="Enter your status"
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
@@ -451,7 +462,7 @@ const VendorSetup: React.FC = () => {
           </thead>
 
           <tbody>
-            {apiClientData?.map((item) => (
+            {apiVendorData?.map((item) => (
               <tr key={item.project_code} className="border-b border-gray-200 ">
                 <td className="px-4 text-center py-6">{item.vendor_code}</td>
                 <td className="px-4 text-center py-6">{item.vendor_name}</td>
@@ -484,7 +495,7 @@ const VendorSetup: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {apiClientData?.map((item) => (
+            {apiVendorData?.map((item) => (
               <tr key={item.project_code} className="border-b border-gray-200 ">
                 <td className="px-3 text-center py-5">{item.vendor_name}</td>
                 <td className="px-3 text-center py-5">{item.vendor_code}</td>
@@ -502,7 +513,7 @@ const VendorSetup: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {apiClientData?.map((item) => (
+            {apiVendorData?.map((item) => (
               <tr key={item.project_code} className="border-b border-gray-200 ">
                 <td className="px-3 text-center py-5">
                   <Link href={item.complete}>Link </Link>
