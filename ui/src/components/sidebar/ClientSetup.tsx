@@ -223,7 +223,7 @@ const ClientSetup: React.FC = () => {
             <div className="mb-4 relative">
               <label
                 htmlFor="projectCode"
-                className="block text-gray-500 font-medium mb-4 relative"
+                className="block text-gray-500 font-medium mb-4 "
               >
                 Project Code *
               </label>
