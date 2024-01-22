@@ -169,7 +169,7 @@ const Form: React.FC = () => {
           }
         );
         // console.log(data.level);
-        toast.success("Form submitted successfully");
+        toast.success("Project Created Successfully");
         if (data.status_code === 200) {
           setFormData({
             projectName: "",

@@ -143,7 +143,7 @@ const ClientSetup: React.FC = () => {
             },
           }
         );
-        toast.success("Form submitted successfully");
+        toast.success("Client Created Successfully");
         if (data.status_code === 200) {
           setFormData({
             projectCode: "",

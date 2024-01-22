@@ -53,7 +53,7 @@ const AddNewClient: React.FC = () => {
           }
         );
         // console.log(data.level, "success");
-        toast.success("Client created successfully");
+        toast.success("Client Created Successfully");
         if (data.status_code === 200) {
           setFormData({
             clientName: "",

@@ -135,7 +135,7 @@ const VendorSetup: React.FC = () => {
           }
         );
 
-        toast.success("Form submitted successfully");
+        toast.success("Vendor Created Successfully");
         if (data.status_code === 200) {
           setFormData({
             projectCode: "",
