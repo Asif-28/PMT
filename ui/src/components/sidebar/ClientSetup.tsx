@@ -163,8 +163,6 @@ const ClientSetup: React.FC = () => {
       }
       // Handle form submission logic here
     } catch (error: any) {
-      // console.error("Error submitting form:", error);
-      // toast.error("Project Code Should be Unique");
       toast.error(error);
     }
   };
@@ -172,6 +170,14 @@ const ClientSetup: React.FC = () => {
   useEffect(() => {
     async function getAllList() {
       try {
+        // Set loading to true when the projectCode is empty or filtered data is empty
+        if (!formData.projectCode) {
+          setLoading(true);
+          setApiClientData(null);
+          setProjectCodeData(null);
+          return;
+        }
+
         const response = await fetch(
           "http://127.0.0.1:8000/project_client/list",
           {
@@ -185,21 +191,17 @@ const ClientSetup: React.FC = () => {
         const filteredData = data.filter((item: any) => {
           return item.project_code === formData.projectCode;
         });
-        // console.log(formData.projectCode);
+
         setApiClientData(filteredData);
         setProjectCodeData(data);
-        // setLoading(false);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setLoading(false); // Set loading to false in case of an error
       }
     }
 
-    // Fetch data only if projectCode is not empty
-    if (formData.projectCode) {
-      getAllList();
-    } else {
-      setLoading(true);
-    }
+    getAllList();
   }, [formData.projectCode]);
 
   return (
@@ -444,114 +446,120 @@ const ClientSetup: React.FC = () => {
         </form>
       </div>
 
-      <div className="pb-14">
+      <div className="pb-12">
         <button
           onClick={() => setShowClients(!showClients)}
           className="bg-[#000000] font-semibold text-base sm:text-[18px] w-[12rem] sm:w-[16.5rem] px-10 py-4 sm:px-16 sm:py-6 text-white rounded-lg mt-10 sm:mt-20"
         >
-          Show Clients
+          {showClients ? "Hide Clients" : "Show Clients"}
         </button>
       </div>
-      {showClients && (
-        <>
-          {/* For The Desktop Screen view  */}
-          <div className="bg-[#fff] px-8 py-6 rounded-3xl mt-6 hidden md:block ">
-            <div className="flex items-center justify-between mb-4"></div>
+      {showClients ? (
+        loading ? (
+          // If loading is true, show loading state
+          <div className="text-2xl mx-auto ">Loading...</div>
+        ) : (
+          // If loading is false, show the tables
+          <>
+            {/* For The Desktop Screen view  */}
+            <div className="bg-[#fff] px-8 py-6 rounded-3xl mt-6 hidden md:block ">
+              <div className="flex items-center justify-between mb-4"></div>
 
-            <table className="table-auto w-full">
-              <thead>
-                <tr>
-                  <th className="px-4 py-4">Input</th>
-                  <th className="px-4 py-4">Country</th>
-                  <th className="px-4 py-4">Country Code</th>
-                  <th className="px-4 py-4">Scope</th>
-                  <th className="px-4 py-4">Test Link</th>
-                  <th className="px-4 py-4">Live Link</th>
-                </tr>
-              </thead>
+              <table className="table-auto w-full">
+                <thead>
+                  <tr>
+                    <th className="px-4 py-4">Input</th>
+                    <th className="px-4 py-4">Country</th>
+                    <th className="px-4 py-4">Country Code</th>
+                    <th className="px-4 py-4">Scope</th>
+                    <th className="px-4 py-4">Test Link</th>
+                    <th className="px-4 py-4">Live Link</th>
+                  </tr>
+                </thead>
 
-              <tbody>
-                {apiClientData?.map((item) => (
-                  <tr
-                    key={item.project_code}
-                    className="border-b border-gray-200 "
-                  >
-                    <td className="px-4 text-center py-6">
-                      {item.input_field}
-                    </td>
-                    <td className="px-4 text-center py-6">{item.country}</td>
-                    <td className="px-4 text-center py-6">
-                      {item.country_code}
-                    </td>
-                    <td className="px-4 text-center py-6">{item.scope}</td>
-                    <td className="px-4 text-center py-6">
-                      <Link href={item.test_link}>Link</Link>
-                    </td>
-                    <td className="px-4 text-center py-6">
-                      <Link href={item.live_link}>Link</Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          {/* Moblie  */}
-          <div className="bg-[#fff] px-2 py-4 rounded-3xl mt-4 md:hidden ">
-            <div className="flex items-center justify-between mb-4"></div>
+                <tbody>
+                  {apiClientData?.map((item) => (
+                    <tr
+                      key={item.project_code}
+                      className="border-b border-gray-200 "
+                    >
+                      <td className="px-4 text-center py-6">
+                        {item.input_field}
+                      </td>
+                      <td className="px-4 text-center py-6">{item.country}</td>
+                      <td className="px-4 text-center py-6">
+                        {item.country_code}
+                      </td>
+                      <td className="px-4 text-center py-6">{item.scope}</td>
+                      <td className="px-4 text-center py-6">
+                        <Link href={item.test_link}>Link</Link>
+                      </td>
+                      <td className="px-4 text-center py-6">
+                        <Link href={item.live_link}>Link</Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {/* Mobile View */}
+            <div className="bg-[#fff] px-2 py-4 rounded-3xl mt-4 md:hidden ">
+              <div className="flex items-center justify-between mb-4"></div>
 
-            <table className="table-auto w-full">
-              <thead>
-                <tr>
-                  <th className="px-2 py-3 text-center">Input</th>
-                  <th className="px-2 py-3 text-center">Country</th>
-                  <th className="px-2 py-3 text-center">Country Code</th>
-                </tr>
-              </thead>
-              <tbody>
-                {apiClientData?.map((item) => (
-                  <tr
-                    key={item.project_code}
-                    className="border-b border-gray-200 "
-                  >
-                    <td className="px-3 text-center py-5">
-                      {item.input_field}
-                    </td>
-                    <td className="px-3 text-center py-5">{item.country}</td>
-                    <td className="px-3 text-center py-5">
-                      {item.country_code}
-                    </td>
+              <table className="table-auto w-full">
+                <thead>
+                  <tr>
+                    <th className="px-2 py-3 text-center">Input</th>
+                    <th className="px-2 py-3 text-center">Country</th>
+                    <th className="px-2 py-3 text-center">Country Code</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-            <table className="table-auto w-full mt-8 ">
-              <thead>
-                <tr>
-                  <th className="px-2 py-3 text-center">Scope</th>
-                  <th className="px-2 py-3 text-center">Test Link</th>
-                  <th className="px-2 py-3 text-center">Live Link</th>
-                </tr>
-              </thead>
-              <tbody>
-                {apiClientData?.map((item) => (
-                  <tr
-                    key={item.project_code}
-                    className="border-b border-gray-200 "
-                  >
-                    <td className="px-3 text-center py-5">{item.scope}</td>
-                    <td className="px-3 text-center py-5">
-                      <Link href={item.test_link}>Link </Link>
-                    </td>
-                    <td className="px-3 text-center py-5">
-                      <Link href={item.live_link}>Link</Link>
-                    </td>
+                </thead>
+                <tbody>
+                  {apiClientData?.map((item) => (
+                    <tr
+                      key={item.project_code}
+                      className="border-b border-gray-200 "
+                    >
+                      <td className="px-3 text-center py-5">
+                        {item.input_field}
+                      </td>
+                      <td className="px-3 text-center py-5">{item.country}</td>
+                      <td className="px-3 text-center py-5">
+                        {item.country_code}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <table className="table-auto w-full mt-8 ">
+                <thead>
+                  <tr>
+                    <th className="px-2 py-3 text-center">Scope</th>
+                    <th className="px-2 py-3 text-center">Test Link</th>
+                    <th className="px-2 py-3 text-center">Live Link</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </>
-      )}
+                </thead>
+                <tbody>
+                  {apiClientData?.map((item) => (
+                    <tr
+                      key={item.project_code}
+                      className="border-b border-gray-200 "
+                    >
+                      <td className="px-3 text-center py-5">{item.scope}</td>
+                      <td className="px-3 text-center py-5">
+                        <Link href={item.test_link}>Link </Link>
+                      </td>
+                      <td className="px-3 text-center py-5">
+                        <Link href={item.live_link}>Link</Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )
+      ) : null}
     </main>
   );
 };

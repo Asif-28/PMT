@@ -47,19 +47,19 @@ label > input[type="checkbox"]:checked + * {
 }
 
 /* Set the scrollbar color */
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 10px;
-}
+} */
 
 /* Handle */
-::-webkit-scrollbar-thumb {
+/* ::-webkit-scrollbar-thumb {
   background-color: #a367b1;
-}
+} */
 
 /* Track */
-::-webkit-scrollbar-track {
+/* ::-webkit-scrollbar-track {
   background: #f1f1f1;
-}
+} */
 
 input[type="radio"] {
   /* Hide the default radio button */
