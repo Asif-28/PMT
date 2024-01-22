@@ -3,6 +3,7 @@ import { countrys } from "../data/data";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import Link from "next/link";
+import { useDebounce } from "../hooks/Debounce";
 
 interface FormData {
   projectCode: string;
@@ -14,6 +15,7 @@ interface FormData {
   checkcountry: boolean;
   checkQuota: boolean;
 }
+
 interface ApiResponse {
   project_code: string;
   input_field: string;
@@ -23,6 +25,7 @@ interface ApiResponse {
   test_link: string;
   live_link: string;
 }
+
 const ClientSetup: React.FC = () => {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const [formData, setFormData] = useState<FormData>({
@@ -49,6 +52,8 @@ const ClientSetup: React.FC = () => {
   const [suggestedProjectCode, setSuggestedProjectCode] = useState<string[]>(
     []
   );
+  const debouncedSearch = useDebounce(formData.projectCode);
+
   //  Filter the list of project_code from the api and input to show the list of available  projectcode
   const filterProjectCodes = (enteredCode: string) => {
     const filteredCodesSet = new Set<string>();
@@ -177,24 +182,19 @@ const ClientSetup: React.FC = () => {
           setProjectCodeData(null);
           return;
         }
+        setLoading(true);
 
-        const response = await fetch(
-          "http://127.0.0.1:8000/project_client/list",
-          {
-            method: "GET",
-          }
-        );
+        const response = await axios.get(`${baseUrl}project_client/list`);
 
-        const data = await response.json();
-
+        const data: ApiResponse[] = response.data;
+        setLoading(false);
         // Filter data based on the entered projectCode
-        const filteredData = data.filter((item: any) => {
+        const filteredData = data.filter((item) => {
           return item.project_code === formData.projectCode;
         });
 
         setApiClientData(filteredData);
         setProjectCodeData(data);
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
         setLoading(false); // Set loading to false in case of an error
@@ -202,7 +202,7 @@ const ClientSetup: React.FC = () => {
     }
 
     getAllList();
-  }, [formData.projectCode]);
+  }, [debouncedSearch]);
 
   return (
     <main className="section">
@@ -242,29 +242,44 @@ const ClientSetup: React.FC = () => {
                 className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
 
-              {suggestedProjectCode.length > 0 && (
-                <div className="absolute z-50 mt-2 sm:w-full rounded-3xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-y-auto max-h-60">
-                  <div
-                    className="py-1 w-full px-3 bg-white"
-                    role="menu"
-                    aria-orientation="vertical"
-                    aria-labelledby="options-menu"
-                  >
-                    {suggestedProjectCode.map((code, index) => (
-                      <div
-                        key={index}
-                        onClick={() => {
-                          setFormData({ ...formData, projectCode: code });
-                          setSuggestedProjectCode([]); // Clear the suggestion list
-                        }}
-                        className="block px-4 py-4 text-sm text-gray-700 w-full hover:bg-[#a367b1] hover:text-[#392467] font-semibold  text-left  my-2 rounded-xl"
-                        role="menuitem"
-                      >
-                        {code}
-                      </div>
-                    ))}
-                  </div>
-                </div>
+              {formData.projectCode && (
+                <>
+                  {loading ? (
+                    <div className="absolute z-50 bg-white shadow-lg my-2 px-4 py-3 text-base text-gray-700 w-full font-semibold text-left rounded-xl">
+                      Loading
+                    </div>
+                  ) : (
+                    <>
+                      {suggestedProjectCode.length > 0 && (
+                        <div className="absolute z-50 mt-2 sm:w-full rounded-3xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-y-auto max-h-60">
+                          <div
+                            className="py-1 w-full px-3 bg-white"
+                            role="menu"
+                            aria-orientation="vertical"
+                            aria-labelledby="options-menu"
+                          >
+                            {suggestedProjectCode.map((code, index) => (
+                              <div
+                                key={index}
+                                onClick={() => {
+                                  setFormData({
+                                    ...formData,
+                                    projectCode: code,
+                                  });
+                                  setSuggestedProjectCode([]); // Clear the suggestion list
+                                }}
+                                className="block px-4 py-4 text-sm text-gray-700 w-full hover:bg-[#a367b1] hover:text-[#392467] font-semibold  text-left  my-2 rounded-xl"
+                                role="menuitem"
+                              >
+                                {code}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </>
               )}
             </div>
             <div className="mb-4">
