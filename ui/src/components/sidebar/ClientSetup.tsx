@@ -246,7 +246,7 @@ const ClientSetup: React.FC = () => {
                 <>
                   {loading ? (
                     <div className="absolute z-50 bg-white shadow-lg my-2 px-4 py-3 text-base text-gray-700 w-full font-semibold text-left rounded-xl">
-                      Loading
+                      Loading...
                     </div>
                   ) : (
                     <>
@@ -466,20 +466,20 @@ const ClientSetup: React.FC = () => {
           onClick={() => setShowClients(!showClients)}
           className="bg-[#000000] font-semibold text-base sm:text-[18px] w-[12rem] sm:w-[16.5rem] px-10 py-4 sm:px-16 sm:py-6 text-white rounded-lg mt-10 sm:mt-20"
         >
-          {showClients ? "Hide Clients" : "Show Clients"}
+          {showClients && formData.projectCode
+            ? "Hide Clients"
+            : "Show Clients"}
         </button>
       </div>
-      {showClients ? (
+
+      {showClients && formData.projectCode ? (
         loading ? (
           // If loading is true, show loading state
           <div className="text-2xl mx-auto ">Loading...</div>
         ) : (
-          // If loading is false, show the tables
           <>
             {/* For The Desktop Screen view  */}
             <div className="bg-[#fff] px-8 py-6 rounded-3xl mt-6 hidden md:block ">
-              <div className="flex items-center justify-between mb-4"></div>
-
               <table className="table-auto w-full">
                 <thead>
                   <tr>

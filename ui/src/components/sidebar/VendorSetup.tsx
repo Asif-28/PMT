@@ -2,6 +2,7 @@ import axios from "axios";
 import Link from "next/link";
 import React, { useState, FormEvent, ChangeEvent, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
+import { useDebounce } from "../hooks/Debounce";
 
 interface FormData {
   projectCode: string;
@@ -53,6 +54,8 @@ const VendorSetup: React.FC = () => {
     []
   );
   const [vendors, setVendors] = useState<VendorListApiResponse[] | null>(null);
+  const debouncedSearch = useDebounce(formData.projectCode);
+  const [showVendors, setShowVendors] = useState<boolean>(false);
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLInputElement>
@@ -179,32 +182,35 @@ const VendorSetup: React.FC = () => {
   useEffect(() => {
     async function getAllList() {
       try {
-        const response = await fetch(
-          "http://127.0.0.1:8000/project_vendor/list",
-          {
-            method: "GET",
-          }
-        );
-        const data = await response.json();
+        // Set loading to true when the projectCode is empty or filtered data is empty
+        if (!formData.projectCode) {
+          setLoading(true);
+          setApiVendorData(null);
+          setProjectCodeData(null);
+          return;
+        }
+        setLoading(true);
+
+        const response = await axios.get(`${baseUrl}project_vendor/list`);
+
+        const data: ApiResponse[] = response.data;
+        setLoading(false);
         // Filter data based on the entered projectCode
-        const filteredData = data.filter((item: any) => {
+        const filteredData = data.filter((item) => {
           return item.project_code === formData.projectCode;
         });
+
         setApiVendorData(filteredData);
         setProjectCodeData(data);
-        // setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setLoading(false); // Set loading to false in case of an error
       }
     }
 
     // Fetch data only if projectCode is not empty
-    if (formData.projectCode) {
-      getAllList();
-    } else {
-      setLoading(true);
-    }
-  }, [formData.projectCode]);
+    getAllList();
+  }, [debouncedSearch]);
 
   return (
     <main className="section">
@@ -237,34 +243,50 @@ const VendorSetup: React.FC = () => {
                 type="text"
                 id="projectCode"
                 name="projectCode"
+                autoComplete="off"
                 value={formData.projectCode}
                 onChange={handleChange}
                 placeholder="Enter your project Code "
                 className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
-              {suggestedProjectCode.length > 0 && (
-                <div className="absolute z-50 mt-2 sm:w-full rounded-3xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-y-auto max-h-60">
-                  <div
-                    className="py-1 w-full px-3 bg-white"
-                    role="menu"
-                    aria-orientation="vertical"
-                    aria-labelledby="options-menu"
-                  >
-                    {suggestedProjectCode.map((code, index) => (
-                      <div
-                        key={index}
-                        onClick={() => {
-                          setFormData({ ...formData, projectCode: code });
-                          setSuggestedProjectCode([]); // Clear the suggestion list
-                        }}
-                        className="block px-4 py-4 text-sm text-gray-700 w-full hover:bg-[#a367b1] hover:text-[#392467] font-semibold  text-left  my-2 rounded-xl"
-                        role="menuitem"
-                      >
-                        {code}
-                      </div>
-                    ))}
-                  </div>
-                </div>
+              {formData.projectCode && (
+                <>
+                  {loading ? (
+                    <div className="absolute z-50 bg-white shadow-lg my-2 px-4 py-3 text-base text-gray-700 w-full font-semibold text-left rounded-xl">
+                      Loading...
+                    </div>
+                  ) : (
+                    <>
+                      {suggestedProjectCode.length > 0 && (
+                        <div className="absolute z-50 mt-2 sm:w-full rounded-3xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-y-auto max-h-60">
+                          <div
+                            className="py-1 w-full px-3 bg-white"
+                            role="menu"
+                            aria-orientation="vertical"
+                            aria-labelledby="options-menu"
+                          >
+                            {suggestedProjectCode.map((code, index) => (
+                              <div
+                                key={index}
+                                onClick={() => {
+                                  setFormData({
+                                    ...formData,
+                                    projectCode: code,
+                                  });
+                                  setSuggestedProjectCode([]); // Clear the suggestion list
+                                }}
+                                className="block px-4 py-4 text-sm text-gray-700 w-full hover:bg-[#a367b1] hover:text-[#392467] font-semibold  text-left  my-2 rounded-xl"
+                                role="menuitem"
+                              >
+                                {code}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </>
               )}
             </div>
             <div className="mb-4">
@@ -445,90 +467,128 @@ const VendorSetup: React.FC = () => {
           </div>
         </form>
       </div>
-      {/* For The Desktop Screen view  */}
-      <div className="bg-[#fff] px-8 py-6 rounded-3xl mt-6 hidden md:block ">
-        <div className="flex items-center justify-between mb-4"></div>
 
-        <table className="table-auto w-full">
-          <thead>
-            <tr>
-              <th className="px-4 py-4">Vendor Name</th>
-              <th className="px-4 py-4">Vendor Code</th>
-              <th className="px-4 py-4">Scope</th>
-              <th className="px-4 py-4">Complete</th>
-              <th className="px-4 py-4">Terminate</th>
-              <th className="px-4 py-4">Over Quota</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {apiVendorData?.map((item) => (
-              <tr key={item.project_code} className="border-b border-gray-200 ">
-                <td className="px-4 text-center py-6">{item.vendor_code}</td>
-                <td className="px-4 text-center py-6">{item.vendor_name}</td>
-                <td className="px-4 text-center py-6">{item.scope}</td>
-                <td className="px-4 text-center py-6">
-                  <Link href={item.complete}>Link</Link>
-                </td>
-                <td className="px-4 text-center py-6">
-                  <Link href={item.terminate}>Link</Link>
-                </td>
-                <td className="px-4 text-center py-6">
-                  <Link href={item.over_quota}>Link</Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="pb-12">
+        <button
+          onClick={() => setShowVendors(!showVendors)}
+          className="bg-[#000000] font-semibold text-base sm:text-[18px] w-[12rem] sm:w-[16.5rem] px-10 py-4 sm:px-16 sm:py-6 text-white rounded-lg mt-10 sm:mt-20"
+        >
+          {showVendors && formData.projectCode
+            ? "Hide Clients"
+            : "Show Clients"}
+        </button>
       </div>
+
+      {showVendors && formData.projectCode ? (
+        loading ? (
+          // If loading is true, show loading state
+          <div className="text-2xl mx-auto ">Loading...</div>
+        ) : (
+          <>
+            {/* For The Desktop Screen view  */}
+            <div className="bg-[#fff] px-8 py-6 rounded-3xl mt-6 hidden md:block ">
+              <table className="table-auto w-full">
+                <thead>
+                  <tr>
+                    <th className="px-4 py-4">Vendor Name</th>
+                    <th className="px-4 py-4">Vendor Code</th>
+                    <th className="px-4 py-4">Scope</th>
+                    <th className="px-4 py-4">Complete</th>
+                    <th className="px-4 py-4">Terminate</th>
+                    <th className="px-4 py-4">Over Quota</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {apiVendorData?.map((item) => (
+                    <tr
+                      key={item.project_code}
+                      className="border-b border-gray-200 "
+                    >
+                      <td className="px-4 text-center py-6">
+                        {item.vendor_code}
+                      </td>
+                      <td className="px-4 text-center py-6">
+                        {item.vendor_name}
+                      </td>
+                      <td className="px-4 text-center py-6">{item.scope}</td>
+                      <td className="px-4 text-center py-6">
+                        <Link href={item.complete}>Link</Link>
+                      </td>
+                      <td className="px-4 text-center py-6">
+                        <Link href={item.terminate}>Link</Link>
+                      </td>
+                      <td className="px-4 text-center py-6">
+                        <Link href={item.over_quota}>Link</Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {/* Mobile View */}
+            <div className="bg-[#fff] px-2 py-4 rounded-3xl mt-4 md:hidden ">
+              <div className="flex items-center justify-between mb-4"></div>
+
+              <table className="table-auto w-full">
+                <thead>
+                  <tr>
+                    <th className="px-2 py-3 text-center">Vendor Name</th>
+                    <th className="px-2 py-3 text-center">Vendor Code </th>
+                    <th className="px-2 py-3 text-center">Scope</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {apiVendorData?.map((item) => (
+                    <tr
+                      key={item.project_code}
+                      className="border-b border-gray-200 "
+                    >
+                      <td className="px-3 text-center py-5">
+                        {item.vendor_name}
+                      </td>
+                      <td className="px-3 text-center py-5">
+                        {item.vendor_code}
+                      </td>
+                      <td className="px-3 text-center py-5">{item.scope}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <table className="table-auto w-full mt-8 ">
+                <thead>
+                  <tr>
+                    <th className="px-2 py-3 text-center">Complete</th>
+                    <th className="px-2 py-3 text-center">Terminate</th>
+                    <th className="px-2 py-3 text-center">Over Quota</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {apiVendorData?.map((item) => (
+                    <tr
+                      key={item.project_code}
+                      className="border-b border-gray-200 "
+                    >
+                      <td className="px-3 text-center py-5">
+                        <Link href={item.complete}>Link </Link>
+                      </td>
+                      <td className="px-3 text-center py-5">
+                        <Link href={item.terminate}>Link </Link>
+                      </td>
+                      <td className="px-3 text-center py-5">
+                        <Link href={item.over_quota}>Link</Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )
+      ) : null}
+      {/* For The Desktop Screen view  */}
 
       {/* Moblie  */}
-      <div className="bg-[#fff] px-2 py-4 rounded-3xl mt-4 md:hidden ">
-        <div className="flex items-center justify-between mb-4"></div>
-
-        <table className="table-auto w-full">
-          <thead>
-            <tr>
-              <th className="px-2 py-3 text-center">Vendor Name</th>
-              <th className="px-2 py-3 text-center">Vendor Code </th>
-              <th className="px-2 py-3 text-center">Scope</th>
-            </tr>
-          </thead>
-          <tbody>
-            {apiVendorData?.map((item) => (
-              <tr key={item.project_code} className="border-b border-gray-200 ">
-                <td className="px-3 text-center py-5">{item.vendor_name}</td>
-                <td className="px-3 text-center py-5">{item.vendor_code}</td>
-                <td className="px-3 text-center py-5">{item.scope}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <table className="table-auto w-full mt-8 ">
-          <thead>
-            <tr>
-              <th className="px-2 py-3 text-center">Complete</th>
-              <th className="px-2 py-3 text-center">Terminate</th>
-              <th className="px-2 py-3 text-center">Over Quota</th>
-            </tr>
-          </thead>
-          <tbody>
-            {apiVendorData?.map((item) => (
-              <tr key={item.project_code} className="border-b border-gray-200 ">
-                <td className="px-3 text-center py-5">
-                  <Link href={item.complete}>Link </Link>
-                </td>
-                <td className="px-3 text-center py-5">
-                  <Link href={item.terminate}>Link </Link>
-                </td>
-                <td className="px-3 text-center py-5">
-                  <Link href={item.over_quota}>Link</Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
     </main>
   );
 };
