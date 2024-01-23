@@ -586,9 +586,6 @@ const VendorSetup: React.FC = () => {
           </>
         )
       ) : null}
-      {/* For The Desktop Screen view  */}
-
-      {/* Moblie  */}
     </main>
   );
 };
