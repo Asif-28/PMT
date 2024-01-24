@@ -26,7 +26,6 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const Form: React.FC = () => {
   const router = useRouter();
-  const { projectCodeNo } = UseProjectCode();
   const [formData, setFormData] = useState<FormData>({
     projectName: "",
     projectCode: "",
@@ -45,7 +44,9 @@ const Form: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<String | null>(null);
   const [methodology, setMethodology] = useState<String>("");
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
-  const [isOpenStatus, setIsOpenStatus] = useState(false);
+  const [isOpenStatus, setIsOpenStatus] = useState<boolean>(false);
+  const [reload, setReload] = useState<boolean>(false);
+  const { projectCodeNo } = UseProjectCode(reload);
 
   const handleChange = (event: any) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -82,7 +83,7 @@ const Form: React.FC = () => {
     if (
       !formData.projectName ||
       // !formData.projectCode ||
-      projectCodeNo ||
+      !projectCodeNo ||
       !formData.projectManager ||
       !formData.clientProjectManager ||
       !formData.incidenceRate ||
@@ -185,6 +186,7 @@ const Form: React.FC = () => {
           setSelectedStatus(null);
           setMethodology("");
           setSelectedOption(null);
+          setReload(!reload);
         }
       }
       // Handle form submission logic here

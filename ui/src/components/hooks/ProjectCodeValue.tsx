@@ -3,7 +3,7 @@ import axios from "axios";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-const UseProjectCode = () => {
+const UseProjectCode = (reload: boolean) => {
   const [projectCodeNo, setProjectCodeNo] = useState<string>("");
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const UseProjectCode = () => {
     };
 
     fetchData();
-  }, []);
+  }, [reload]);
 
   return { projectCodeNo };
 };
