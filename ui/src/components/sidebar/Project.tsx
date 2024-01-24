@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../app/globals.css";
 import { useRouter } from "next/navigation";
 import axios from "axios";
@@ -7,6 +7,7 @@ import { projectStatusList } from "../data/data";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { options } from "../data/data";
+import UseProjectCode from "../hooks/ProjectCodeValue";
 
 interface FormData {
   projectName: string;
@@ -16,16 +17,16 @@ interface FormData {
   clientProjectManager: string;
   incidenceRate: string;
   loi: string;
-  scope: number;
   targetDescription: string;
   onlineOffline: string;
   billingComments: string;
   securityCheck: boolean;
 }
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const Form: React.FC = () => {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const router = useRouter();
+  const { projectCodeNo } = UseProjectCode();
   const [formData, setFormData] = useState<FormData>({
     projectName: "",
     projectCode: "",
@@ -34,7 +35,6 @@ const Form: React.FC = () => {
     clientProjectManager: "",
     incidenceRate: "",
     loi: "",
-    scope: 0,
     targetDescription: "",
     onlineOffline: "",
     billingComments: "",
@@ -81,12 +81,12 @@ const Form: React.FC = () => {
     // Check if any field is empty
     if (
       !formData.projectName ||
-      !formData.projectCode ||
+      // !formData.projectCode ||
+      projectCodeNo ||
       !formData.projectManager ||
       !formData.clientProjectManager ||
       !formData.incidenceRate ||
       !formData.loi ||
-      !formData.scope ||
       !selectedOption ||
       !formData.targetDescription ||
       !selectedStatus ||
@@ -130,13 +130,11 @@ const Form: React.FC = () => {
     event.preventDefault();
     const {
       projectName,
-      projectCode,
       projectManager,
       clientName,
       clientProjectManager,
       incidenceRate,
       loi,
-      scope,
       targetDescription,
       onlineOffline,
       billingComments,
@@ -148,13 +146,12 @@ const Form: React.FC = () => {
           `${baseUrl}project/create`,
           {
             project_name: projectName,
-            project_code: projectCode,
+            project_code: projectCodeNo,
             project_manager: projectManager,
             client_name: clientName,
             client_project_manager: clientProjectManager,
             incidence_rate: incidenceRate,
             loi: loi,
-            scope: scope,
             target: selectedOption,
             target_description: targetDescription,
             status: selectedStatus,
@@ -180,7 +177,6 @@ const Form: React.FC = () => {
             clientProjectManager: "",
             incidenceRate: "",
             loi: "",
-            scope: 0,
             targetDescription: "",
             onlineOffline: "",
             billingComments: "",
@@ -250,7 +246,8 @@ const Form: React.FC = () => {
                 type="text"
                 id="projectCode"
                 name="projectCode"
-                value={formData.projectCode}
+                value={projectCodeNo ? projectCodeNo : "Loading.."}
+                disabled
                 onChange={handleChange}
                 placeholder="Enter your project Code "
                 className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
@@ -350,26 +347,6 @@ const Form: React.FC = () => {
               />
             </div>
 
-            <div className="mb-4">
-              <label
-                htmlFor="scope"
-                className="block text-gray-500 font-medium mb-4"
-              >
-                Scope *
-              </label>
-              <input
-                required
-                type="number"
-                id="scope"
-                name="scope"
-                min={0}
-                value={formData.scope}
-                onChange={handleChange}
-                placeholder="Enter your Scope "
-                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
-              />
-            </div>
-
             <div className="relative inline-block text-left z-40 mb-4">
               <label
                 htmlFor="target"
@@ -384,7 +361,7 @@ const Form: React.FC = () => {
                     type="button"
                     className=" bg-white inline-flex justify-center w-full  text-sm appearance-none border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
                   >
-                    {selectedOption ? selectedOption : "B2B"}
+                    {selectedOption ? selectedOption : "Choose from dropdown"}
                   </button>
                 </span>
               </div>
