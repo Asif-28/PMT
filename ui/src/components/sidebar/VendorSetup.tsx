@@ -301,6 +301,7 @@ const VendorSetup: React.FC = () => {
                 type="text"
                 id="vendorCode"
                 name="vendorCode"
+                min={0}
                 value={formData.vendorCode}
                 onChange={handleChange}
                 placeholder="Enter your Input Field"

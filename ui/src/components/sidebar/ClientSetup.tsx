@@ -25,9 +25,9 @@ interface ApiResponse {
   test_link: string;
   live_link: string;
 }
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const ClientSetup: React.FC = () => {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const [formData, setFormData] = useState<FormData>({
     projectCode: "",
     inputField: "",

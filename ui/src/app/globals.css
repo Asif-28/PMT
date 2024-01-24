@@ -78,3 +78,13 @@ input[type="radio"]:checked {
   border-color: #a367b1; /* Change border color when checked to pink */
   background-color: #a367b1; /* Change background color when checked to pink */
 }
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}

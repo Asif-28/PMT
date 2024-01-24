@@ -7,6 +7,7 @@ import { projectStatusList } from "../data/data";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { options } from "../data/data";
+
 interface FormData {
   projectName: string;
   projectCode: string;
