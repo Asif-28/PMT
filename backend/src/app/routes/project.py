@@ -6,7 +6,7 @@ from ..modules.project import ProjectCreation
 from ..modules.client import Client
 
 from ..modules._schemas import ProjectCreationSchema
-
+from datetime import datetime as dt
 
 router = Router()
 
@@ -31,3 +31,18 @@ def create_project(request, project: ProjectCreationSchema):
 def list_projects(request):
     projects = ProjectCreation.objects.all()
     return [ProjectCreationSchema.from_orm(project) for project in projects]
+
+
+@router.get("/generate_code")
+def generate_code(request):
+    """
+    Generate a new project code
+    """
+    title = "QQ"
+    try:
+        dt_now = dt.now()
+        total_projects = ProjectCreation.objects.count()
+        code = f"{title}_{dt_now.month}{dt_now.year}_{total_projects+1}"
+        return message.success(text=code)
+    except Exception as e:
+        return message.error(text=str(e))

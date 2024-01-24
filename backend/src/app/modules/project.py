@@ -17,7 +17,6 @@ class ProjectCreation(models.Model):
 
     incidence_rate = models.CharField(max_length=50)  # Adjust max_length as needed
     loi = models.CharField(max_length=10)  # LOI field with max_length
-    scope = models.IntegerField()
     target = models.CharField(
         max_length=100
     )  # Adjust max_length based on expected values
