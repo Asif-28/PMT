@@ -18,7 +18,6 @@ def request_post(endpoint, data, message, status):
     assert re.search(message.lower(), response.json()["detail"].lower())
 
 
-
 def request_get(endpoint, status=200):
     url = endpoint  # replace with your actual server URL
     response = requests.get(url)
