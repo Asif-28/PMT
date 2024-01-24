@@ -17,23 +17,25 @@ services:
     environment:
       - STAGE=dev
       - DB_HOST=db
-      - DB_PORT=5432
-      - DB_NAME=postgres
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
+      - DB_PORT=3306
+      - DB_NAME=ptm
+      - DB_USER=ptm
+      - DB_PASSWORD=ptm
       - DJANGO_ADMIN_USERNAME=admin
       - DJANGO_ADMIN_PASSWORD=admin
       - DJANGO_ADMIN_EMAIL=admin@localhost.com
     depends_on:
-      - db  
+      - db
   db:
-    image: postgres:16.1-alpine
+    image: mysql:8.3
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres
+      - MYSQL_USER=ptm
+      - MYSQL_PASSWORD=ptm
+      - MYSQL_DATABASE=ptm
+      - MYSQL_ROOT_PASSWORD=root
     volumes:
-      - postgres_ptm:/var/lib/postgresql/data/
+      - ptm_db:/var/lib/mysql
+      
 
 volumes:
-  postgres_ptm:
+  ptm_db:

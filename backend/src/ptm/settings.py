@@ -95,12 +95,12 @@ WSGI_APPLICATION = "ptm.wsgi.application"
 if os.getenv("STAGE"):
     DATABASES = {
         "default": {
-            "ENGINE": "django.db.backends.postgresql",
+            "ENGINE": "django.db.backends.mysql",
             "HOST": os.getenv("DB_HOST"),
             "NAME": os.getenv("DB_NAME"),
             "USER": os.getenv("DB_USER"),
             "PASSWORD": os.getenv("DB_PASSWORD"),
-            "PORT": os.getenv("DB_PORT", "5432"),
+            "PORT": os.getenv("DB_PORT", "3306"),
         }
     }
 else:

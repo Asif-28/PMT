@@ -15,7 +15,7 @@ data = {
     "input_field": "string",
     "country": fake.country(),
     "country_code": fake.country_code(),
-    "scope": 0,
+    "scope": 100,
     "test_link": "string",
     "live_link": "string",
     "check_country": True,

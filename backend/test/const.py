@@ -1,5 +1,9 @@
 import os
 import requests
+import re
+from dotenv import load_dotenv
+
+load_dotenv()
 
 SOURCE = os.getenv("SOURCE", "http://localhost:8000")
 
@@ -11,7 +15,7 @@ def request_post(endpoint, data, message, status):
     print(response.json())
     assert response.status_code == status
 
-    assert message.lower() in response.json()["detail"].lower()
+    assert re.search(message.lower(), response.json()["detail"].lower())
 
 
 def request_get(endpoint, status=200):
