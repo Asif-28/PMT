@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import "../../app/globals.css";
-import { useRouter } from "next/navigation";
 import axios from "axios";
 import { projectStatusList } from "../data/data";
 import { ToastContainer, toast } from "react-toastify";
@@ -22,10 +21,10 @@ interface FormData {
   billingComments: string;
   securityCheck: boolean;
 }
+
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const Form: React.FC = () => {
-  const router = useRouter();
   const [formData, setFormData] = useState<FormData>({
     projectName: "",
     projectCode: "",
@@ -40,7 +39,7 @@ const Form: React.FC = () => {
     securityCheck: false,
   });
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<String | null>(null);
   const [methodology, setMethodology] = useState<String>("");
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);

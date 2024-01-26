@@ -1,12 +1,13 @@
-import React, { useState, FormEvent, ChangeEvent, useEffect } from "react";
+import React, { useState, FormEvent, ChangeEvent } from "react";
 import { countrys } from "../data/data";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import Link from "next/link";
-import { useDebounce } from "../hooks/Debounce";
+import { ProjectCodeStore } from "@/store/ProjectCode";
+import UseProjectCodeList from "../hooks/ProjectCodeList";
+import UseClientListData from "../hooks/ClientList";
 
 interface FormData {
-  projectCode: string;
   inputField: string;
   countryCode: string;
   scope: number;
@@ -16,20 +17,10 @@ interface FormData {
   checkQuota: boolean;
 }
 
-interface ApiResponse {
-  project_code: string;
-  input_field: string;
-  country: string;
-  country_code: string;
-  scope: number;
-  test_link: string;
-  live_link: string;
-}
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const ClientSetup: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
-    projectCode: "",
     inputField: "",
     countryCode: "",
     scope: 0,
@@ -41,24 +32,29 @@ const ClientSetup: React.FC = () => {
 
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [isOpenCountry, setIsOpenCountry] = useState(false);
-  const [apiClientData, setApiClientData] = useState<ApiResponse[] | null>(
-    null
-  );
-  const [projectCodeData, setProjectCodeData] = useState<ApiResponse[] | null>(
-    null
-  );
+
   const [showClients, setShowClients] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
   const [suggestedProjectCode, setSuggestedProjectCode] = useState<string[]>(
     []
   );
-  const debouncedSearch = useDebounce(formData.projectCode);
 
+  //
+
+  const ProjectCode = ProjectCodeStore((state: any) => state.ProjectCode);
+  const updateProjectCode = ProjectCodeStore(
+    (state: any) => state.updateProjectCode
+  );
+
+  //
+
+  const { list, loading } = UseProjectCodeList();
+
+  const { apiClientData, loadingData } = UseClientListData();
   //  Filter the list of project_code from the api and input to show the list of available  projectcode
   const filterProjectCodes = (enteredCode: string) => {
     const filteredCodesSet = new Set<string>();
 
-    projectCodeData?.forEach((item) => {
+    list?.forEach((item: any) => {
       if (item.project_code.includes(enteredCode)) {
         filteredCodesSet.add(item.project_code);
       }
@@ -73,10 +69,20 @@ const ClientSetup: React.FC = () => {
     event: ChangeEvent<HTMLInputElement | HTMLInputElement>
   ) => {
     const { name, value } = event.target;
+
+    if (name === "projectCode" && suggestedProjectCode.includes(value)) {
+      // Do not update projectCode if it's in the suggestedProjectCode list
+      return;
+    }
+
     setFormData({ ...formData, [name]: value });
 
-    // Call the function to filter project codes when projectCode is being changed
-    filterProjectCodes(value);
+    if (name === "projectCode") {
+      updateProjectCode({ ProjectCode: value });
+
+      // Call the function to filter project codes when projectCode is being changed
+      filterProjectCodes(value);
+    }
   };
 
   const handleOptionCountry = (country: string) => {
@@ -103,7 +109,7 @@ const ClientSetup: React.FC = () => {
   const validateForm = () => {
     // Check if any field is empty
     if (
-      !formData.projectCode ||
+      !ProjectCode.ProjectCode ||
       !formData.inputField ||
       !formData.scope ||
       !formData.liveLink ||
@@ -119,7 +125,7 @@ const ClientSetup: React.FC = () => {
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     const {
-      projectCode,
+      // projectCode,
       inputField,
       countryCode,
       scope,
@@ -133,7 +139,7 @@ const ClientSetup: React.FC = () => {
         const { data } = await axios.post(
           `${baseUrl}project_client/create`,
           {
-            project_code: projectCode,
+            project_code: ProjectCode.ProjectCode,
             input_field: inputField,
             country: selectedCountry,
             country_code: countryCode,
@@ -152,7 +158,6 @@ const ClientSetup: React.FC = () => {
         toast.success("Client Created Successfully");
         if (data.status_code === 200) {
           setFormData({
-            projectCode: "",
             inputField: "",
             countryCode: "",
             scope: 0,
@@ -162,8 +167,7 @@ const ClientSetup: React.FC = () => {
             checkQuota: false,
           });
           setSelectedCountry(null);
-          setApiClientData(null);
-          setProjectCodeData(null);
+          updateProjectCode({ ProjectCode: "" });
         }
       }
       // Handle form submission logic here
@@ -171,38 +175,6 @@ const ClientSetup: React.FC = () => {
       toast.error(error);
     }
   };
-
-  useEffect(() => {
-    async function getAllList() {
-      try {
-        // Set loading to true when the projectCode is empty or filtered data is empty
-        if (!formData.projectCode) {
-          setLoading(true);
-          setApiClientData(null);
-          setProjectCodeData(null);
-          return;
-        }
-        setLoading(true);
-
-        const response = await axios.get(`${baseUrl}project_client/list`);
-
-        const data: ApiResponse[] = response.data;
-        setLoading(false);
-        // Filter data based on the entered projectCode
-        const filteredData = data.filter((item) => {
-          return item.project_code === formData.projectCode;
-        });
-
-        setApiClientData(filteredData);
-        setProjectCodeData(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setLoading(false); // Set loading to false in case of an error
-      }
-    }
-
-    getAllList();
-  }, [debouncedSearch]);
 
   return (
     <main className="section">
@@ -236,13 +208,13 @@ const ClientSetup: React.FC = () => {
                 id="projectCode"
                 name="projectCode"
                 autoComplete="off"
-                value={formData.projectCode}
+                value={ProjectCode.ProjectCode}
                 onChange={handleChange}
                 placeholder="Enter your project Code "
                 className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
 
-              {formData.projectCode && (
+              {ProjectCode.ProjectCode && (
                 <>
                   {loading ? (
                     <div className="absolute z-50 bg-white shadow-lg my-2 px-4 py-3 text-base text-gray-700 w-full font-semibold text-left rounded-xl">
@@ -262,10 +234,8 @@ const ClientSetup: React.FC = () => {
                               <div
                                 key={index}
                                 onClick={() => {
-                                  setFormData({
-                                    ...formData,
-                                    projectCode: code,
-                                  });
+                                  updateProjectCode({ ProjectCode: code });
+
                                   setSuggestedProjectCode([]); // Clear the suggestion list
                                 }}
                                 className="block px-4 py-4 text-sm text-gray-700 w-full hover:bg-[#a367b1] hover:text-[#392467] font-semibold  text-left  my-2 rounded-xl"
@@ -466,14 +436,14 @@ const ClientSetup: React.FC = () => {
           onClick={() => setShowClients(!showClients)}
           className="bg-[#000000] font-semibold text-base sm:text-[18px] w-[12rem] sm:w-[16.5rem] px-10 py-4 sm:px-16 sm:py-6 text-white rounded-lg mt-10 sm:mt-20"
         >
-          {showClients && formData.projectCode
+          {showClients && ProjectCode.ProjectCode
             ? "Hide Clients"
             : "Show Clients"}
         </button>
       </div>
 
-      {showClients && formData.projectCode ? (
-        loading ? (
+      {showClients && ProjectCode.ProjectCode ? (
+        loadingData ? (
           // If loading is true, show loading state
           <div className="text-2xl mx-auto ">Loading...</div>
         ) : (
