@@ -1,26 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { useDebounce } from "./Debounce";
-import { ProjectCodeStore } from "@/store/ProjectCode";
 import axios from "axios";
+import { VendorProjectCodeStore } from "@/store/VendorProjectCode";
 
 interface ApiResponse {
   project_code: string;
-  input_field: string;
-  country: string;
-  country_code: string;
+  vendor_code: string;
   scope: number;
-  test_link: string;
-  live_link: string;
+  complete: string;
+  terminate: string;
+  over_quota: string;
+  pause_vendor: boolean;
+  vendor_name: string;
 }
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-const UseClientListData = () => {
-  const [apiClientData, setApiClientData] = useState<ApiResponse[] | null>(
+const UseVendorListData = () => {
+  const [apiVendorData, setApiVendorData] = useState<ApiResponse[] | null>(
     null
   );
-  const ProjectCode = ProjectCodeStore((state: any) => state.ProjectCode);
-  const debouncedSearch = useDebounce(ProjectCode.ProjectCode);
+  const VendorProjectCode = VendorProjectCodeStore(
+    (state: any) => state.VendorProjectCode
+  );
+  const debouncedSearch = useDebounce(VendorProjectCode.ProjectCode);
   const [loadingData, setLoadingData] = useState<boolean>(false); // Start loading as false
 
   useEffect(() => {
@@ -28,16 +31,17 @@ const UseClientListData = () => {
       try {
         setLoadingData(true); // Set loading to true before fetching data
 
-        const response = await axios.get(`${baseUrl}project_client/list`);
+        const response = await axios.get(`${baseUrl}project_vendor/list`);
 
         const data: ApiResponse[] = response.data;
 
         // Filter data based on the entered projectCode
         const filteredData = data.filter((item) => {
-          return item.project_code === ProjectCode.ProjectCode;
+          return item.project_code === VendorProjectCode.ProjectCode;
         });
 
-        setApiClientData(filteredData);
+        setApiVendorData(filteredData);
+        console.log(filteredData);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -48,7 +52,7 @@ const UseClientListData = () => {
     getAllList();
   }, [debouncedSearch]);
 
-  return { apiClientData, loadingData };
+  return { apiVendorData, loadingData };
 };
 
-export default UseClientListData;
+export default UseVendorListData;

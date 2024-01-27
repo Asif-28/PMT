@@ -1,12 +1,10 @@
-import { ProjectCodeStore } from "@/store/ProjectCode";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDebounce } from "./Debounce";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-const UseProjectCodeList = () => {
-  const ProjectCode = ProjectCodeStore((state: any) => state.ProjectCode);
+const UseProjectCodeList = (ProjectCode: any) => {
   const [list, setList] = useState([]);
   const debouncedSearch = useDebounce(ProjectCode.ProjectCode);
   const [loading, setLoading] = useState<boolean>(true);

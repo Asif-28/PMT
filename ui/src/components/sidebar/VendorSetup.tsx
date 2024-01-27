@@ -2,10 +2,11 @@ import axios from "axios";
 import Link from "next/link";
 import React, { useState, FormEvent, ChangeEvent, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
-import { useDebounce } from "../hooks/Debounce";
+import { VendorProjectCodeStore } from "@/store/VendorProjectCode";
+import UseProjectCodeList from "../hooks/ProjectCodeList";
+import UseVendorListData from "../hooks/VendorList";
 
 interface FormData {
-  projectCode: string;
   vendorCode: string;
   pauseVendor: boolean;
   scope: number;
@@ -13,16 +14,7 @@ interface FormData {
   terminate: string;
   overQuota: string;
 }
-interface ApiResponse {
-  project_code: string;
-  vendor_code: string;
-  scope: number;
-  complete: string;
-  terminate: string;
-  over_quota: string;
-  pause_vendor: boolean;
-  vendor_name: string;
-}
+
 interface VendorListApiResponse {
   id: number;
   name: string;
@@ -32,7 +24,6 @@ const VendorSetup: React.FC = () => {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
   const [formData, setFormData] = useState<FormData>({
-    projectCode: "",
     vendorCode: "",
     pauseVendor: false,
     scope: 0,
@@ -42,35 +33,50 @@ const VendorSetup: React.FC = () => {
   });
 
   const [selectedVendor, setSelectedVendor] = useState<string | null>(null);
-  const [isOpenVendor, setIsOpenVendor] = useState(false);
-  const [apiVendorData, setApiVendorData] = useState<ApiResponse[] | null>(
-    null
-  );
-  const [projectCodeData, setProjectCodeData] = useState<ApiResponse[] | null>(
-    null
-  );
-  const [loading, setLoading] = useState<boolean>(true);
+  const [isOpenVendor, setIsOpenVendor] = useState<boolean>(false);
+  const [loadingVendor, setLoadingVendor] = useState<boolean>(true);
   const [suggestedProjectCode, setSuggestedProjectCode] = useState<string[]>(
     []
   );
   const [vendors, setVendors] = useState<VendorListApiResponse[] | null>(null);
-  const debouncedSearch = useDebounce(formData.projectCode);
   const [showVendors, setShowVendors] = useState<boolean>(false);
+
+  // Use the store created for the vendor project code
+  const VendorProjectCode = VendorProjectCodeStore(
+    (state: any) => state.VendorProjectCode
+  );
+  const updateVendorProjectCode = VendorProjectCodeStore(
+    (state: any) => state.updateVendorProjectCode
+  );
+
+  // use the custom hook to call the list of vendors data
+  const { apiVendorData, loadingData } = UseVendorListData();
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLInputElement>
   ) => {
     const { name, value } = event.target;
+
+    if (name === "projectCode" && suggestedProjectCode.includes(value)) {
+      // Do not update projectCode if it's in the suggestedProjectCode list
+      return;
+    }
+
     setFormData({ ...formData, [name]: value });
 
-    // Call the function to filter project codes when projectCode is being changed
-    filterProjectCodes(value);
+    if (name === "projectCode") {
+      updateVendorProjectCode({ ProjectCode: value });
+
+      filterProjectCodes(value);
+    }
   };
+
+  const { list, loading } = UseProjectCodeList(VendorProjectCode);
 
   const filterProjectCodes = (enteredCode: string) => {
     const filteredCodesSet = new Set<string>();
 
-    projectCodeData?.forEach((item) => {
+    list?.forEach((item: any) => {
       if (item.project_code.includes(enteredCode)) {
         filteredCodesSet.add(item.project_code);
       }
@@ -92,7 +98,7 @@ const VendorSetup: React.FC = () => {
   const validateForm = () => {
     // Check if any field is empty
     if (
-      !formData.projectCode ||
+      !VendorProjectCode.ProjectCode ||
       !formData.vendorCode ||
       !formData.scope ||
       !formData.pauseVendor ||
@@ -108,21 +114,14 @@ const VendorSetup: React.FC = () => {
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     event.preventDefault();
-    const {
-      projectCode,
-      vendorCode,
-      pauseVendor,
-      scope,
-      complete,
-      terminate,
-      overQuota,
-    } = formData;
+    const { vendorCode, pauseVendor, scope, complete, terminate, overQuota } =
+      formData;
     try {
       if (validateForm()) {
         const { data } = await axios.post(
           `${baseUrl}project_vendor/create`,
           {
-            project_code: projectCode,
+            project_code: VendorProjectCode.ProjectCode,
             vendor_code: vendorCode,
             scope: scope,
             complete: complete,
@@ -141,7 +140,6 @@ const VendorSetup: React.FC = () => {
         toast.success("Vendor Created Successfully");
         if (data.status_code === 200) {
           setFormData({
-            projectCode: "",
             vendorCode: "",
             pauseVendor: false,
             scope: 0,
@@ -149,7 +147,7 @@ const VendorSetup: React.FC = () => {
             terminate: "",
             overQuota: "",
           });
-          setApiVendorData(null);
+          updateVendorProjectCode({ ProjectCode: "" });
         }
       }
       // Handle form submission logic here
@@ -171,46 +169,13 @@ const VendorSetup: React.FC = () => {
         );
         const vendorListData = await vendorListResponse.json();
         setVendors(vendorListData);
-        setLoading(false);
+        setLoadingVendor(false);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     }
     getAllVendors();
   }, []);
-  // fetch the data for  the  vendor setup and project code
-  useEffect(() => {
-    async function getAllList() {
-      try {
-        // Set loading to true when the projectCode is empty or filtered data is empty
-        if (!formData.projectCode) {
-          setLoading(true);
-          setApiVendorData(null);
-          setProjectCodeData(null);
-          return;
-        }
-        setLoading(true);
-
-        const response = await axios.get(`${baseUrl}project_vendor/list`);
-
-        const data: ApiResponse[] = response.data;
-        setLoading(false);
-        // Filter data based on the entered projectCode
-        const filteredData = data.filter((item) => {
-          return item.project_code === formData.projectCode;
-        });
-
-        setApiVendorData(filteredData);
-        setProjectCodeData(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setLoading(false); // Set loading to false in case of an error
-      }
-    }
-
-    // Fetch data only if projectCode is not empty
-    getAllList();
-  }, [debouncedSearch]);
 
   return (
     <main className="section">
@@ -244,12 +209,12 @@ const VendorSetup: React.FC = () => {
                 id="projectCode"
                 name="projectCode"
                 autoComplete="off"
-                value={formData.projectCode}
+                value={VendorProjectCode.ProjectCode}
                 onChange={handleChange}
                 placeholder="Enter your project Code "
                 className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
-              {formData.projectCode && (
+              {VendorProjectCode.ProjectCode && (
                 <>
                   {loading ? (
                     <div className="absolute z-50 bg-white shadow-lg my-2 px-4 py-3 text-base text-gray-700 w-full font-semibold text-left rounded-xl">
@@ -269,10 +234,10 @@ const VendorSetup: React.FC = () => {
                               <div
                                 key={index}
                                 onClick={() => {
-                                  setFormData({
-                                    ...formData,
-                                    projectCode: code,
+                                  updateVendorProjectCode({
+                                    ProjectCode: code,
                                   });
+
                                   setSuggestedProjectCode([]); // Clear the suggestion list
                                 }}
                                 className="block px-4 py-4 text-sm text-gray-700 w-full hover:bg-[#a367b1] hover:text-[#392467] font-semibold  text-left  my-2 rounded-xl"
@@ -335,7 +300,7 @@ const VendorSetup: React.FC = () => {
                     aria-orientation="vertical"
                     aria-labelledby="options-menu"
                   >
-                    {loading ? (
+                    {loadingVendor ? (
                       // Show loading state if loading is true
                       <div className="block px-4 py-4 text-sm text-gray-700 w-full my-2 rounded-xl">
                         Loading...
@@ -474,14 +439,14 @@ const VendorSetup: React.FC = () => {
           onClick={() => setShowVendors(!showVendors)}
           className="bg-[#000000] font-semibold text-base sm:text-[18px] w-[12rem] sm:w-[16.5rem] px-10 py-4 sm:px-16 sm:py-6 text-white rounded-lg mt-10 sm:mt-20"
         >
-          {showVendors && formData.projectCode
-            ? "Hide Clients"
-            : "Show Clients"}
+          {showVendors && VendorProjectCode.ProjectCode
+            ? "Hide Vendors"
+            : "Show Vendors"}
         </button>
       </div>
 
-      {showVendors && formData.projectCode ? (
-        loading ? (
+      {showVendors && VendorProjectCode.ProjectCode ? (
+        loadingData ? (
           // If loading is true, show loading state
           <div className="text-2xl mx-auto ">Loading...</div>
         ) : (

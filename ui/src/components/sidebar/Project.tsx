@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "../../app/globals.css";
 import axios from "axios";
 import { projectStatusList } from "../data/data";
@@ -7,20 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { options } from "../data/data";
 import UseProjectCode from "../hooks/ProjectCodeValue";
-
-interface FormData {
-  projectName: string;
-  projectCode: string;
-  projectManager: string;
-  clientName: string;
-  clientProjectManager: string;
-  incidenceRate: string;
-  loi: string;
-  targetDescription: string;
-  onlineOffline: string;
-  billingComments: string;
-  securityCheck: boolean;
-}
+import { FormData as FormData } from "../utils/types";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -81,7 +68,6 @@ const Form: React.FC = () => {
     // Check if any field is empty
     if (
       !formData.projectName ||
-      // !formData.projectCode ||
       !projectCodeNo ||
       !formData.projectManager ||
       !formData.clientProjectManager ||

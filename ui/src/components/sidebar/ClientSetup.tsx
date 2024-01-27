@@ -6,16 +6,7 @@ import Link from "next/link";
 import { ProjectCodeStore } from "@/store/ProjectCode";
 import UseProjectCodeList from "../hooks/ProjectCodeList";
 import UseClientListData from "../hooks/ClientList";
-
-interface FormData {
-  inputField: string;
-  countryCode: string;
-  scope: number;
-  testLink: string;
-  liveLink: string;
-  checkcountry: boolean;
-  checkQuota: boolean;
-}
+import { ClientFormData as FormData } from "../utils/types";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -38,17 +29,17 @@ const ClientSetup: React.FC = () => {
     []
   );
 
-  //
+  //Use the Client  Project Code Store
 
   const ProjectCode = ProjectCodeStore((state: any) => state.ProjectCode);
   const updateProjectCode = ProjectCodeStore(
     (state: any) => state.updateProjectCode
   );
 
-  //
+  //Use the custom hook for the calling the project code list
+  const { list, loading } = UseProjectCodeList(ProjectCode);
 
-  const { list, loading } = UseProjectCodeList();
-
+  // call the custom hook to get the list of the client of a particular project code
   const { apiClientData, loadingData } = UseClientListData();
   //  Filter the list of project_code from the api and input to show the list of available  projectcode
   const filterProjectCodes = (enteredCode: string) => {
@@ -217,7 +208,7 @@ const ClientSetup: React.FC = () => {
               {ProjectCode.ProjectCode && (
                 <>
                   {loading ? (
-                    <div className="absolute z-50 bg-white shadow-lg my-2 px-4 py-3 text-base text-gray-700 w-full font-semibold text-left rounded-xl">
+                    <div className="absolute z-50 bg-white shadow-lg my-2 px-4 py-3 text-base text-gray-700 w-full font-semibold text-left rounded-xl  h-48">
                       Loading...
                     </div>
                   ) : (
