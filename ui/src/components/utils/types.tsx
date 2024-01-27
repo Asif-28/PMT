@@ -21,3 +21,17 @@ export interface ClientFormData {
   checkcountry: boolean;
   checkQuota: boolean;
 }
+export interface VendorFormData {
+  vendorCode: string;
+  pauseVendor: boolean;
+  scope: number;
+  complete: string;
+  terminate: string;
+  overQuota: string;
+}
+
+export interface VendorListApiResponse {
+  id: number;
+  name: string;
+  email: string;
+}

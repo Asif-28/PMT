@@ -5,21 +5,9 @@ import { toast, ToastContainer } from "react-toastify";
 import { VendorProjectCodeStore } from "@/store/VendorProjectCode";
 import UseProjectCodeList from "../hooks/ProjectCodeList";
 import UseVendorListData from "../hooks/VendorList";
+import { VendorFormData as FormData } from "../utils/types";
+import { VendorListApiResponse } from "../utils/types";
 
-interface FormData {
-  vendorCode: string;
-  pauseVendor: boolean;
-  scope: number;
-  complete: string;
-  terminate: string;
-  overQuota: string;
-}
-
-interface VendorListApiResponse {
-  id: number;
-  name: string;
-  email: string;
-}
 const VendorSetup: React.FC = () => {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
