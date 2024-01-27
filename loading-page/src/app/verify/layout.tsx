@@ -1,4 +1,4 @@
-import { CaptchaProvider } from "@/components/context/CaptchaContext";
+import { CaptchaProvider } from "@/context/CaptchaContext";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 // import "./globals.css";
