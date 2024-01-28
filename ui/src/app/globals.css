@@ -8,7 +8,7 @@
   padding: 0;
 }
 .section {
-  @apply max-w-[1400px] mx-auto px-4 sm:px-4 md:px-5 lg:px-5 2xl:px-0;
+  @apply max-w-[1400px] mx-auto px-3 sm:px-4 md:px-5 lg:px-5 2xl:px-0;
 }
 body {
   background-color: rgb(250, 250, 248);
@@ -44,4 +44,47 @@ label > input[type="checkbox"]:checked + *::before {
 }
 label > input[type="checkbox"]:checked + * {
   color: #a367b1;
+}
+
+/* Set the scrollbar color */
+/* ::-webkit-scrollbar {
+  width: 10px;
+} */
+
+/* Handle */
+/* ::-webkit-scrollbar-thumb {
+  background-color: #a367b1;
+} */
+
+/* Track */
+/* ::-webkit-scrollbar-track {
+  background: #f1f1f1;
+} */
+
+input[type="radio"] {
+  /* Hide the default radio button */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid #a367b1; /* Default border color (pink) */
+  outline: none;
+}
+
+/* Style the checked state */
+input[type="radio"]:checked {
+  border-color: #a367b1; /* Change border color when checked to pink */
+  background-color: #a367b1; /* Change background color when checked to pink */
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }

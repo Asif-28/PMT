@@ -245,31 +245,31 @@ export const data = [
 
 export const clientData = [
   {
-    id: 1,
-    input: "VC123",
+    project_code: "001",
+    input_field: "testing",
     country: "India",
-    countryCode: "J563",
-    scope: "12",
-    testLink: "http://localhost",
-    liveLink: "http://localhost",
+    country_code: "91",
+    scope: 100,
+    test_link:
+      "http://127.0.0.1:8000/docs#/default/app_routes_project_client_create_client",
+    live_link:
+      "http://127.0.0.1:8000/docs#/default/app_routes_project_client_create_client",
+    check_country: true,
+    check_quota: true,
   },
+
   {
-    id: 2,
-    input: "VC123",
-    country: "India",
-    countryCode: "J563",
-    scope: "12",
-    testLink: "http://localhost",
-    liveLink: "http://localhost",
-  },
-  {
-    id: 3,
-    input: "VC123",
-    country: "India ",
-    countryCode: "J563",
-    scope: "12",
-    testLink: "http://localhost",
-    liveLink: "http://localhost",
+    project_code: "002",
+    input_field: "testing",
+    country: "Us",
+    country_code: "00",
+    scope: 12,
+    test_link:
+      "http://127.0.0.1:8000/docs#/default/app_routes_project_client_create_client",
+    live_link:
+      "http://127.0.0.1:8000/docs#/default/app_routes_project_client_create_client",
+    check_country: true,
+    check_quota: true,
   },
 ];
 

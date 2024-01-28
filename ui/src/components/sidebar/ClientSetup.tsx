@@ -1,23 +1,17 @@
-import React, { useState, FormEvent, ChangeEvent, useEffect } from "react";
-import { countrys, clientData } from "../data/data";
+import React, { useState, FormEvent, ChangeEvent } from "react";
+import { countrys } from "../data/data";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import Link from "next/link";
+import { ProjectCodeStore } from "@/store/ProjectCode";
+import UseProjectCodeList from "../hooks/ProjectCodeList";
+import UseClientListData from "../hooks/ClientList";
+import { ClientFormData as FormData } from "../utils/types";
 
-interface FormData {
-  projectCode: string;
-  inputField: string;
-  countryCode: string;
-  scope: number;
-  testLink: string;
-  liveLink: string;
-  checkcountry: boolean;
-  checkQuota: boolean;
-}
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
 const ClientSetup: React.FC = () => {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const [formData, setFormData] = useState<FormData>({
-    projectCode: "",
     inputField: "",
     countryCode: "",
     scope: 0,
@@ -30,10 +24,56 @@ const ClientSetup: React.FC = () => {
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [isOpenCountry, setIsOpenCountry] = useState(false);
 
+  const [showClients, setShowClients] = useState<boolean>(false);
+  const [suggestedProjectCode, setSuggestedProjectCode] = useState<string[]>(
+    []
+  );
+
+  //Use the Client  Project Code Store
+
+  const ProjectCode = ProjectCodeStore((state: any) => state.ProjectCode);
+  const updateProjectCode = ProjectCodeStore(
+    (state: any) => state.updateProjectCode
+  );
+
+  //Use the custom hook for the calling the project code list
+  const { list, loading } = UseProjectCodeList(ProjectCode);
+
+  // call the custom hook to get the list of the client of a particular project code
+  const { apiClientData, loadingData } = UseClientListData();
+  //  Filter the list of project_code from the api and input to show the list of available  projectcode
+  const filterProjectCodes = (enteredCode: string) => {
+    const filteredCodesSet = new Set<string>();
+
+    list?.forEach((item: any) => {
+      if (item.project_code.includes(enteredCode)) {
+        filteredCodesSet.add(item.project_code);
+      }
+    });
+
+    const filteredCodes = Array.from(filteredCodesSet);
+
+    setSuggestedProjectCode(enteredCode ? filteredCodes : []);
+  };
+
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLInputElement>
   ) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
+    const { name, value } = event.target;
+
+    if (name === "projectCode" && suggestedProjectCode.includes(value)) {
+      // Do not update projectCode if it's in the suggestedProjectCode list
+      return;
+    }
+
+    setFormData({ ...formData, [name]: value });
+
+    if (name === "projectCode") {
+      updateProjectCode({ ProjectCode: value });
+
+      // Call the function to filter project codes when projectCode is being changed
+      filterProjectCodes(value);
+    }
   };
 
   const handleOptionCountry = (country: string) => {
@@ -44,22 +84,7 @@ const ClientSetup: React.FC = () => {
   const handleToggleCountry = () => {
     setIsOpenCountry(!isOpenCountry);
   };
-  const validateForm = () => {
-    // Check if any field is empty
-    if (
-      !formData.projectCode ||
-      !formData.inputField ||
-      !formData.scope ||
-      !formData.liveLink ||
-      !formData.testLink ||
-      !formData.countryCode ||
-      !selectedCountry
-    ) {
-      toast.error("Fill the necessary fields");
-      return false;
-    }
-    return true;
-  };
+
   const handleCheckCountryClick = () => {
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -72,11 +97,26 @@ const ClientSetup: React.FC = () => {
       checkQuota: !prevFormData.checkQuota,
     }));
   };
-
+  const validateForm = () => {
+    // Check if any field is empty
+    if (
+      !ProjectCode.ProjectCode ||
+      !formData.inputField ||
+      !formData.scope ||
+      !formData.liveLink ||
+      !formData.testLink ||
+      !formData.countryCode ||
+      !selectedCountry
+    ) {
+      toast.error("Fill the necessary fields");
+      return false;
+    }
+    return true;
+  };
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     const {
-      projectCode,
+      // projectCode,
       inputField,
       countryCode,
       scope,
@@ -90,7 +130,7 @@ const ClientSetup: React.FC = () => {
         const { data } = await axios.post(
           `${baseUrl}project_client/create`,
           {
-            project_code: projectCode,
+            project_code: ProjectCode.ProjectCode,
             input_field: inputField,
             country: selectedCountry,
             country_code: countryCode,
@@ -106,11 +146,9 @@ const ClientSetup: React.FC = () => {
             },
           }
         );
-        // console.log(data.level, "success");
-        toast.success("Form submitted successfully");
-        if (data.level === "SUCESS") {
+        toast.success("Client Created Successfully");
+        if (data.status_code === 200) {
           setFormData({
-            projectCode: "",
             inputField: "",
             countryCode: "",
             scope: 0,
@@ -120,31 +158,15 @@ const ClientSetup: React.FC = () => {
             checkQuota: false,
           });
           setSelectedCountry(null);
+          updateProjectCode({ ProjectCode: "" });
         }
       }
       // Handle form submission logic here
     } catch (error: any) {
-      // console.error("Error submitting form:", error);
-      // toast.error("Project Code Should be Unique");
       toast.error(error);
     }
   };
-  // const [apiClientData, setApiClientData] = useState([]);
-  // useEffect(() => {
-  //   async function getAllList() {
-  //     const response = await fetch(
-  //       "http://localhost:8001/project_client/list/",
-  //       {
-  //         method: "GET",
-  //       }
-  //     );
 
-  //     const data = await response.json();
-  //     setApiClientData(data);
-  //   }
-  //   getAllList();
-  // }, []);
-  // console.log(apiClientData);
   return (
     <main className="section">
       <ToastContainer
@@ -164,10 +186,10 @@ const ClientSetup: React.FC = () => {
         <form className="text-[14px] sm:text-[15px] " onSubmit={handleSubmit}>
           <h2 className="mb-10">Enter the following details</h2>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <div className="mb-4">
+            <div className="mb-4 relative">
               <label
                 htmlFor="projectCode"
-                className="block text-gray-500 font-medium mb-4"
+                className="block text-gray-500 font-medium mb-4 "
               >
                 Project Code *
               </label>
@@ -176,11 +198,50 @@ const ClientSetup: React.FC = () => {
                 type="text"
                 id="projectCode"
                 name="projectCode"
-                value={formData.projectCode}
+                autoComplete="off"
+                value={ProjectCode.ProjectCode}
                 onChange={handleChange}
                 placeholder="Enter your project Code "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
+
+              {ProjectCode.ProjectCode && (
+                <>
+                  {loading ? (
+                    <div className="absolute z-50 bg-white shadow-lg my-2 px-4 py-3 text-base text-gray-700 w-full font-semibold text-left rounded-xl  h-48">
+                      Loading...
+                    </div>
+                  ) : (
+                    <>
+                      {suggestedProjectCode.length > 0 && (
+                        <div className="absolute z-50 mt-2 sm:w-full rounded-3xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-y-auto max-h-60">
+                          <div
+                            className="py-1 w-full px-3 bg-white"
+                            role="menu"
+                            aria-orientation="vertical"
+                            aria-labelledby="options-menu"
+                          >
+                            {suggestedProjectCode.map((code, index) => (
+                              <div
+                                key={index}
+                                onClick={() => {
+                                  updateProjectCode({ ProjectCode: code });
+
+                                  setSuggestedProjectCode([]); // Clear the suggestion list
+                                }}
+                                className="block px-4 py-4 text-sm text-gray-700 w-full hover:bg-[#a367b1] hover:text-[#392467] font-semibold  text-left  my-2 rounded-xl"
+                                role="menuitem"
+                              >
+                                {code}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </>
+              )}
             </div>
             <div className="mb-4">
               <label
@@ -197,7 +258,7 @@ const ClientSetup: React.FC = () => {
                 value={formData.inputField}
                 onChange={handleChange}
                 placeholder="Enter your Input Field"
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
 
@@ -213,7 +274,7 @@ const ClientSetup: React.FC = () => {
                   <button
                     onClick={handleToggleCountry}
                     type="button"
-                    className="inline-flex justify-center w-full  text-sm appearance-none  xl:min-w-[480px] border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                    className="inline-flex justify-center w-full  text-sm appearance-none border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
                   >
                     {selectedCountry ? selectedCountry : "Select a Country"}
                   </button>
@@ -258,7 +319,7 @@ const ClientSetup: React.FC = () => {
                 value={formData.countryCode}
                 onChange={handleChange}
                 placeholder="Enter your Country Code"
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
 
@@ -278,7 +339,7 @@ const ClientSetup: React.FC = () => {
                 value={formData.scope}
                 onChange={handleChange}
                 placeholder="Enter your Scope "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
           </div>
@@ -298,7 +359,7 @@ const ClientSetup: React.FC = () => {
                 value={formData.testLink}
                 onChange={handleChange}
                 placeholder="Enter your test Link "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
@@ -316,7 +377,7 @@ const ClientSetup: React.FC = () => {
                 value={formData.liveLink}
                 onChange={handleChange}
                 placeholder="Enter your live Link "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
@@ -360,86 +421,121 @@ const ClientSetup: React.FC = () => {
           </div>
         </form>
       </div>
-      {/* For The Desktop Screen view  */}
-      <div className="bg-[#fff] px-8 py-6 rounded-3xl mt-6 hidden md:block ">
-        <div className="flex items-center justify-between mb-4"></div>
 
-        <table className="table-auto w-full">
-          <thead>
-            <tr>
-              <th className="px-4 py-4">Input</th>
-              <th className="px-4 py-4">Country</th>
-              <th className="px-4 py-4">Country Code</th>
-              <th className="px-4 py-4">Scope</th>
-              <th className="px-4 py-4">Test Link</th>
-              <th className="px-4 py-4">Live Link</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {clientData.map((item) => (
-              <tr key={item.id} className="border-b border-gray-200 ">
-                <td className="px-4 text-center py-6">{item.input}</td>
-                <td className="px-4 text-center py-6">{item.country}</td>
-                <td className="px-4 text-center py-6">{item.countryCode}</td>
-                <td className="px-4 text-center py-6">{item.scope}</td>
-                <td className="px-4 text-center py-6">
-                  <Link href={item.testLink}>Link</Link>
-                </td>
-                <td className="px-4 text-center py-6">
-                  <Link href={item.liveLink}>Link</Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="pb-12">
+        <button
+          onClick={() => setShowClients(!showClients)}
+          className="bg-[#000000] font-semibold text-base sm:text-[18px] w-[12rem] sm:w-[16.5rem] px-10 py-4 sm:px-16 sm:py-6 text-white rounded-lg mt-10 sm:mt-20"
+        >
+          {showClients && ProjectCode.ProjectCode
+            ? "Hide Clients"
+            : "Show Clients"}
+        </button>
       </div>
 
-      {/* Moblie  */}
-      <div className="bg-[#fff] px-2 py-4 rounded-3xl mt-4 md:hidden ">
-        <div className="flex items-center justify-between mb-4"></div>
+      {showClients && ProjectCode.ProjectCode ? (
+        loadingData ? (
+          // If loading is true, show loading state
+          <div className="text-2xl mx-auto ">Loading...</div>
+        ) : (
+          <>
+            {/* For The Desktop Screen view  */}
+            <div className="bg-[#fff] px-8 py-6 rounded-3xl mt-6 hidden md:block ">
+              <table className="table-auto w-full">
+                <thead>
+                  <tr>
+                    <th className="px-4 py-4">Input</th>
+                    <th className="px-4 py-4">Country</th>
+                    <th className="px-4 py-4">Country Code</th>
+                    <th className="px-4 py-4">Scope</th>
+                    <th className="px-4 py-4">Test Link</th>
+                    <th className="px-4 py-4">Live Link</th>
+                  </tr>
+                </thead>
 
-        <table className="table-auto w-full">
-          <thead>
-            <tr>
-              <th className="px-2 py-3 text-center">Input</th>
-              <th className="px-2 py-3 text-center">Country</th>
-              <th className="px-2 py-3 text-center">Country Code</th>
-            </tr>
-          </thead>
-          <tbody>
-            {clientData.map((item) => (
-              <tr key={item.id} className="border-b border-gray-200 ">
-                <td className="px-3 text-center py-5">{item.input}</td>
-                <td className="px-3 text-center py-5">{item.country}</td>
-                <td className="px-3 text-center py-5">{item.countryCode}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <table className="table-auto w-full mt-8 ">
-          <thead>
-            <tr>
-              <th className="px-2 py-3 text-center">Scope</th>
-              <th className="px-2 py-3 text-center">Test Link</th>
-              <th className="px-2 py-3 text-center">Live Link</th>
-            </tr>
-          </thead>
-          <tbody>
-            {clientData.map((item) => (
-              <tr key={item.id} className="border-b border-gray-200 ">
-                <td className="px-3 text-center py-5">{item.scope}</td>
-                <td className="px-3 text-center py-5">
-                  <Link href={item.testLink}>Link </Link>
-                </td>
-                <td className="px-3 text-center py-5">
-                  <Link href={item.liveLink}>Link</Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                <tbody>
+                  {apiClientData?.map((item) => (
+                    <tr
+                      key={item.project_code}
+                      className="border-b border-gray-200 "
+                    >
+                      <td className="px-4 text-center py-6">
+                        {item.input_field}
+                      </td>
+                      <td className="px-4 text-center py-6">{item.country}</td>
+                      <td className="px-4 text-center py-6">
+                        {item.country_code}
+                      </td>
+                      <td className="px-4 text-center py-6">{item.scope}</td>
+                      <td className="px-4 text-center py-6">
+                        <Link href={item.test_link}>Link</Link>
+                      </td>
+                      <td className="px-4 text-center py-6">
+                        <Link href={item.live_link}>Link</Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {/* Mobile View */}
+            <div className="bg-[#fff] px-2 py-4 rounded-3xl mt-4 md:hidden ">
+              <div className="flex items-center justify-between mb-4"></div>
+
+              <table className="table-auto w-full">
+                <thead>
+                  <tr>
+                    <th className="px-2 py-3 text-center">Input</th>
+                    <th className="px-2 py-3 text-center">Country</th>
+                    <th className="px-2 py-3 text-center">Country Code</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {apiClientData?.map((item) => (
+                    <tr
+                      key={item.project_code}
+                      className="border-b border-gray-200 "
+                    >
+                      <td className="px-3 text-center py-5">
+                        {item.input_field}
+                      </td>
+                      <td className="px-3 text-center py-5">{item.country}</td>
+                      <td className="px-3 text-center py-5">
+                        {item.country_code}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <table className="table-auto w-full mt-8 ">
+                <thead>
+                  <tr>
+                    <th className="px-2 py-3 text-center">Scope</th>
+                    <th className="px-2 py-3 text-center">Test Link</th>
+                    <th className="px-2 py-3 text-center">Live Link</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {apiClientData?.map((item) => (
+                    <tr
+                      key={item.project_code}
+                      className="border-b border-gray-200 "
+                    >
+                      <td className="px-3 text-center py-5">{item.scope}</td>
+                      <td className="px-3 text-center py-5">
+                        <Link href={item.test_link}>Link </Link>
+                      </td>
+                      <td className="px-3 text-center py-5">
+                        <Link href={item.live_link}>Link</Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )
+      ) : null}
     </main>
   );
 };

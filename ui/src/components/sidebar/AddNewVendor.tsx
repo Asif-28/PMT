@@ -1,10 +1,14 @@
+import axios from "axios";
 import React, { useState, FormEvent, ChangeEvent } from "react";
+import { ToastContainer, toast } from "react-toastify";
 
 interface FormData {
   vendorName: string;
   vendorEmail: string;
 }
 const AddNewVendor: React.FC = () => {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
   const [formData, setFormData] = useState<FormData>({
     vendorName: "",
     vendorEmail: "",
@@ -13,15 +17,66 @@ const AddNewVendor: React.FC = () => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
+  const validateForm = () => {
+    // Check if any field is empty
+    if (!formData.vendorName || !formData.vendorEmail) {
+      toast.error("Fill the necessary fields");
 
-  const handleSubmit = (event: FormEvent) => {
+      return false;
+    }
+    return true;
+  };
+
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+    const { vendorEmail, vendorName } = formData;
     // Handle form submission logic here
     console.log(formData); // Replace with actual submission logic
+    try {
+      if (validateForm()) {
+        const { data } = await axios.post(
+          `${baseUrl}vendor/create`,
+          {
+            name: vendorName,
+            email: vendorEmail,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        // console.log(data.level, "success");
+        toast.success("Vendor created successfully");
+        if (data.status_code === 200) {
+          setFormData({
+            vendorEmail: "",
+            vendorName: "",
+          });
+        }
+      }
+      // Handle form submission logic here
+    } catch (error: any) {
+      // console.error("Error submitting form:", error);
+      // toast.error("Project Code Should be Unique");
+      toast.error(error);
+    }
   };
 
   return (
     <main className="section">
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <h2 className="text-2xl font-semibold text-[#000] ">Add New Vendor</h2>
       <div className=" bg-white pl-5 pr-2 sm:pl-6 sm:pr-16 py-12 rounded-3xl mt-2 sm:mt-4  ">
         <form className=" text-[14px] sm:text-[15px] " onSubmit={handleSubmit}>
