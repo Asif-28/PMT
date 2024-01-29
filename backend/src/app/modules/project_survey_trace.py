@@ -5,7 +5,7 @@ from .project_vendor import ProjectVendor
 
 class ProjectSurveyTrace(models.Model):
     key = models.CharField(max_length=225, unique=True, db_index=True)
-    test = models.BooleanField(default=False)
+    test = models.BooleanField(db_default=False)
     start_time = models.DateTimeField(auto_now_add=True)
     end_time = models.DateTimeField(auto_now=True, blank=True, null=True)
     project = models.ForeignKey(ProjectCreation, on_delete=models.CASCADE)
@@ -16,7 +16,7 @@ class ProjectSurveyTrace(models.Model):
     county_code = models.CharField(max_length=225)
     ip_address = models.CharField(max_length=225, blank=True, null=True)
     fraud_score = models.IntegerField(blank=True, null=True)
-    ip_proxy = models.BooleanField(default=False)
+    ip_proxy = models.BooleanField(db_default=False)
     ip_region = models.CharField(max_length=225, blank=True, null=True)
     qc_remarks = models.CharField(max_length=225, blank=True, null=True)
 
