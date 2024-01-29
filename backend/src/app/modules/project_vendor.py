@@ -18,7 +18,7 @@ Pause Vendor(Bool)
 
 class ProjectVendor(models.Model):
     project_code = models.CharField(max_length=255)
-    vendor_code = models.CharField(max_length=255, unique=True)
+    vendor_code = models.CharField(max_length=255)
     scope = models.IntegerField()
     complete = models.CharField(max_length=255)
     terminate = models.CharField(max_length=255)
@@ -28,6 +28,9 @@ class ProjectVendor(models.Model):
 
     project = models.ForeignKey(ProjectCreation, on_delete=models.CASCADE)
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = (("project_code", "vendor_code"),)
 
     def __str__(self):
         return f"{self.vendor_code} - {self.vendor_name}"

@@ -20,8 +20,5 @@ class ProjectSurveyTrace(models.Model):
     ip_region = models.CharField(max_length=225, blank=True, null=True)
     qc_remarks = models.CharField(max_length=225, blank=True, null=True)
 
-
-# class ProjectSurveyTraceCount(models.Model):
-#     project = models.ForeignKey(ProjectCreation, on_delete=models.CASCADE)
-#     vendor = models.ForeignKey(ProjectVendor, on_delete=models.CASCADE)
-#     project_survey_count = models.IntegerField()
+    def __str__(self):
+        return f"{self.key} - {self.vendor_code}"
