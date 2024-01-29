@@ -1,8 +1,10 @@
-from typing import Any
-from ninja import Schema
-from ninja.errors import HttpError
 import time
 import hashlib
+from typing import Any
+
+from requests import Session
+from ninja import Schema
+from ninja.errors import HttpError
 
 
 class JSONResponse(Schema):
@@ -27,6 +29,8 @@ class Message:
 
 message = Message()
 
+request_session = Session()
+
 
 def objects_save(obj, data):
     try:
@@ -48,6 +52,12 @@ def get_request_ip(request):
             "REMOTE_ADDR"
         )  # Otherwise, use the standard 'REMOTE_ADDR'
     return ip
+
+
+def validate_ipqualityscore(ip, api_key):
+    return request_session.get(
+        f"https://ipqualityscore.com/api/json/ip/{api_key}/{ip}?strictness=2&fast=1"
+    ).json()
 
 
 def uniq_md5_hash():
