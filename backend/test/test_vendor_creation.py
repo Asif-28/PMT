@@ -1,17 +1,33 @@
 import pytest
-from .const import request_post, request_get, SOURCE
+from .const import request_post, request_get, SOURCE, fake
 from .test_vendor import data as vendor_data
 from .test_project_client import data as project_client_data
 
 endpoint = f"{SOURCE}/project_vendor/create"
 
 data = {
-    "project_code": project_client_data[0]["data"]["project_code"],
-    "vendor_code": vendor_data[0]["data"]["vendor_code"],
+    "project_code": project_client_data["project_code"],
+    "vendor_code": f"PTM_{fake.random_int(min=1000, max=9999)}",
     "scope": 0,
     "complete": "string",
     "terminate": "string",
     "over_quota": "string",
     "pause_vendor": False,
-    "vendor_name": "string",
+    "vendor_name": vendor_data["name"],
 }
+
+def test_create_project_vendor(data, message, status):
+    request_post(f"{endpoint}/create", data, message, status)
+
+def test_list_project_vendor(data):
+    response = request_get(f"{endpoint}/list")
+
+    match = False
+
+    for project_vendor in response:
+        if project_vendor["project_code"] == data["project_code"]:
+            match = True
+            break
+
+    assert match == True
+
