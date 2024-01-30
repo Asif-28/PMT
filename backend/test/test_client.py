@@ -1,9 +1,5 @@
 import pytest
-import requests
-from faker import Faker
-from .const import SOURCE, request_post, request_get
-
-fake = Faker()
+from .const import SOURCE, request_post, request_get, fake
 
 endpoint = f"{SOURCE}/client"
 

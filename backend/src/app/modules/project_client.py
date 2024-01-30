@@ -20,13 +20,13 @@ class ProjectClient(models.Model):
     check_quota = models.BooleanField()
     # ForeignKey relationship with ProjectCreation
     project = models.ForeignKey(ProjectCreation, on_delete=models.CASCADE)
-    index_key = models.CharField(max_length=255, blank=True, null=True)
+    index_key = models.CharField(max_length=255, blank=True, null=True, db_index=True)
 
     class Meta:
         unique_together = (("project_code", "country_code"),)
 
     def save(self, *args, **kwargs):
-        self.index_key = f"{self.project_code}_{self.country_code}"
+        self.index_key = f"{self.project_code}+{self.country_code}"
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):

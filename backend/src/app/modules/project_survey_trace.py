@@ -13,7 +13,7 @@ class ProjectSurveyTrace(models.Model):
     vendor_code = models.CharField(max_length=225)
     vendor_id = models.CharField(max_length=225)
     country = models.CharField(max_length=225)
-    county_code = models.CharField(max_length=225)
+    country_code = models.CharField(max_length=225)
     ip_address = models.CharField(max_length=225, blank=True, null=True)
     fraud_score = models.IntegerField(blank=True, null=True)
     ip_proxy = models.BooleanField(db_default=False)
