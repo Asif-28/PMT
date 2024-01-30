@@ -12,8 +12,8 @@ data = {
     "country": fake.country(),
     "country_code": fake.country_code(),
     "scope": 100,
-    "test_link": "string",
-    "live_link": "string",
+    "test_link": "https://www.google.com/",
+    "live_link": "https://www.google.com/",
     "check_country": True,
     "check_quota": True,
 }
