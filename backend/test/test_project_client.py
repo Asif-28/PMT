@@ -1,11 +1,7 @@
 import pytest
-import requests
-from faker import Faker
 from .test_project import data as project_data
-import json
-from .const import SOURCE, request_post, request_get
 
-fake = Faker()
+from .const import SOURCE, request_post, request_get, fake
 
 
 endpoint = f"{SOURCE}/project_client"

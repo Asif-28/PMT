@@ -2,6 +2,9 @@ import os
 import requests
 import re
 from dotenv import load_dotenv
+from faker import Faker
+
+fake = Faker()
 
 load_dotenv()
 
