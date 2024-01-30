@@ -29,14 +29,18 @@ class ProjectCreation(models.Model):
 
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
 
-    def save(self, *args, **kwargs):
-        # Custom save method to handle data cleaning
+    def clean(self) -> None:
+        # Custom clean method to handle data cleaning
         if not self.incidence_rate.endswith("%"):
             self.incidence_rate = f"{self.incidence_rate}%"
         if not self.loi.endswith(" Min"):
             self.loi = f"{self.loi} Min"
         if self.target not in ["HCP", "B2B", "B2C"]:
             raise ValueError("'target' must be one of HCP, B2B, B2C")
+
+    def save(self, *args, **kwargs):
+        # Custom save method to handle data cleaning
+        self.clean()
         super().save(*args, **kwargs)
 
     def __str__(self):
