@@ -77,11 +77,6 @@ const ClientSetup: React.FC = () => {
     }
   };
 
-  // const handleOptionCountry = (country: string) => {
-  //   setSelectedCountry(country);
-  //   setIsOpenCountry(false);
-  // };
-  console.log(formData.countryCode);
   const handleOptionCountry = (country: string) => {
     const selectedCountryObject = countries.find((c) => c.name === country);
 
