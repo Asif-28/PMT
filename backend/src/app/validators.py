@@ -12,7 +12,7 @@ def validate_ipqualityscore(ip, api_key):
     """
     Validate IP address using IPQualityScore API
     example response:
-        {
+    {
         "success": true,
         "message": "Success",
         "fraud_score": 100,
