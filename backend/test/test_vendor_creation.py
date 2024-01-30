@@ -3,7 +3,7 @@ from .const import request_post, request_get, SOURCE, fake
 from .test_vendor import data as vendor_data
 from .test_project_client import data as project_client_data
 
-endpoint = f"{SOURCE}/project_vendor/create"
+endpoint = f"{SOURCE}/project_vendor"
 
 data = {
     "project_code": project_client_data["project_code"],
@@ -16,10 +16,10 @@ data = {
     "vendor_name": vendor_data["name"],
 }
 
-def test_create_project_vendor(data, message, status):
-    request_post(f"{endpoint}/create", data, message, status)
+def test_create_project_vendor():
+    request_post(f"{endpoint}/create", data, "created", 200)
 
-def test_list_project_vendor(data):
+def test_list_project_vendor():
     response = request_get(f"{endpoint}/list")
 
     match = False

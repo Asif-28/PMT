@@ -10,11 +10,11 @@ data = {
 }
 
 
-def test_create_client(data):
+def test_create_client():
     request_post(f"{endpoint}/create", data, "created", 200)
 
 
-def test_list_client(data):
+def test_list_client():
     response = request_get(f"{endpoint}/list")
 
     match = False
