@@ -1,11 +1,12 @@
 from requests import Session
+from django.core.exceptions import ValidationError
 
 request_session = Session()
 
 
 def scope_limit(scope: int, _scope_limit=100) -> bool:
     if scope > _scope_limit:
-        raise ValueError(f"Scope should be less than {_scope_limit}")
+        raise ValidationError(f"Scope should be less than {_scope_limit}")
 
 
 def validate_ipqualityscore(ip, api_key):
