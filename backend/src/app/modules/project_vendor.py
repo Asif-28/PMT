@@ -26,6 +26,7 @@ class ProjectVendor(models.Model):
     pause_vendor = models.BooleanField()
     vendor_name = models.CharField(max_length=255)
 
+    index_key = models.CharField(max_length=255, blank=True, null=True, db_index=True)
     project = models.ForeignKey(ProjectCreation, on_delete=models.CASCADE)
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
 
@@ -37,7 +38,7 @@ class ProjectVendor(models.Model):
 
     def save(self, *args, **kwargs):
         scope_limit(self.scope)
-
+        self.index_key = f"{self.project_code}+{self.vendor_code}"
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):

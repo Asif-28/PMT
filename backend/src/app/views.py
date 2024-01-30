@@ -61,7 +61,8 @@ def survey(request):
         return HttpResponse(f"Invalid Project Code or Vendor Code: {e}", status=400)
 
     if countries[check_country] != project_client.country:
-        return HttpResponse("Country Code is invalid", status=400)
+        logging.info(f'project_client.country: {project_client.country}')
+        return HttpResponse(f"Country Code is invalid {countries[check_country]} {project_client.country}", status=400)
 
     # Setup Index Key Hash for Survey Trace
     _key = md5(f"{ip}_{project_code}_{country_code}".encode()).hexdigest()
@@ -71,6 +72,9 @@ def survey(request):
         key = "live_" + _key
 
     # Save Survey Trace to DB
+    if ProjectSurveyTrace.objects.get(key=key):
+        return HttpResponse(f"Survey Trace already exists by {ip} for {project_code}", status=400)
+    
     ProjectSurveyTrace(
         key=key,
         test=is_test,
@@ -86,7 +90,7 @@ def survey(request):
         qc_remarks=check["message"],
         project_client=project_client,
         project_vendor=project_vendor,
-    )
+    ).save()
 
     logging.info(f"Survey Trace: {key}")
     logging.info(f"Redirecting to: {project_client.live_link}")
