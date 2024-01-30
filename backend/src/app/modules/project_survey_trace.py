@@ -21,7 +21,7 @@ class ProjectSurveyTrace(models.Model):
     qc_remarks = models.CharField(max_length=225, blank=True, null=True)
 
     project_client = models.ForeignKey(ProjectClient, on_delete=models.CASCADE)
-    project_vendor = models.ForeignKey(ProjectVendor, on_delete=models.CASCADE)
+    project_vendor = models.ForeignKey(ProjectVendor, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return f"{self.key} | {self.project_code} | {self.project_client} | {self.vendor_code}"

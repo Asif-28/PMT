@@ -26,7 +26,6 @@ def create_client(request, project_client: ProjectClientSchema):
     if not project:
         message.error(text="Project not found")
     data = project_client.dict()
-    data["project"] = project
 
     try:
         ProjectClient(**data).save()
