@@ -1,5 +1,12 @@
 from django.contrib import admin
-from .models import Client, ProjectCreation, ProjectClient, Vendor, ProjectVendor, ProjectSurveyTrace
+from .models import (
+    Client,
+    ProjectCreation,
+    ProjectClient,
+    Vendor,
+    ProjectVendor,
+    ProjectSurveyTrace,
+)
 
 # Register your models here.
 
