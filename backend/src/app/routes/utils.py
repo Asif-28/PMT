@@ -1,7 +1,9 @@
+from typing import Dict
 from ninja import Router
+from ninja.schema import Schema
+
 from .._country_codes import countries
 from ..utils import get_request_ip, uniq_md5_hash
-from ninja.schema import Schema
 
 router = Router()
 
@@ -12,11 +14,6 @@ class IPResponse(Schema):
     ip: str
 
 
-class CountriesSchema(Schema):
-    name: str
-    code: str
-
-
 class HashResponse(Schema):
     hash: str
 
@@ -24,7 +21,7 @@ class HashResponse(Schema):
 """ Routes """
 
 
-@router.get("/countries", response=list[CountriesSchema])
+@router.get("/countries", response=Dict[str, str])
 def list_countries(request):
     return countries
 

@@ -1,8 +1,9 @@
-from typing import Any
-from ninja import Schema
-from ninja.errors import HttpError
 import time
 import hashlib
+from typing import Any
+
+from ninja import Schema
+from ninja.errors import HttpError
 
 
 class JSONResponse(Schema):

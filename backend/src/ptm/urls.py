@@ -16,9 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import include
 
 from ninja import NinjaAPI, Redoc, Swagger
-
 
 api = NinjaAPI(docs=Swagger(), docs_url="/docs")
 
@@ -27,4 +27,5 @@ api.add_router("/", "app.urls.router")
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", api.urls),
+    path("survey/", include("app.template_urls")),
 ]
