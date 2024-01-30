@@ -1,8 +1,8 @@
 "use client";
 import Image from "next/image";
 import React from "react";
-import { useSearch } from "../context/SearchContext";
-import { data as sidebarData } from "../data/data";
+import { useSearch } from "../../context/SearchContext";
+import { data as sidebarData } from "../../data/data";
 import ProjectAllocation from "./ProjectAllocation";
 import DataExport from "./DataExport";
 import IdReconciliation from "./IdReconciliation";

@@ -1,9 +1,9 @@
 "use client";
 import Image from "next/image";
-import { useMenu } from "../context/MenuContext";
+import { useMenu } from "../../context/MenuContext";
 import { useEffect, useRef, useState } from "react";
-import { data } from "../data/data";
-import { useSearch } from "../context/SearchContext";
+import { data } from "../../data/data";
+import { useSearch } from "../../context/SearchContext";
 
 interface DataItem {
   id: number;
