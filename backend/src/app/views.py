@@ -123,6 +123,8 @@ def complete_survey(request):
     GET /complete_survey?key=123
     """
     key = request.GET.get("key", None)
+    status = request.GET.get("status", None)
+
     if not key:
         return HttpResponse("Key is required", status=400)
 
@@ -130,6 +132,7 @@ def complete_survey(request):
         project_survey_trace = ProjectSurveyTrace.objects.get(key=key)
         if project_survey_trace.status == "complete":
             return HttpResponse("Survey already completed", status=400)
+
         project_survey_trace.objects.filter(key=key).update(
             status="complete", end_time=datetime.datetime.utcnow()
         )
