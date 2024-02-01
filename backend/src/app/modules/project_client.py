@@ -16,7 +16,7 @@ class ProjectClient(models.Model):
     scope = models.IntegerField()
     test_link = models.URLField()
     live_link = models.URLField()
-    check_country = models.BooleanField()
+    country_pause = models.BooleanField()
     check_quota = models.BooleanField()
     # ForeignKey relationship with ProjectCreation
     project = models.ForeignKey(ProjectCreation, on_delete=models.CASCADE)

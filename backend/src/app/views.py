@@ -71,12 +71,20 @@ def get_survey(request):
         except Exception as e:
             return HttpResponse(f"Invalid Project Code or Vendor Code: {e}", status=400)
 
-        if countries[check_country] != project_client.country:
-            logging.info(f"project_client.country: {project_client.country}")
-            return HttpResponse(
-                f"Country Code is invalid {countries[check_country]} {project_client.country}",
-                status=400,
-            )
+
+    if (
+        project_vendor.pause_vendor == True
+        or project_client.country_pause == True
+        or project.status == "closed"
+    ):
+        return HttpResponse("Survey is paused", status=400)
+    
+    if countries[check_country] != project_client.country:
+        logging.info(f"project_client.country: {project_client.country}")
+        return HttpResponse(
+            f"Country Code is invalid {countries[check_country]} {project_client.country}",
+            status=400,
+        )
 
     # Setup Index Key Hash for Survey Trace
     _key = md5(f"{ip}_{project_code}_{country_code}".encode()).hexdigest()
