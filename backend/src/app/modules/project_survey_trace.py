@@ -7,7 +7,7 @@ class ProjectSurveyTrace(models.Model):
     key = models.CharField(max_length=225, unique=True, db_index=True)
     test = models.BooleanField(db_default=False)
     start_time = models.DateTimeField(auto_now_add=True)
-    end_time = models.DateTimeField(auto_now=True, blank=True, null=True)
+    end_time = models.DateTimeField(blank=True, null=True)
     status = models.CharField(max_length=225, db_default="insurvey")
     project_code = models.CharField(max_length=225)
     vendor_code = models.CharField(max_length=225)

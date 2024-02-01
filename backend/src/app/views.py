@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from hashlib import md5
 
 import time
+import datetime
 from .modules.project_survey_trace import ProjectSurveyTrace
 from .modules.project import ProjectCreation
 from .modules.project_client import ProjectClient
@@ -14,9 +15,9 @@ from .utils import get_request_ip
 from .validators import validate_ipqualityscore
 
 
-def survey(request):
-    # GET /survey?project_code=123&country_code=US&vendor_code=123&vendor_id=123&id_test=true
+def get_survey(request):
     """
+    # GET /survey?project_code=123&country_code=US&vendor_code=123&vendor_id=123&id_test=true
     is_test
     project_code
     country_code
@@ -115,3 +116,25 @@ def survey(request):
         return redirect(project_client.test_link + f"&trans={key}")
     else:
         return redirect(project_client.live_link)
+
+
+def complete_survey(request):
+    """
+    GET /complete_survey?key=123
+    """
+    key = request.GET.get("key", None)
+    if not key:
+        return HttpResponse("Key is required", status=400)
+
+    try:
+        project_survey_trace = ProjectSurveyTrace.objects.get(key=key)
+        if project_survey_trace.status == "complete":
+            return HttpResponse("Survey already completed", status=400)
+        project_survey_trace.objects.filter(key=key).update(
+            status="complete", end_time=datetime.datetime.utcnow()
+        )
+
+    except Exception as e:
+        return HttpResponse(f"Error: {e}", status=400)
+
+    return HttpResponse("Survey Completed")
