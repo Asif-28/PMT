@@ -94,6 +94,7 @@ def survey(request):
         key=key,
         test=is_test,
         start_time=start_time,
+
         project_code=project_code,
         country_code=country_code,
         vendor_code=project_vendor.vendor_code,
@@ -112,6 +113,6 @@ def survey(request):
 
     # return redirect(f"https://ipqualityscore.com/api/json/ip/{ip}?strictness=2&fast=1")
     if is_test:
-        return redirect(project_client.test_link)
+        return redirect(project_client.test_link + f"&trans={key}")
     else:
         return redirect(project_client.live_link)

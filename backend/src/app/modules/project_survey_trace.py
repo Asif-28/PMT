@@ -2,7 +2,6 @@ from django.db import models
 from .project_client import ProjectClient
 from .project_vendor import ProjectVendor
 
-
 class ProjectSurveyTrace(models.Model):
     key = models.CharField(max_length=225, unique=True, db_index=True)
     test = models.BooleanField(db_default=False)
@@ -22,6 +21,16 @@ class ProjectSurveyTrace(models.Model):
 
     project_client = models.ForeignKey(ProjectClient, on_delete=models.CASCADE)
     project_vendor = models.ForeignKey(ProjectVendor, on_delete=models.DO_NOTHING)
+
+    def clean(self):
+        if self.status not in ("insurvey", "complete", "terminate", "overquota"):
+            return ValueError("Invalid status value")
+        if self.end_time == None and self.status == "insurvey":
+            return ValueError("Invalid status value")
+    
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs) 
 
     def __str__(self):
         return f"{self.key} | {self.project_code} | {self.project_client} | {self.vendor_code}"
