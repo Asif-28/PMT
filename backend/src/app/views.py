@@ -94,7 +94,6 @@ def survey(request):
         key=key,
         test=is_test,
         start_time=start_time,
-
         project_code=project_code,
         country_code=country_code,
         vendor_code=project_vendor.vendor_code,
