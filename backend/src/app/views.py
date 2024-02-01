@@ -35,14 +35,6 @@ def get_survey(request):
     vendor_code = request.GET["vendor_code"]
     vendor_id = request.GET["vendor_id"]
 
-    try:
-        project = ProjectCreation.objects.get(project_code=project_code)
-    except Exception as e:
-        return HttpResponse(f"project_code {project_code} dose not exist", status=400)
-
-    # epoch time int UTC
-    start_time = int(time.time())
-
     ip = get_request_ip(request)
 
     # Validate Request IP
@@ -62,12 +54,14 @@ def get_survey(request):
             return HttpResponse("Proxy/VPN detected", status=400)
 
         try:
-            project_client = ProjectClient.objects.get(
+            project_client: ProjectClient = ProjectClient.objects.get(
                 index_key=f"{project_code}+{country_code}"
-            )
+            ).select_related("project")
             project_vendor = ProjectVendor.objects.get(
                 index_key=f"{project_code}+{vendor_code}"
             )
+            project: ProjectCreation = project_client.project
+
         except Exception as e:
             return HttpResponse(f"Invalid Project Code or Vendor Code: {e}", status=400)
 
@@ -86,11 +80,8 @@ def get_survey(request):
         )
 
     # Setup Index Key Hash for Survey Trace
-    _key = md5(f"{ip}_{project_code}_{country_code}".encode()).hexdigest()
-    if is_test:
-        key = "test_" + _key
-    else:
-        key = "live_" + _key
+    _key_prefix = "test_" if is_test else "live_"
+    key = _key_prefix + md5(f"{ip}_{project_code}_{country_code}".encode()).hexdigest()
 
     # Save Survey Trace to DB
     if ProjectSurveyTrace.objects.filter(key=key).exists():
@@ -101,7 +92,6 @@ def get_survey(request):
     ProjectSurveyTrace(
         key=key,
         test=is_test,
-        start_time=start_time,
         project_code=project_code,
         country_code=country_code,
         vendor_code=project_vendor.vendor_code,
@@ -119,10 +109,8 @@ def get_survey(request):
     logging.info(f"Redirecting to: {project_client.live_link}")
 
     # return redirect(f"https://ipqualityscore.com/api/json/ip/{ip}?strictness=2&fast=1")
-    if is_test:
-        return redirect(project_client.test_link + f"&trans={key}")
-    else:
-        return redirect(project_client.live_link)
+    redirect_url = project_client.test_link if is_test else project_client.live_link
+    return redirect(f"{redirect_url}&trans={key}")
 
 
 def complete_survey(request):
