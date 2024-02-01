@@ -5,6 +5,7 @@ from hashlib import md5
 
 import time
 from .modules.project_survey_trace import ProjectSurveyTrace
+from .modules.project import ProjectCreation
 from .modules.project_client import ProjectClient
 from .modules.project_vendor import ProjectVendor
 
@@ -14,7 +15,7 @@ from .validators import validate_ipqualityscore
 
 
 def survey(request):
-    # GET /survey?project_code=123&country_code=US&vendor_code=123&vendor_id=123
+    # GET /survey?project_code=123&country_code=US&vendor_code=123&vendor_id=123&id_test=true
     """
     is_test
     project_code
@@ -33,6 +34,11 @@ def survey(request):
     vendor_code = request.GET["vendor_code"]
     vendor_id = request.GET["vendor_id"]
 
+    try:
+        project = ProjectCreation.objects.get(project_code=project_code)
+    except Exception as e:
+        return HttpResponse(f"project_code {project_code} dose not exist", status=400)
+
     # epoch time int UTC
     start_time = int(time.time())
 
@@ -44,28 +50,32 @@ def survey(request):
 
     check_country = check["country_code"]
 
-    if check["fraud_score"] > FRAUD_THRESHOLD:
-        logging.info(f"Fraud Score is too high: {check['fraud_score']}")
-        return HttpResponse("Fraud Score is too high", status=400)
-    if check["vpn"] or check["tor"] or check["proxy"]:
-        return HttpResponse("Proxy/VPN detected", status=400)
+    if not is_test or project.security_check == False:
+        # Bypass fraud check
+        if check["fraud_score"] > FRAUD_THRESHOLD:
+            logging.info(f"Fraud Score is too high: {check['fraud_score']} for {ip}")
+            return HttpResponse(
+                f"Fraud Score is too high: {check['fraud_score']} for {ip}", status=400
+            )
+        if check["vpn"] or check["tor"] or check["proxy"]:
+            return HttpResponse("Proxy/VPN detected", status=400)
 
-    try:
-        project_client = ProjectClient.objects.get(
-            index_key=f"{project_code}+{country_code}"
-        )
-        project_vendor = ProjectVendor.objects.get(
-            index_key=f"{project_code}+{vendor_code}"
-        )
-    except Exception as e:
-        return HttpResponse(f"Invalid Project Code or Vendor Code: {e}", status=400)
+        try:
+            project_client = ProjectClient.objects.get(
+                index_key=f"{project_code}+{country_code}"
+            )
+            project_vendor = ProjectVendor.objects.get(
+                index_key=f"{project_code}+{vendor_code}"
+            )
+        except Exception as e:
+            return HttpResponse(f"Invalid Project Code or Vendor Code: {e}", status=400)
 
-    if countries[check_country] != project_client.country:
-        logging.info(f"project_client.country: {project_client.country}")
-        return HttpResponse(
-            f"Country Code is invalid {countries[check_country]} {project_client.country}",
-            status=400,
-        )
+        if countries[check_country] != project_client.country:
+            logging.info(f"project_client.country: {project_client.country}")
+            return HttpResponse(
+                f"Country Code is invalid {countries[check_country]} {project_client.country}",
+                status=400,
+            )
 
     # Setup Index Key Hash for Survey Trace
     _key = md5(f"{ip}_{project_code}_{country_code}".encode()).hexdigest()
