@@ -25,6 +25,12 @@ class ProjectClient(models.Model):
     class Meta:
         unique_together = (("project_code", "country_code"),)
 
+    def clean(self) -> None:
+        link_key_param = "{trans_id}"
+        if link_key_param not in self.test_link or link_key_param not in self.live_link:
+            raise ValueError(f"link requires placeholder {link_key_param}")
+
+        return super().clean()
     def save(self, *args, **kwargs):
         self.index_key = f"{self.project_code}+{self.country_code}"
         self.project = ProjectCreation.objects.get(project_code=self.project_code)
