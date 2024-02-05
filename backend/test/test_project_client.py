@@ -1,11 +1,7 @@
 import pytest
-import requests
-from faker import Faker
 from .test_project import data as project_data
-import json
-from .const import SOURCE, request_post, request_get
 
-fake = Faker()
+from .const import SOURCE, request_post, request_get, fake
 
 
 endpoint = f"{SOURCE}/project_client"
@@ -16,8 +12,8 @@ data = {
     "country": fake.country(),
     "country_code": fake.country_code(),
     "scope": 100,
-    "test_link": "string",
-    "live_link": "string",
+    "test_link": "https://www.google.com/",
+    "live_link": "https://www.google.com/",
     "check_country": True,
     "check_quota": True,
 }

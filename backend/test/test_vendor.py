@@ -1,9 +1,6 @@
 import pytest
-import requests
-from faker import Faker
-from .const import SOURCE, request_post, request_get
+from .const import SOURCE, request_post, request_get, fake
 
-fake = Faker()
 
 endpoint = f"{SOURCE}/vendor"
 
