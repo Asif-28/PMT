@@ -519,6 +519,6 @@ export const clientData = [
   },
 ];
 
-export const projectStatusList = ["live", "end"];
+export const projectStatusList = ["live", "close", "pause"];
 
 export const options = ["B2B", "B2C", "HCP"];
