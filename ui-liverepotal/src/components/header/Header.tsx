@@ -14,9 +14,9 @@ const Header: React.FC = () => {
       <div className="bg-[#5C2081] text-[#fff] flex justify-between py-[.6rem] px-14 rounded-full">
         <div className="w-full flex items-center justify-between">
           <ul className="w-full flex justify-around font-semibold">
-            <li className="cursor-pointer">
+            {/* <li className="cursor-pointer">
               <Link href={`liveprojects`}>All Projects</Link>
-            </li>
+            </li> */}
             <li className="cursor-pointer">
               <Link href={`liveprojects`}>Live Project</Link>
             </li>

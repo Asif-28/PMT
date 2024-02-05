@@ -1,5 +1,6 @@
 import React from "react";
 import { ProjectsProps } from "@/types/types";
+import DropDown from "../utils/DropDown";
 
 const ClosedProjectComponent: React.FC<ProjectsProps> = ({
   projects,
@@ -65,7 +66,9 @@ const ClosedProjectComponent: React.FC<ProjectsProps> = ({
               <td className="px-10 py-4">{project.scope}</td>
               <td className="px-12 py-4">{project.achieved}</td>
               <td className="px-14 py-4">{project.remaining}</td>
-              <td className="px-14 py-4">{project.status}</td>
+              <td className="px-8 py-4">
+                <DropDown value1="Live" value2="Pause" />
+              </td>
             </tr>
           ))}
         </tbody>
