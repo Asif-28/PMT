@@ -94,6 +94,7 @@ def get_survey(request):
         test=is_test,
         project_code=project_code,
         country_code=country_code,
+        country=project_client.country,
         vendor_code=project_vendor.vendor_code,
         vendor_id=vendor_id,
         ip_address=ip,
