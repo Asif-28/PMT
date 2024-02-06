@@ -72,12 +72,12 @@ def get_survey(request):
     ):
         return HttpResponse("Survey is paused", status=400)
 
-    if countries[check_country] != project_client.country:
-        logging.info(f"project_client.country: {project_client.country}")
-        return HttpResponse(
-            f"Country Code is invalid {countries[check_country]} {project_client.country}",
-            status=400,
-        )
+    # if countries[check_country] != project_client.country:
+    #     logging.info(f"project_client.country: {project_client.country}")
+    #     return HttpResponse(
+    #         f"Country Code is invalid {countries[check_country]} {project_client.country}",
+    #         status=400,
+    #     )
 
     # Setup Index Key Hash for Survey Trace
     _key_prefix = "test_" if is_test else "live_"
@@ -89,10 +89,12 @@ def get_survey(request):
             f"Survey Trace already exists by {ip} for {project_code}", status=400
         )
 
-    if check["vpn"] or check["tor"] or check["proxy"] or check["fraud_score"] > FRAUD_THRESHOLD:
+    if check["vpn"] or check["tor"] or check["proxy"]:
         vpn_flag = True
+
+    if vpn_flag or check["fraud_score"] > FRAUD_THRESHOLD or countries[check_country] != project_client.country:
         status = "terminated"
-        qc_remarks = "DFP Termination - VPN/Tor/Proxy"
+        qc_remarks = "DFP Terminated"
     else:
         status = "insurvey"
         qc_remarks = check["message"]
