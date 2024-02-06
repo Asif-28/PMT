@@ -47,22 +47,23 @@ def get_survey(request):
     try:
         project_client: ProjectClient = ProjectClient.objects.get(
             index_key=f"{project_code}+{country_code}"
-        ).select_related("project")
+        )
+
         project_vendor = ProjectVendor.objects.get(
             index_key=f"{project_code}+{vendor_code}"
         )
-        project: ProjectCreation = project_client.project
+        project: ProjectCreation = ProjectCreation.objects.get(project_code=project_code)
 
     except Exception as e:
         return HttpResponse(f"Invalid Project Code or Vendor Code: {e}", status=400)
 
-    if not is_test or project.security_check == False:
-        # Bypass fraud check
-        if check["fraud_score"] > FRAUD_THRESHOLD:
-            logging.info(f"Fraud Score is too high: {check['fraud_score']} for {ip}")
-            return HttpResponse(
-                f"Fraud Score is too high: {check['fraud_score']} for {ip}", status=400
-            )
+    # if not is_test or project.security_check == False:
+    #     # Bypass fraud check
+    #     if check["fraud_score"] > FRAUD_THRESHOLD:
+    #         logging.info(f"Fraud Score is too high: {check['fraud_score']} for {ip}")
+    #         return HttpResponse(
+    #             f"Fraud Score is too high: {check['fraud_score']} for {ip}", status=400
+    #         )
 
     if (
         project_vendor.pause_vendor == True
@@ -88,7 +89,7 @@ def get_survey(request):
             f"Survey Trace already exists by {ip} for {project_code}", status=400
         )
 
-    if check["vpn"] or check["tor"] or check["proxy"]:
+    if check["vpn"] or check["tor"] or check["proxy"] or check["fraud_score"] > FRAUD_THRESHOLD:
         vpn_flag = True
         status = "terminated"
         qc_remarks = "DFP Termination - VPN/Tor/Proxy"
