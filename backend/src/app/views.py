@@ -52,7 +52,9 @@ def get_survey(request):
         project_vendor = ProjectVendor.objects.get(
             index_key=f"{project_code}+{vendor_code}"
         )
-        project: ProjectCreation = ProjectCreation.objects.get(project_code=project_code)
+        project: ProjectCreation = ProjectCreation.objects.get(
+            project_code=project_code
+        )
 
     except Exception as e:
         return HttpResponse(f"Invalid Project Code or Vendor Code: {e}", status=400)
@@ -92,7 +94,11 @@ def get_survey(request):
     if check["vpn"] or check["tor"] or check["proxy"]:
         vpn_flag = True
 
-    if vpn_flag or check["fraud_score"] > FRAUD_THRESHOLD or countries[check_country] != project_client.country:
+    if (
+        vpn_flag
+        or check["fraud_score"] > FRAUD_THRESHOLD
+        or countries[check_country] != project_client.country
+    ):
         status = "terminated"
         qc_remarks = "DFP Terminated"
     else:
