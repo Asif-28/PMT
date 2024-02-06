@@ -133,7 +133,7 @@ def get_survey(request):
     redirect_url = redirect_url.replace("{trans_id}", key)
     logging.info(f"Redirecting to: {redirect_url}")
 
-    return redirect(f"{redirect_url}&trans={key}")
+    return redirect(f"{redirect_url}")
 
 
 def complete_survey(request):
