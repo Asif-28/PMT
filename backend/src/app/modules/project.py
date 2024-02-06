@@ -37,7 +37,7 @@ class ProjectCreation(models.Model):
             self.loi = f"{self.loi} Min"
         if self.target not in ("HCP", "B2B", "B2C"):
             raise ValueError("'target' must be one of HCP, B2B, B2C")
-        if self.status not in ("active", "closed"):
+        if self.status not in ("live", "end", "paused"):
             raise ValueError("'status' must be one of active, closed")
 
     def save(self, *args, **kwargs):
