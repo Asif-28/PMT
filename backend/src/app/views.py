@@ -43,6 +43,18 @@ def get_survey(request):
 
     check_country = check["country_code"]
 
+    try:
+        project_client: ProjectClient = ProjectClient.objects.get(
+            index_key=f"{project_code}+{country_code}"
+        ).select_related("project")
+        project_vendor = ProjectVendor.objects.get(
+            index_key=f"{project_code}+{vendor_code}"
+        )
+        project: ProjectCreation = project_client.project
+
+    except Exception as e:
+        return HttpResponse(f"Invalid Project Code or Vendor Code: {e}", status=400)
+
     if not is_test or project.security_check == False:
         # Bypass fraud check
         if check["fraud_score"] > FRAUD_THRESHOLD:
@@ -52,18 +64,6 @@ def get_survey(request):
             )
         if check["vpn"] or check["tor"] or check["proxy"]:
             return HttpResponse("Proxy/VPN detected", status=400)
-
-        try:
-            project_client: ProjectClient = ProjectClient.objects.get(
-                index_key=f"{project_code}+{country_code}"
-            ).select_related("project")
-            project_vendor = ProjectVendor.objects.get(
-                index_key=f"{project_code}+{vendor_code}"
-            )
-            project: ProjectCreation = project_client.project
-
-        except Exception as e:
-            return HttpResponse(f"Invalid Project Code or Vendor Code: {e}", status=400)
 
     if (
         project_vendor.pause_vendor == True
