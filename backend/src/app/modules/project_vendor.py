@@ -38,7 +38,11 @@ class ProjectVendor(models.Model):
 
     def save(self, *args, **kwargs):
         scope_limit(self.scope)
+
+        self.project = ProjectCreation.objects.get(project_code=self.project_code)
+        self.vendor = Vendor.objects.get(name=self.vendor_name)
         self.index_key = f"{self.project_code}+{self.vendor_code}"
+
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):

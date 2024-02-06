@@ -9,7 +9,7 @@ ProjectCreation model has a OneToOne relationship with Client model.
 class ProjectCreation(models.Model):
     project_name = models.CharField(max_length=255, unique=False)
     # Project creation can be many to one project code
-    project_code = models.CharField(max_length=255, unique=True)
+    project_code = models.CharField(max_length=255, unique=True, db_index=True)
 
     project_manager = models.CharField(max_length=255)
     client_name = models.CharField(max_length=255)
@@ -29,14 +29,20 @@ class ProjectCreation(models.Model):
 
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
 
-    def save(self, *args, **kwargs):
-        # Custom save method to handle data cleaning
+    def clean(self) -> None:
+        # Custom clean method to handle data cleaning
         if not self.incidence_rate.endswith("%"):
             self.incidence_rate = f"{self.incidence_rate}%"
         if not self.loi.endswith(" Min"):
             self.loi = f"{self.loi} Min"
-        if self.target not in ["HCP", "B2B", "B2C"]:
+        if self.target not in ("HCP", "B2B", "B2C"):
             raise ValueError("'target' must be one of HCP, B2B, B2C")
+        if self.status not in ("active", "closed"):
+            raise ValueError("'status' must be one of active, closed")
+
+    def save(self, *args, **kwargs):
+        # Custom save method to handle data cleaning
+        self.clean()
         super().save(*args, **kwargs)
 
     def __str__(self):

@@ -16,8 +16,10 @@ data = {
     "vendor_name": vendor_data["name"],
 }
 
+
 def test_create_project_vendor():
     request_post(f"{endpoint}/create", data, "created", 200)
+
 
 def test_list_project_vendor():
     response = request_get(f"{endpoint}/list")
@@ -30,4 +32,3 @@ def test_list_project_vendor():
             break
 
     assert match == True
-
