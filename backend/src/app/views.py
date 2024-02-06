@@ -95,7 +95,7 @@ def get_survey(request):
         vpn_flag = True
 
     if (
-        vpn_flag
+        vpn_flag == True
         or check["fraud_score"] > FRAUD_THRESHOLD
         or countries[check_country] != project_client.country
     ):
