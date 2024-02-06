@@ -43,6 +43,18 @@ def get_survey(request):
 
     check_country = check["country_code"]
 
+    try:
+        project_client: ProjectClient = ProjectClient.objects.get(
+            index_key=f"{project_code}+{country_code}"
+        ).select_related("project")
+        project_vendor = ProjectVendor.objects.get(
+            index_key=f"{project_code}+{vendor_code}"
+        )
+        project: ProjectCreation = project_client.project
+
+    except Exception as e:
+        return HttpResponse(f"Invalid Project Code or Vendor Code: {e}", status=400)
+
     if not is_test or project.security_check == False:
         # Bypass fraud check
         if check["fraud_score"] > FRAUD_THRESHOLD:
@@ -52,18 +64,6 @@ def get_survey(request):
             )
         if check["vpn"] or check["tor"] or check["proxy"]:
             return HttpResponse("Proxy/VPN detected", status=400)
-
-        try:
-            project_client: ProjectClient = ProjectClient.objects.get(
-                index_key=f"{project_code}+{country_code}"
-            ).select_related("project")
-            project_vendor = ProjectVendor.objects.get(
-                index_key=f"{project_code}+{vendor_code}"
-            )
-            project: ProjectCreation = project_client.project
-
-        except Exception as e:
-            return HttpResponse(f"Invalid Project Code or Vendor Code: {e}", status=400)
 
     if (
         project_vendor.pause_vendor == True
@@ -111,7 +111,7 @@ def get_survey(request):
 
     # return redirect(f"https://ipqualityscore.com/api/json/ip/{ip}?strictness=2&fast=1")
     redirect_url = project_client.test_link if is_test else project_client.live_link
-    redirect_url = redirect_url.format('{trans_id}', key)
+    redirect_url = redirect_url.format("{trans_id}", key)
     return redirect(f"{redirect_url}&trans={key}")
 
 
