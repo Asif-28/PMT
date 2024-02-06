@@ -34,6 +34,7 @@ def get_survey(request):
     country_code = request.GET["country_code"]
     vendor_code = request.GET["vendor_code"]
     vendor_id = request.GET["vendor_id"]
+    vpn_flag = False
 
     ip = get_request_ip(request)
 
@@ -62,8 +63,6 @@ def get_survey(request):
             return HttpResponse(
                 f"Fraud Score is too high: {check['fraud_score']} for {ip}", status=400
             )
-        if check["vpn"] or check["tor"] or check["proxy"]:
-            return HttpResponse("Proxy/VPN detected", status=400)
 
     if (
         project_vendor.pause_vendor == True
@@ -89,8 +88,17 @@ def get_survey(request):
             f"Survey Trace already exists by {ip} for {project_code}", status=400
         )
 
+    if check["vpn"] or check["tor"] or check["proxy"]:
+        vpn_flag = True
+        status = "terminated"
+        qc_remarks = "DFP Termination - VPN/Tor/Proxy"
+    else:
+        status = "insurvey"
+        qc_remarks = check["message"]
+
     ProjectSurveyTrace(
         key=key,
+        status=status,
         test=is_test,
         project_code=project_code,
         country_code=country_code,
@@ -101,23 +109,27 @@ def get_survey(request):
         fraud_score=check["fraud_score"],
         ip_proxy=check["proxy"],
         ip_region=check["region"],
-        qc_remarks=check["message"],
+        qc_remarks=qc_remarks,
         project_client=project_client,
         project_vendor=project_vendor,
     ).save()
 
     logging.info(f"Survey Trace: {key}")
-    logging.info(f"Redirecting to: {project_client.live_link}")
+
+    if vpn_flag:
+        return redirect("https://www.google.com")
 
     # return redirect(f"https://ipqualityscore.com/api/json/ip/{ip}?strictness=2&fast=1")
     redirect_url = project_client.test_link if is_test else project_client.live_link
     redirect_url = redirect_url.format("{trans_id}", key)
+    logging.info(f"Redirecting to: {redirect_url}")
+
     return redirect(f"{redirect_url}&trans={key}")
 
 
 def complete_survey(request):
     """
-    GET /complete_survey?key=123
+    GET /complete_survey?key=123&status=complete
     """
     key = request.GET.get("key", None)
     status = request.GET.get("status", None)
