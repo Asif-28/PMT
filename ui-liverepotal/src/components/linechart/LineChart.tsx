@@ -133,7 +133,7 @@ const MyView = () => {
   return (
     <ReactFusioncharts
       type="msspline"
-      width={900}
+      width={800}
       height={400}
       dataFormat="JSON"
       dataSource={dataSource}
