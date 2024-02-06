@@ -130,7 +130,7 @@ def get_survey(request):
 
     # return redirect(f"https://ipqualityscore.com/api/json/ip/{ip}?strictness=2&fast=1")
     redirect_url = project_client.test_link if is_test else project_client.live_link
-    redirect_url = redirect_url.format("{trans_id}", key)
+    redirect_url = redirect_url.replace("{trans_id}", key)
     logging.info(f"Redirecting to: {redirect_url}")
 
     return redirect(f"{redirect_url}&trans={key}")
