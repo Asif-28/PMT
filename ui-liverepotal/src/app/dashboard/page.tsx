@@ -1,4 +1,4 @@
-import MyView from "@/components/linechart/LineChart";
+import { MyView } from "@/components/linechart/LineChart";
 import Counts from "@/components/projectdetails/Counts";
 import PartnersProgress from "@/components/projectdetails/PartnersProgress";
 import SearchBar from "@/components/projectdetails/Search";
@@ -9,7 +9,7 @@ const page = () => {
     <div className="bg-gray-100">
       <SearchBar />
       <h3 className="my-14 section">
-        <span className="font-bold text-base text-gray-950">Hey Gaurav -</span>{" "}
+        <span className="font-bold text-base text-gray-950">Hey Gaurav -</span>
         <span className="text-gray-500">
           here&apos;s what&apos;s happening with your project today
         </span>
