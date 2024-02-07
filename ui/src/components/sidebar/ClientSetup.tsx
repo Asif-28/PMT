@@ -1,12 +1,13 @@
 import React, { useState, FormEvent, ChangeEvent } from "react";
-import { countrys } from "../data/data";
+import { countrys } from "../../data/data";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import Link from "next/link";
 import { ProjectCodeStore } from "@/store/ProjectCode";
-import UseProjectCodeList from "../hooks/ProjectCodeList";
-import UseClientListData from "../hooks/ClientList";
-import { ClientFormData as FormData } from "../utils/types";
+import UseProjectCodeList from "../../hooks/ProjectCodeList";
+import UseClientListData from "../../hooks/ClientList";
+import { ClientFormData as FormData } from "../../utils/types";
+import { countries } from "../../data/data";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -77,8 +78,16 @@ const ClientSetup: React.FC = () => {
   };
 
   const handleOptionCountry = (country: string) => {
-    setSelectedCountry(country);
-    setIsOpenCountry(false);
+    const selectedCountryObject = countries.find((c) => c.name === country);
+
+    if (selectedCountryObject) {
+      setSelectedCountry(country);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        countryCode: selectedCountryObject.code,
+      }));
+      setIsOpenCountry(false);
+    }
   };
 
   const handleToggleCountry = () => {
@@ -289,14 +298,14 @@ const ClientSetup: React.FC = () => {
                     aria-orientation="vertical"
                     aria-labelledby="options-menu"
                   >
-                    {countrys.map((country, index) => (
+                    {countries.map((country, index) => (
                       <div
                         key={index}
-                        onClick={() => handleOptionCountry(country)}
+                        onClick={() => handleOptionCountry(country.name)}
                         className="block px-4 py-4 text-sm text-gray-700 w-full hover:bg-[#a367b1] hover:text-[#392467] font-semibold  text-left  my-2 rounded-xl"
                         role="menuitem"
                       >
-                        {country}
+                        {country.name}
                       </div>
                     ))}
                   </div>

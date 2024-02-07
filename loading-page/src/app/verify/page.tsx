@@ -1,8 +1,5 @@
 "use client";
-import {
-  CaptchaProvider,
-  useCaptcha,
-} from "@/components/context/CaptchaContext";
+import { CaptchaProvider, useCaptcha } from "@/context/CaptchaContext";
 import { useState } from "react";
 
 import React from "react";

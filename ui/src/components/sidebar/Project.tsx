@@ -2,12 +2,12 @@
 import React, { useState } from "react";
 import "../../app/globals.css";
 import axios from "axios";
-import { projectStatusList } from "../data/data";
+import { projectStatusList } from "../../data/data";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { options } from "../data/data";
-import UseProjectCode from "../hooks/ProjectCodeValue";
-import { FormData as FormData } from "../utils/types";
+import { options } from "../../data/data";
+import UseProjectCode from "../../hooks/ProjectCodeValue";
+import { FormData as FormData } from "../../utils/types";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
