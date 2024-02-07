@@ -31,28 +31,30 @@ export const options = {
     },
     title: {
       display: true,
-      text: "Chart.js Line Chart",
+      text: "Partner Completes Chart (Last 10 Days)",
     },
   },
 };
 
-const labels = ["January", "February", "March", "April", "May", "June", "July"];
+const daysToShow = 10;
+const labels = Array.from({ length: daysToShow }, (_, i) => `Day ${i + 1}`);
 
 export const data = {
   labels,
   datasets: [
     {
-      label: "Dataset 1",
-      data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
+      label: "Partner 1",
+      data: labels.map(() => faker.datatype.number({ min: 0, max: 100 })),
       borderColor: "rgb(255, 99, 132)",
       backgroundColor: "rgba(255, 99, 132, 0.5)",
     },
     {
-      label: "Dataset 2",
-      data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
+      label: "Partner 2",
+      data: labels.map(() => faker.datatype.number({ min: 0, max: 100 })),
       borderColor: "rgb(53, 162, 235)",
       backgroundColor: "rgba(53, 162, 235, 0.5)",
     },
+    // Add more partners as needed
   ],
 };
 

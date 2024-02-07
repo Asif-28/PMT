@@ -22,7 +22,7 @@ const page = () => {
         todaysTarget={200}
         yesterdaysTarget={500}
       />
-      <div className="section flex justify-between mt-16">
+      <div className="section flex justify-between mt-16 gap-6">
         <MyView />
         <PartnersProgress value1={10} value2={8} value3={89} value4={35} />
       </div>
