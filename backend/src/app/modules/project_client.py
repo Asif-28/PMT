@@ -31,6 +31,7 @@ class ProjectClient(models.Model):
         #     raise ValueError(f"link requires placeholder {link_key_param}")
 
         return super().clean()
+
     def save(self, *args, **kwargs):
         self.index_key = f"{self.project_code}+{self.country_code}"
         self.project = ProjectCreation.objects.get(project_code=self.project_code)

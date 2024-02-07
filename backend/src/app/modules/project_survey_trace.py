@@ -21,7 +21,9 @@ class ProjectSurveyTrace(models.Model):
     qc_remarks = models.CharField(max_length=225, blank=True, null=True)
 
     project_client = models.ForeignKey(ProjectClient, on_delete=models.CASCADE)
-    project_vendor = models.ForeignKey(ProjectVendor, on_delete=models.SET_NULL, null=True)
+    project_vendor = models.ForeignKey(
+        ProjectVendor, on_delete=models.SET_NULL, null=True
+    )
 
     def clean(self):
         if self.status not in ("insurvey", "complete", "terminate", "overquota"):
