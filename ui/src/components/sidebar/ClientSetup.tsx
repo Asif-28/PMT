@@ -221,7 +221,7 @@ const ClientSetup: React.FC = () => {
               {ProjectCode.ProjectCode && (
                 <>
                   {loading ? (
-                    <div className="absolute z-50 bg-white shadow-lg my-2 px-4 py-3 text-base text-gray-700 w-full font-semibold text-left rounded-xl  h-48 md:h-64  mt-2 sm:w-full ring-1 ring-black ring-opacity-5 max-h-60">
+                    <div className="absolute z-50 bg-white shadow-lg my-2 px-4 py-3 text-base text-gray-700 w-full font-semibold text-left rounded-xl  h-48 md:h-60  mt-2 sm:w-full ring-1 ring-black ring-opacity-5 max-h-60">
                       <h3 className="text-center text-gray-900 font-semibold">
                         Loading...
                       </h3>

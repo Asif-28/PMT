@@ -59,8 +59,8 @@ const TimeZones = () => {
   }, []);
 
   return (
-    <main>
-      <div className=" px-10 py-7 shadow-xl rounded-md border border-gray-200 mb-20">
+    <main className="bg-gray-100">
+      <div className=" px-10 py-7 shadow-xl rounded-md border border-gray-200 mb-20 bg-[#fff]">
         <div className="pb-7 text-gray-500">Country Info</div>
 
         <div className="flex gap-8 items-start">
