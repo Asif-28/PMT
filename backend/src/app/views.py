@@ -109,6 +109,10 @@ def get_survey(request):
         status = "insurvey"
         qc_remarks = check["message"]
 
+    if is_test:
+        status = "insurvey"
+        qc_remarks = "Test Survey"
+
     ProjectSurveyTrace(
         key=key,
         status=status,
