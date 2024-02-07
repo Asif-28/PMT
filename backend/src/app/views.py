@@ -148,14 +148,32 @@ def complete_survey(request):
 
     try:
         project_survey_trace = ProjectSurveyTrace.objects.get(key=key)
-        if project_survey_trace.status == "complete":
-            return HttpResponse("Survey already completed", status=400)
-
-        project_survey_trace.objects.filter(key=key).update(
-            status="complete", end_time=datetime.datetime.utcnow()
-        )
-
+        project_vendor = project_survey_trace.project_vendor
     except Exception as e:
         return HttpResponse(f"Error: {e}", status=400)
 
-    return HttpResponse("Survey Completed")
+    if project_survey_trace.status == "complete":
+        redirect_url = project_vendor.complete
+
+    valid_status = {
+        "terminate": project_vendor.terminate,
+        "overquota": project_vendor.over_quota,
+        "complete": project_vendor.complete,
+    }
+
+    if status not in valid_status.keys():
+        return HttpResponse(f"Invalid status: {status}", status=400)
+    else:
+        redirect_url = valid_status[status]
+        if status == "terminate":
+            project_survey_trace.objects.filter(key=key).update(
+                status=status,
+                end_time=datetime.datetime.utcnow(),
+                qc_remarks="Client Terminat",
+            )
+        else:
+            project_survey_trace.objects.filter(key=key).update(
+                status=status, end_time=datetime.datetime.utcnow()
+            )
+
+    return redirect(redirect_url)
