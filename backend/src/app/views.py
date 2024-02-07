@@ -129,7 +129,7 @@ def get_survey(request):
 
     logging.info(f"Survey Trace: {key}")
 
-    if vpn_flag:
+    if vpn_flag and is_test == False:
         return redirect("https://www.google.com")
 
     # return redirect(f"https://ipqualityscore.com/api/json/ip/{ip}?strictness=2&fast=1")
