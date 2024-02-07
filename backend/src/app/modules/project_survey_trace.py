@@ -7,7 +7,7 @@ class ProjectSurveyTrace(models.Model):
     key = models.CharField(max_length=225, unique=True, db_index=True)
     test = models.BooleanField(db_default=False)
     start_time = models.DateTimeField(auto_now_add=True)
-    end_time = models.DateTimeField(auto_now=True, blank=True, null=True)
+    end_time = models.DateTimeField(blank=True, null=True)
     status = models.CharField(max_length=225, db_default="insurvey")
     project_code = models.CharField(max_length=225)
     vendor_code = models.CharField(max_length=225)
@@ -21,7 +21,17 @@ class ProjectSurveyTrace(models.Model):
     qc_remarks = models.CharField(max_length=225, blank=True, null=True)
 
     project_client = models.ForeignKey(ProjectClient, on_delete=models.CASCADE)
-    project_vendor = models.ForeignKey(ProjectVendor, on_delete=models.CASCADE)
+    project_vendor = models.ForeignKey(ProjectVendor, on_delete=models.SET_NULL, null=True)
+
+    def clean(self):
+        if self.status not in ("insurvey", "complete", "terminate", "overquota"):
+            return ValueError("Invalid status value")
+        if self.end_time == None and self.status == "insurvey":
+            return ValueError("Invalid status value")
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.key} | {self.project_code} | {self.project_client} | {self.vendor_code}"

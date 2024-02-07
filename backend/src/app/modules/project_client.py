@@ -16,7 +16,7 @@ class ProjectClient(models.Model):
     scope = models.IntegerField()
     test_link = models.URLField()
     live_link = models.URLField()
-    check_country = models.BooleanField()
+    country_pause = models.BooleanField()
     check_quota = models.BooleanField()
     # ForeignKey relationship with ProjectCreation
     project = models.ForeignKey(ProjectCreation, on_delete=models.CASCADE)
@@ -25,8 +25,15 @@ class ProjectClient(models.Model):
     class Meta:
         unique_together = (("project_code", "country_code"),)
 
+    def clean(self) -> None:
+        link_key_param = "{trans_id}"
+        if link_key_param not in self.test_link or link_key_param not in self.live_link:
+            raise ValueError(f"link requires placeholder {link_key_param}")
+
+        return super().clean()
     def save(self, *args, **kwargs):
         self.index_key = f"{self.project_code}+{self.country_code}"
+        self.project = ProjectCreation.objects.get(project_code=self.project_code)
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
