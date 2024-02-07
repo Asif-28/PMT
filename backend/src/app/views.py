@@ -162,7 +162,7 @@ def complete_survey(request):
 
     if project_survey_trace.status != "insurvey":
         return HttpResponse(
-            f"Survey Trace is already completed: {project_survey_trace.status}",
+            f"Survey Trace is already: {project_survey_trace.status}",
             status=400,
         )
 
