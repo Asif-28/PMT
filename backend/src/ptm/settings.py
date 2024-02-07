@@ -29,10 +29,7 @@ SECRET_KEY = os.getenv(
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = [
-    "https://*.trycloudflare.com",
-    "https://foo.decopoint.co.in"
-]
+CSRF_TRUSTED_ORIGINS = ["https://*.trycloudflare.com", "https://foo.decopoint.co.in"]
 
 # Application definition
 

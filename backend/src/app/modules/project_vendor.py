@@ -20,9 +20,9 @@ class ProjectVendor(models.Model):
     project_code = models.CharField(max_length=255)
     vendor_code = models.CharField(max_length=255)
     scope = models.IntegerField()
-    complete = models.CharField(max_length=255)
-    terminate = models.CharField(max_length=255)
-    over_quota = models.CharField(max_length=255)
+    complete = models.URLField(max_length=255)
+    terminate = models.URLField(max_length=255)
+    over_quota = models.URLField(max_length=255)
     pause_vendor = models.BooleanField()
     vendor_name = models.CharField(max_length=255)
 
