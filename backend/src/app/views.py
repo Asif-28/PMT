@@ -11,13 +11,13 @@ from .modules.project_client import ProjectClient
 from .modules.project_vendor import ProjectVendor
 
 from ._country_codes import countries
-from .utils import get_request_ip
+from .utils import get_request_ip, random_value
 from .validators import validate_ipqualityscore
 
 
 def get_survey(request):
     """
-    # GET /survey?project_code=123&country_code=US&vendor_code=123&vendor_id=123&id_test=true
+    # GET /survey?project_code=123&country_code=US&vendor_code=123&vendor_id=123&is_test=true
     is_test
     project_code
     country_code
@@ -29,14 +29,18 @@ def get_survey(request):
     """
     FRAUD_THRESHOLD = 70
 
-    is_test = request.GET.get("is_test", False)
+    is_test: bool = request.GET.get("is_test", False)
     project_code = request.GET["project_code"]
     country_code = request.GET["country_code"]
     vendor_code = request.GET["vendor_code"]
     vendor_id = request.GET["vendor_id"]
-    vpn_flag = False
+    vpn_flag: bool = False
 
     ip = get_request_ip(request)
+
+    if is_test:
+        ip = random_value("ip")
+        is_test = True
 
     # Validate Request IP
     check = validate_ipqualityscore(ip, "r1LFO51aNeoubwpklFFjseJTqYlTNojF")
