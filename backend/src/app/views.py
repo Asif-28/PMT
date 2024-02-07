@@ -160,8 +160,11 @@ def complete_survey(request):
     except Exception as e:
         return HttpResponse(f"Error: {e}", status=400)
 
-    if project_survey_trace.status == "complete":
-        redirect_url = project_vendor.complete
+    if project_survey_trace.status != "insurvey":
+        return HttpResponse(
+            f"Survey Trace is already completed: {project_survey_trace.status}",
+            status=400,
+        )
 
     valid_status = {
         "terminate": project_vendor.terminate,
