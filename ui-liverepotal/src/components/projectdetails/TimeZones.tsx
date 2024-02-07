@@ -72,10 +72,7 @@ const TimeZones = () => {
               {currentTime} {` `}
               {dayNight}
             </div>
-            <div className="text-base text-gray-950 md:text-xl">
-              {" "}
-              {timezone}
-            </div>
+            <div className="text-base text-gray-950 md:text-xl">{timezone}</div>
           </div>
           {/* flag */}
           <div>

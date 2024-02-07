@@ -146,7 +146,7 @@ const ClientSetup: React.FC = () => {
             scope: scope,
             test_link: testLink,
             live_link: liveLink,
-            check_country: checkcountry,
+            country_pause: checkcountry,
             check_quota: checkQuota,
           },
           {
@@ -172,7 +172,11 @@ const ClientSetup: React.FC = () => {
       }
       // Handle form submission logic here
     } catch (error: any) {
-      toast.error(error);
+      {
+        error.message === "Request failed with status code 400"
+          ? toast.error(error.response.data.detail)
+          : toast.error("Error in Submitting");
+      }
     }
   };
 
@@ -217,8 +221,10 @@ const ClientSetup: React.FC = () => {
               {ProjectCode.ProjectCode && (
                 <>
                   {loading ? (
-                    <div className="absolute z-50 bg-white shadow-lg my-2 px-4 py-3 text-base text-gray-700 w-full font-semibold text-left rounded-xl  h-48">
-                      Loading...
+                    <div className="absolute z-50 bg-white shadow-lg my-2 px-4 py-3 text-base text-gray-700 w-full font-semibold text-left rounded-xl  h-48 md:h-64  mt-2 sm:w-full ring-1 ring-black ring-opacity-5 max-h-60">
+                      <h3 className="text-center text-gray-900 font-semibold">
+                        Loading...
+                      </h3>
                     </div>
                   ) : (
                     <>

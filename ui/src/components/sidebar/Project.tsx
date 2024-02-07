@@ -178,7 +178,7 @@ const Form: React.FC = () => {
     } catch (error: any) {
       {
         error.message === "Request failed with status code 400"
-          ? toast.error("Enter Unique Project Key")
+          ? toast.error(error.response.data.detail)
           : toast.error("Error in Submitting");
       }
     }
