@@ -174,13 +174,13 @@ def complete_survey(request):
     else:
         redirect_url = valid_status[status]
         if status == "terminate":
-            project_survey_trace.objects.filter(key=key).update(
+            ProjectSurveyTrace.objects.filter(key=key).update(
                 status=status,
                 end_time=datetime.datetime.utcnow(),
                 qc_remarks="Client Terminat",
             )
         else:
-            project_survey_trace.objects.filter(key=key).update(
+            ProjectSurveyTrace.objects.filter(key=key).update(
                 status=status, end_time=datetime.datetime.utcnow()
             )
 
