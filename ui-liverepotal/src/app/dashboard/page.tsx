@@ -2,6 +2,7 @@ import { MyView } from "@/components/linechart/LineChart";
 import Counts from "@/components/projectdetails/Counts";
 import PartnersProgress from "@/components/projectdetails/PartnersProgress";
 import SearchBar from "@/components/projectdetails/Search";
+import TimeZones from "@/components/projectdetails/TimeZones";
 import React from "react";
 
 const page = () => {
@@ -26,6 +27,7 @@ const page = () => {
         <MyView />
         <PartnersProgress value1={10} value2={8} value3={89} value4={35} />
       </div>
+      <TimeZones />
     </div>
   );
 };
