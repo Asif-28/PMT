@@ -60,7 +60,7 @@ export const data = {
 
 export function MyView() {
   return (
-    <div className="w-full">
+    <div className="w-3/5">
       <Line options={options} data={data} />
     </div>
   );
