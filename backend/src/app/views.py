@@ -176,4 +176,7 @@ def complete_survey(request):
                 status=status, end_time=datetime.datetime.utcnow()
             )
 
+    redirect_url = redirect_url.replace("{vendor_id}", project_survey_trace.vendor_id)
+    logging.info(f"Redirecting to: {redirect_url}")
+
     return redirect(redirect_url)
