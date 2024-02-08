@@ -4,6 +4,7 @@ export interface FormData {
   projectManager: string;
   clientName: string;
   clientProjectManager: string;
+  scope: number;
   incidenceRate: string;
   loi: string;
   targetDescription: string;

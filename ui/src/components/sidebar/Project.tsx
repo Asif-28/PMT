@@ -18,6 +18,7 @@ const Form: React.FC = () => {
     projectManager: "",
     clientName: "",
     clientProjectManager: "",
+    scope: 0,
     incidenceRate: "",
     loi: "",
     targetDescription: "",
@@ -71,6 +72,7 @@ const Form: React.FC = () => {
       !projectCodeNo ||
       !formData.projectManager ||
       !formData.clientProjectManager ||
+      !formData.scope ||
       !formData.incidenceRate ||
       !formData.loi ||
       !selectedOption ||
@@ -136,6 +138,7 @@ const Form: React.FC = () => {
             project_manager: projectManager,
             client_name: clientName,
             client_project_manager: clientProjectManager,
+            scope: formData.scope,
             incidence_rate: incidenceRate,
             loi: loi,
             target: selectedOption,
@@ -161,6 +164,7 @@ const Form: React.FC = () => {
             projectManager: "",
             clientName: "",
             clientProjectManager: "",
+            scope: 0,
             incidenceRate: "",
             loi: "",
             targetDescription: "",
@@ -291,6 +295,25 @@ const Form: React.FC = () => {
                 value={formData.clientProjectManager}
                 onChange={handleChange}
                 placeholder="Enter your Client Project Manager "
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="scope"
+                className="block text-gray-500 font-medium mb-4"
+              >
+                Scope *
+              </label>
+              <input
+                required
+                type="number"
+                id="scope"
+                name="scope"
+                min={0}
+                value={formData.scope}
+                onChange={handleChange}
+                placeholder="Enter your Scope "
                 className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
