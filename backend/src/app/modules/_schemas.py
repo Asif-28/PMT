@@ -18,7 +18,7 @@ class ProjectClientSchema(ModelSchema):
     class Meta:
         model = ProjectClient
         fields = "__all__"
-        exclude = ["id", "project"]
+        exclude = ["id", "project", "index_key"]
 
 
 class ClientSchema(ModelSchema):
@@ -38,4 +38,4 @@ class ProjectVendorSchema(ModelSchema):
     class Meta:
         model = ProjectVendor
         fields = "__all__"
-        exclude = ["id", "project", "vendor"]
+        exclude = ["id", "project", "vendor","index_key"]
