@@ -43,6 +43,16 @@ def get_survey(request):
         ip = random_value("ip")
         is_test = True
 
+    # Setup Index Key Hash for Survey Trace
+    _key_prefix = "test_" if is_test else "live_"
+    key = _key_prefix + md5(f"{ip}_{project_code}_{country_code}".encode()).hexdigest()
+
+    # Save Survey Trace to DB
+    if ProjectSurveyTrace.objects.filter(key=key).exists():
+        return HttpResponse(
+            f"Survey Trace already exists by {ip} for {project_code}", status=400
+        )
+
     # Validate Request IP
     check = validate_ipqualityscore(ip, "r1LFO51aNeoubwpklFFjseJTqYlTNojF")
     logging.info(f"IPQualityScore: {check}")
@@ -86,16 +96,6 @@ def get_survey(request):
     #         status=400,
     #     )
 
-    # Setup Index Key Hash for Survey Trace
-    _key_prefix = "test_" if is_test else "live_"
-    key = _key_prefix + md5(f"{ip}_{project_code}_{country_code}".encode()).hexdigest()
-
-    # Save Survey Trace to DB
-    if ProjectSurveyTrace.objects.filter(key=key).exists():
-        return HttpResponse(
-            f"Survey Trace already exists by {ip} for {project_code}", status=400
-        )
-
     if check["vpn"] or check["tor"] or check["proxy"]:
         vpn_flag = True
 
@@ -114,14 +114,41 @@ def get_survey(request):
         status = "insurvey"
         qc_remarks = "Test Survey"
 
-    # Check Project Quota
-    project_quota_count: int = ProjectSurveyTrace.objects.filter(
-        project_code=project_code, status="complete", country_code=country_code
-    ).aggregate(complete_count=Count("id"))["complete_count"]
+    # Check country Quota
+    if project_client.check_quota == True:
+        project_quota_count: int = ProjectSurveyTrace.objects.filter(
+            project_code=project_code,
+            status="complete",
+            country_code=country_code,
+            # test=False,
+        ).aggregate(complete_count=Count("id"))["complete_count"]
 
-    if project_quota_count >= project_client.scope and project_client.check_quota == True:
+        if project_quota_count >= project_client.scope:
+            return HttpResponse("Country Quota is achived", status=200)
+
+    # Check Vendor Quota
+    if project_vendor.pause_vendor == False:
+        project_vendor_quota_count: int = ProjectSurveyTrace.objects.filter(
+            project_code=project_code,
+            vendor_code=vendor_code,
+            status="complete",
+            # test=False,
+        ).aggregate(complete_count=Count("id"))["complete_count"]
+
+        if project_vendor_quota_count >= project_vendor.scope:
+            return HttpResponse("Vendor Quota is achived", status=200)
+
+    # Check Project Quota
+    if (
+        ProjectSurveyTrace.objects.filter(
+            project_code=project_code,
+            status="complete",
+            # test=False,
+        ).aggregate(complete_count=Count("id"))["complete_count"]
+        >= project.scope
+    ):
         return HttpResponse("Project Quota is achived", status=200)
-    
+
     # Save Survey Trace
     ProjectSurveyTrace(
         key=key,
