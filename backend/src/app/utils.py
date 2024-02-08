@@ -1,6 +1,7 @@
 import time
 import hashlib
 from typing import Any
+import random
 
 from ninja import Schema
 from ninja.errors import HttpError
@@ -53,3 +54,8 @@ def get_request_ip(request):
 
 def uniq_md5_hash():
     return hashlib.md5(str(time.time()).encode()).hexdigest()
+
+
+def random_value(flag: str = "ip"):
+    if flag == "ip":
+        return ".".join(str(random.randint(0, 255)) for _ in range(4))
