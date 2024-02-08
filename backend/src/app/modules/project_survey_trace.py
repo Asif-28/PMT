@@ -8,6 +8,9 @@ class ProjectSurveyTrace(models.Model):
     test = models.BooleanField(db_default=False)
     start_time = models.DateTimeField(auto_now_add=True)
     end_time = models.DateTimeField(blank=True, null=True)
+    # end_time - start_time = duration
+    duration = models.DurationField(blank=True, null=True)
+
     status = models.CharField(max_length=225, db_default="insurvey")
     project_code = models.CharField(max_length=225)
     vendor_code = models.CharField(max_length=225)
@@ -31,8 +34,16 @@ class ProjectSurveyTrace(models.Model):
         if self.end_time == None and self.status == "insurvey":
             return ValueError("Invalid status value")
 
+    def total_duration(self):
+        if self.start_time and self.end_time:
+            return self.end_time - self.start_time
+        else:
+            # Handle cases where times are missing or invalid
+            return None
+
     def save(self, *args, **kwargs):
         self.clean()
+        self.duration = self.total_duration()
         super().save(*args, **kwargs)
 
     def __str__(self):
