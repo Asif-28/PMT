@@ -89,7 +89,6 @@ const VendorSetup: React.FC = () => {
       !VendorProjectCode.ProjectCode ||
       !formData.vendorCode ||
       !formData.scope ||
-      !formData.pauseVendor ||
       !formData.complete ||
       !formData.terminate ||
       !formData.overQuota
