@@ -2,6 +2,7 @@ import logging
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from hashlib import md5
+from django.db.models import Count
 
 import time
 import datetime
@@ -113,6 +114,15 @@ def get_survey(request):
         status = "insurvey"
         qc_remarks = "Test Survey"
 
+    # Check Project Quota
+    project_quota_count: int = ProjectSurveyTrace.objects.filter(
+        project_code=project_code, status="complete", country_code=country_code
+    ).aggregate(complete_count=Count("id"))["complete_count"]
+
+    if project_quota_count >= project_client.scope and project_client.check_quota == True:
+        return HttpResponse("Project Quota is achived", status=200)
+    
+    # Save Survey Trace
     ProjectSurveyTrace(
         key=key,
         status=status,
