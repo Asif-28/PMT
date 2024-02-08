@@ -26,6 +26,7 @@ class ProjectCreation(models.Model):
     methodology = models.CharField(max_length=100, blank=True)
     billing_comments = models.CharField(max_length=500)
     security_check = models.BooleanField()
+    scope = models.IntegerField()
 
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
 
