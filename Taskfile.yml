@@ -22,7 +22,7 @@ includes:
 
 tasks:
   start-backend:
-    desc:
+    deps:
     - backend:ecr-build-push
     cmds:
       - git pull
