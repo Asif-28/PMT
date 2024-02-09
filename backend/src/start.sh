@@ -14,7 +14,7 @@ function _django_config {
 
   if [[ "$STAGE" == "PRODUCTION" || "$STAGE" == "TESTING" ]]; then
     echo "------------ Running gunicorn ----------------"
-    gunicorn decopoint.wsgi:application -b 0.0.0.0:$RUN_PORT
+    gunicorn pmt.wsgi:application -b 0.0.0.0:$RUN_PORT
   else
     python3 manage.py runserver 0.0.0.0:$RUN_PORT
   fi
