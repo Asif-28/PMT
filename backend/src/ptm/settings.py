@@ -26,7 +26,8 @@ SECRET_KEY = os.getenv(
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
+DEBUG = False if os.getenv("DISABLE_DEBUG") else True
 
 ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = ["https://*.trycloudflare.com", "https://foo.decopoint.co.in"]
