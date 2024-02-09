@@ -647,9 +647,121 @@ const Form: React.FC = () => {
           <div className="py-5">
             <ul>
               {searchResults.map((project) => (
-                <li key={project.project_code}>
-                  <p>Project Name: {project.project_name}</p>
-                  <p>Project Code: {project.project_code}</p>
+                <li className="" key={project.project_code}>
+                  <p>
+                    <span className="font-semibold text-[1.1rem]">
+                      Project Name:
+                    </span>
+                    <span className="ml-2 text-base text-gray-500">
+                      {project.project_name}
+                    </span>
+                  </p>
+                  <p>
+                    <span className="font-semibold text-[1.1rem]">
+                      Project Code:
+                    </span>
+                    <span className="ml-2 text-base text-gray-500">
+                      {" "}
+                      {project.project_code}
+                    </span>
+                  </p>
+                  <p>
+                    <span className="font-semibold text-[1.1rem]">
+                      project_manager:
+                    </span>
+                    <span className="ml-2 text-base text-gray-500">
+                      {project.project_manager}
+                    </span>
+                  </p>
+                  <p>
+                    <span className="font-semibold text-[1.1rem]">
+                      client_name:
+                    </span>
+                    <span className="ml-2 text-base text-gray-500">
+                      {" "}
+                      {project.client_name}
+                    </span>
+                  </p>
+                  <p>
+                    <span className="font-semibold text-[1.1rem]">
+                      client_project_manager :
+                    </span>
+                    <span className="ml-2 text-base text-gray-500">
+                      {project.client_project_manager}
+                    </span>
+                  </p>
+                  <p>
+                    <span className="font-semibold text-[1.1rem]">
+                      incidence_rate:
+                    </span>{" "}
+                    <span className="ml-2 text-base text-gray-500">
+                      {project.incidence_rate}
+                    </span>
+                  </p>
+                  <p>
+                    <span className="font-semibold text-[1.1rem]">loi:</span>
+                    <span className="ml-2 text-base text-gray-500">
+                      {project.loi}
+                    </span>
+                  </p>
+                  <p>
+                    <span className="font-semibold text-[1.1rem]">target:</span>
+                    <span className="ml-2 text-base text-gray-500">
+                      {project.target}
+                    </span>
+                  </p>
+                  <p>
+                    <span className="font-semibold text-[1.1rem]">
+                      target_description:
+                    </span>
+                    <span className="ml-2 text-base text-gray-500">
+                      {project.target_description}
+                    </span>
+                  </p>
+                  <p>
+                    <span className="font-semibold text-[1.1rem]">status:</span>
+                    <span className="ml-2 text-base text-gray-500">
+                      {" "}
+                      {project.status}
+                    </span>
+                  </p>
+                  <p>
+                    <span className="font-semibold text-[1.1rem]">online:</span>
+                    <span className="ml-2 text-base text-gray-500">
+                      {" "}
+                      {project.online}
+                    </span>
+                  </p>
+                  <p>
+                    <span className="font-semibold text-[1.1rem]">
+                      methodology:
+                    </span>
+                    <span className="ml-2 text-base text-gray-500">
+                      {project.methodology}
+                    </span>
+                  </p>
+                  <p>
+                    <span className="font-semibold text-[1.1rem]">
+                      billing_comments:
+                    </span>
+                    <span className="ml-2 text-base text-gray-500">
+                      {project.billing_comments}
+                    </span>
+                  </p>
+                  <p>
+                    <span className="font-semibold text-[1.1rem]">
+                      security_check:
+                    </span>
+                    <span className="ml-2 text-base text-gray-500">
+                      {project.security_check}
+                    </span>
+                  </p>
+                  <p>
+                    <span className="font-semibold text-[1.1rem]">scope:</span>{" "}
+                    <span className="ml-2 text-base text-gray-500">
+                      {project.scope}
+                    </span>
+                  </p>
                 </li>
               ))}
             </ul>
