@@ -19,3 +19,12 @@ includes:
       CF_PUSH: "true"
       CF_DISTRIBUTION_ID: "ENGIBT49ANBXI"
       CF_S3_BUCKET: "pmt-ui"
+
+tasks:
+  start-backend:
+    desc:
+    - backend:ecr-build-push
+    cmds:
+      - git pull
+      - docker compose -f docker-compose.prod.yml pull
+      - docker compose -f docker-compose.prod.yml up -d
