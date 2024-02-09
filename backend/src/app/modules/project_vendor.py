@@ -37,7 +37,7 @@ class ProjectVendor(models.Model):
         return f"{self.vendor_code} - {self.vendor_name}"
 
     def save(self, *args, **kwargs):
-        scope_limit(self.scope)
+        # scope_limit(self.scope)
 
         self.project = ProjectCreation.objects.get(project_code=self.project_code)
         self.vendor = Vendor.objects.get(name=self.vendor_name)
