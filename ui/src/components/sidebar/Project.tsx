@@ -661,7 +661,6 @@ const Form: React.FC = () => {
                       Project Code:
                     </span>
                     <span className="ml-2 text-base text-gray-500">
-                      {" "}
                       {project.project_code}
                     </span>
                   </p>
@@ -678,7 +677,6 @@ const Form: React.FC = () => {
                       client_name:
                     </span>
                     <span className="ml-2 text-base text-gray-500">
-                      {" "}
                       {project.client_name}
                     </span>
                   </p>
@@ -693,7 +691,7 @@ const Form: React.FC = () => {
                   <p>
                     <span className="font-semibold text-[1.1rem]">
                       incidence_rate:
-                    </span>{" "}
+                    </span>
                     <span className="ml-2 text-base text-gray-500">
                       {project.incidence_rate}
                     </span>
@@ -721,14 +719,12 @@ const Form: React.FC = () => {
                   <p>
                     <span className="font-semibold text-[1.1rem]">status:</span>
                     <span className="ml-2 text-base text-gray-500">
-                      {" "}
                       {project.status}
                     </span>
                   </p>
                   <p>
                     <span className="font-semibold text-[1.1rem]">online:</span>
                     <span className="ml-2 text-base text-gray-500">
-                      {" "}
                       {project.online}
                     </span>
                   </p>
@@ -748,14 +744,16 @@ const Form: React.FC = () => {
                       {project.billing_comments}
                     </span>
                   </p>
-                  <p>
+                  {/* Security Check  */}
+
+                  {/* <p>
                     <span className="font-semibold text-[1.1rem]">
                       security_check:
                     </span>
                     <span className="ml-2 text-base text-gray-500">
                       {project.security_check}
                     </span>
-                  </p>
+                  </p> */}
                   <p>
                     <span className="font-semibold text-[1.1rem]">scope:</span>{" "}
                     <span className="ml-2 text-base text-gray-500">
