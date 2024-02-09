@@ -64,8 +64,6 @@ const AddNewClient: React.FC = () => {
       }
       // Handle form submission logic here
     } catch (error: any) {
-      // console.error("Error submitting form:", error);
-      // toast.error("Project Code Should be Unique");
       toast.error(error);
     }
   };

@@ -5,7 +5,7 @@ import Image from "next/image";
 const PartnersProgress = ({ value1, value2, value3, value4 }: any) => {
   return (
     <div className="flex flex-col">
-      <div className="min-w-[30rem] max-w-[32rem] shadow-xl px-8 py-3 rounded-2xl bg-[#fff]">
+      <div className="md:min-w-[30rem] max-w-[32rem] shadow-xl px-8 py-3 rounded-2xl bg-[#fff]">
         <div className="flex justify-between pt-4 pb-6 px-2">
           <h2 className="font-bold text-gray-950">Completed Sources</h2>
           <p className="text-sm">Today</p>
@@ -35,7 +35,7 @@ const PartnersProgress = ({ value1, value2, value3, value4 }: any) => {
         <h3 className="text-gray-600">Performance</h3>
       </div>
       {/* logo end  */}
-      <div className="min-w-[30rem] max-w-[32rem] shadow-xl px-8 py-3 rounded-2xl mt-5 bg-[#fff]">
+      <div className="md:min-w-[30rem] max-w-[32rem] shadow-xl px-8 py-3 rounded-2xl bg-[#fff]">
         <div className="flex justify-between pt-4 pb-6 px-2">
           <h2 className="font-bold text-gray-950">Data Summary</h2>
           <p className="text-sm">Overall</p>

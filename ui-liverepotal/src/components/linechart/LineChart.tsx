@@ -60,8 +60,8 @@ export const data = {
 
 export function MyView() {
   return (
-    <div className="w-full">
-      <Line options={options} data={data} />
+    <div className="w-3/5">
+      <Line className="bg-white" options={options} data={data} />
     </div>
   );
 }

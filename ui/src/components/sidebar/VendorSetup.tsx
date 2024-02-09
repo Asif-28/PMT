@@ -89,7 +89,6 @@ const VendorSetup: React.FC = () => {
       !VendorProjectCode.ProjectCode ||
       !formData.vendorCode ||
       !formData.scope ||
-      !formData.pauseVendor ||
       !formData.complete ||
       !formData.terminate ||
       !formData.overQuota
@@ -140,9 +139,11 @@ const VendorSetup: React.FC = () => {
       }
       // Handle form submission logic here
     } catch (error: any) {
-      // console.error("Error submitting form:", error);
-      // toast.error("Project Code Should be Unique");
-      toast.error(error);
+      {
+        error.message === "Request failed with status code 400"
+          ? toast.error(error.response.data.detail)
+          : toast.error("Error in Submitting");
+      }
     }
   };
   // fetch all the vendor list
@@ -205,8 +206,10 @@ const VendorSetup: React.FC = () => {
               {VendorProjectCode.ProjectCode && (
                 <>
                   {loading ? (
-                    <div className="absolute z-50 bg-white shadow-lg my-2 px-4 py-3 text-base text-gray-700 w-full font-semibold text-left rounded-xl">
-                      Loading...
+                    <div className="absolute z-50 bg-white shadow-lg my-2 px-4 py-3 text-base text-gray-700 w-full font-semibold text-left rounded-xl  h-48 md:h-60  mt-2 sm:w-full ring-1 ring-black ring-opacity-5 max-h-60">
+                      <h3 className="text-center text-gray-900 font-semibold">
+                        Loading...
+                      </h3>
                     </div>
                   ) : (
                     <>
@@ -254,7 +257,6 @@ const VendorSetup: React.FC = () => {
                 type="text"
                 id="vendorCode"
                 name="vendorCode"
-                min={0}
                 value={formData.vendorCode}
                 onChange={handleChange}
                 placeholder="Enter your Input Field"
@@ -323,6 +325,7 @@ const VendorSetup: React.FC = () => {
                 type="number"
                 id="scope"
                 name="scope"
+                min={0}
                 value={formData.scope}
                 onChange={handleChange}
                 placeholder="Enter your Scope "

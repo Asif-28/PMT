@@ -46,7 +46,7 @@ const AddNewVendor: React.FC = () => {
             },
           }
         );
-        // console.log(data.level, "success");
+
         toast.success("Vendor created successfully");
         if (data.status_code === 200) {
           setFormData({
@@ -57,8 +57,6 @@ const AddNewVendor: React.FC = () => {
       }
       // Handle form submission logic here
     } catch (error: any) {
-      // console.error("Error submitting form:", error);
-      // toast.error("Project Code Should be Unique");
       toast.error(error);
     }
   };
