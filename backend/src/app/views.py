@@ -54,7 +54,20 @@ def get_survey(request):
         )
 
     # Validate Request IP
-    check = validate_ipqualityscore(ip, "r1LFO51aNeoubwpklFFjseJTqYlTNojF")
+    if not is_test:
+        check = validate_ipqualityscore(ip, "r1LFO51aNeoubwpklFFjseJTqYlTNojF")
+    else:
+        # Temprory Test Check
+        check = {
+            "fraud_score": 0,
+            "message": "Test Survey",
+            "country_code": country_code,
+            "proxy": False,
+            "region": "Test",
+            "vpn": False,
+            "tor": False,
+        }
+
     logging.info(f"IPQualityScore: {check}")
 
     check_country = check["country_code"]
