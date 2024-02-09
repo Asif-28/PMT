@@ -31,6 +31,7 @@ pymemcache = "^4.0.0"
 django-extensions = "^3.2.3"
 django-cors-headers = "^4.3.1"
 mysqlclient = "^2.2.1"
+gunicorn = "^21.2.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.4"
