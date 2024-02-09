@@ -621,7 +621,7 @@ const Form: React.FC = () => {
         </h2>
         <div className="flex flex-col justify-center gap-5 py-4">
           <input
-            className=" appearance-none font-light border border-gray-500 rounded-xl min-w-[310px] max-w-[30%] py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+            className=" appearance-none md:max-w-[30%] font-light border border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
             type="text"
             value={searchString}
             onChange={(e) => setSearchString(e.target.value)}
