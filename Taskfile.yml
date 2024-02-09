@@ -15,7 +15,7 @@ includes:
     taskfile: "./.taskci/task-templates/templates/aws.yml"
     vars:
       PATH: "./ui"
-      BUILD_DIR: ".next/server/app"
+      BUILD_DIR: "out"
       CF_PUSH: "true"
       CF_DISTRIBUTION_ID: "ENGIBT49ANBXI"
       CF_S3_BUCKET: "pmt-ui"
