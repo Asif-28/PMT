@@ -1,6 +1,21 @@
 version: '3'
 
-dotenv: ['.env', '{{.ENV}}/.env.', '{{.HOME}}/.env']
+# dotenv: ['.env', '{{.ENV}}/.env.', '{{.HOME}}/.env']
 
 includes:
-  aws: ".taskci/task-templates/templates/aws.yml"
+  backend:
+    taskfile: "./.taskci/task-templates/templates/aws.yml"
+    vars:
+      IMAGE_TAG: "development"
+      AWS_DEFAULT_REGION: "us-east-1"
+      ECR_REPOSITORY: "pmt"
+      PATH: "./backend"
+
+  ui:
+    taskfile: "./.taskci/task-templates/templates/aws.yml"
+    vars:
+      PATH: "./ui"
+      BUILD_DIR: "out"
+      CF_PUSH: "true"
+      CF_DISTRIBUTION_ID: "ENGIBT49ANBXI"
+      CF_S3_BUCKET: "pmt-ui"
