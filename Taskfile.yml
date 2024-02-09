@@ -3,7 +3,7 @@ version: '3'
 # dotenv: ['.env', '{{.ENV}}/.env.', '{{.HOME}}/.env']
 
 includes:
-  backend:
+  aws:
     taskfile: "./.taskci/task-templates/templates/aws.yml"
     vars:
       IMAGE_TAG: "development"
@@ -21,12 +21,17 @@ includes:
       CF_S3_BUCKET: "pmt-ui"
 
 tasks:
-  start-backend:
-    deps:
-    - backend:ecr-build-push
+  backend:pull:
     cmds:
       - git pull
-      - docker compose -f docker-compose.prod.yml pull
+  backend:build:
+    deps:
+      - backend:pull
+      - aws:ecr-build-push
+  backend:start:
+    deps:
+    - backend:build
+    cmds:
       - docker compose -f docker-compose.prod.yml up -d
 
   docker:clean:
