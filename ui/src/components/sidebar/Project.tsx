@@ -8,8 +8,27 @@ import "react-toastify/dist/ReactToastify.css";
 import { options } from "../../data/data";
 import UseProjectCode from "../../hooks/ProjectCodeValue";
 import { FormData as FormData } from "../../utils/types";
+import UseProjectCreateList from "@/hooks/ProjectCreateList";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
+interface ApiResponse {
+  project_name: string;
+  project_code: string;
+  project_manager: string;
+  client_name: string;
+  client_project_manager: string;
+  incidence_rate: string;
+  loi: string;
+  target: string;
+  target_description: string;
+  status: string;
+  online: string;
+  methodology: string;
+  billing_comments: string;
+  security_check: boolean;
+  scope: number;
+}
 
 const Form: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
@@ -34,6 +53,37 @@ const Form: React.FC = () => {
   const [isOpenStatus, setIsOpenStatus] = useState<boolean>(false);
   const [reload, setReload] = useState<boolean>(false);
   const { projectCodeNo } = UseProjectCode(reload);
+  const { apiCreateProjectList } = UseProjectCreateList();
+
+  const [searchString, setSearchString] = useState<string>("");
+  const [searchResults, setSearchResults] = useState<ApiResponse[]>([]);
+
+  const handleSearch = () => {
+    const trimmedSearchString = searchString.trim().toLowerCase();
+
+    if (trimmedSearchString === "") {
+      // If the search string is empty, display a message
+      setSearchResults([]);
+      toast.info("Please enter the project code to be searched.");
+    } else {
+      // If the search string is not empty, filter projects
+      const filteredProjects = (apiCreateProjectList || []).filter(
+        (project) => project.project_code.toLowerCase() === trimmedSearchString
+      );
+
+      if (filteredProjects.length === 0) {
+        // If no matching projects found, display a message
+        toast.warning("Please enter a correct project code.");
+      }
+
+      setSearchResults(filteredProjects);
+    }
+  };
+
+  const handleClear = () => {
+    setSearchResults([]);
+    setSearchString(""); // Optionally, clear the search string as well
+  };
 
   const handleChange = (event: any) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -65,6 +115,7 @@ const Form: React.FC = () => {
       securityCheck: !prevFormData.securityCheck,
     }));
   };
+
   const validateForm = () => {
     // Check if any field is empty
     if (
@@ -113,7 +164,6 @@ const Form: React.FC = () => {
 
     return true;
   };
-  // console.log(formData.securityCheck);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const {
@@ -187,7 +237,6 @@ const Form: React.FC = () => {
       }
     }
   };
-
   return (
     <main className="section">
       <ToastContainer
@@ -565,6 +614,47 @@ const Form: React.FC = () => {
             </button>
           </div>
         </form>
+      </div>
+      <div className="bg-white rounded-3xl px-6">
+        <h2 className="text-3xl text-gray-950 my-3 pt-10 font-semibold">
+          Search Projects
+        </h2>
+        <div className="flex flex-col justify-center gap-5 py-4">
+          <input
+            className=" appearance-none font-light border border-gray-500 rounded-xl min-w-[310px] max-w-[30%] py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+            type="text"
+            value={searchString}
+            onChange={(e) => setSearchString(e.target.value)}
+            placeholder="Enter project_code to search"
+          />
+          <div className=" flex gap-3">
+            <button
+              className="bg-black text-white font-bold py-3 px-3 rounded-md md:w-[150px] mb-3"
+              onClick={handleSearch}
+            >
+              Search
+            </button>
+            <button
+              className="bg-black text-white font-bold py-3 px-3 rounded-md md:w-[150px] mb-3"
+              onClick={handleClear}
+            >
+              clear
+            </button>
+          </div>
+        </div>
+
+        {searchResults.length > 0 ? (
+          <div className="py-5">
+            <ul>
+              {searchResults.map((project) => (
+                <li key={project.project_code}>
+                  <p>Project Name: {project.project_name}</p>
+                  <p>Project Code: {project.project_code}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
       </div>
     </main>
   );
