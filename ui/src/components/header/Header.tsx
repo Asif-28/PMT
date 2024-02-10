@@ -218,13 +218,13 @@ const Header: React.FC = () => {
                 width={20}
               />
             </div>
-            <div className="absolute bg-white top-12 shadow-md ">
-              <ul>
+            <div className="absolute bg-white top-12 shadow-md w-[92%] rounded-3xl z-100 ">
+              <ul className="">
                 {searchResults.map((item) => (
                   <li key={item.id}>
                     <div
                       onClick={() => handleSection(item.title)}
-                      className="px-7 py-3 pt-3 pb-3 cursor-pointer hover:bg-[#a367b1] hover:text-[#392467] font-medium rounded-xl"
+                      className="px-7 border-b mt-2 pt-3 pb-3 cursor-pointer hover:bg-[#a367b1] hover:text-[#392467] font-medium rounded-xl w-full"
                     >
                       <button>{item.title}</button>
                     </div>
