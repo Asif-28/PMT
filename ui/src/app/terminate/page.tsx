@@ -13,7 +13,7 @@ const Terminate = () => {
           <div className="text-[#7221B1]">
             <h1 className=" text-2xl md:text-3xl font-bold pb-6 w-[80%] mx-auto text-center">
               Thank you for your interest! While this survey may not be a match
-              today, your opinions matter.{" "}
+              today, your opinions matter.
             </h1>
             <h3 className="text-base md:text-xl font-bold text-center mx-auto w-[80%]">
               Explore more opportunities to share your insights on the Puffulle
