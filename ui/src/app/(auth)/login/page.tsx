@@ -116,7 +116,7 @@ const Login = () => {
         </div>
         <div className=" bg-[#392467] h-screen w-full max-w-2xl rounded-tl-[2.5rem] rounded-bl-[2.5rem] flex justify-center pt-20 relative">
           <div className="absolute right-0 mt-14">
-            <Image src="/login.png" alt="background" height={600} width={600} />
+            <Image src="/login.svg" alt="background" height={600} width={600} />
           </div>
           <h1 className="text-[#fff] text-5xl font-bold">LEGACY</h1>
         </div>
