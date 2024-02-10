@@ -5,20 +5,6 @@ version: '3'
 includes:
   aws:
     taskfile: "./.taskci/task-templates/templates/aws.yml"
-    vars:
-      IMAGE_TAG: "development"
-      AWS_DEFAULT_REGION: "us-east-1"
-      ECR_REPOSITORY: "pmt"
-      PATH: "./backend"
-
-  aws_ui:
-    taskfile: "./.taskci/task-templates/templates/aws.yml"
-    vars:
-      PATH: "./ui"
-      BUILD_DIR: "out"
-      CF_PUSH: "true"
-      CF_DISTRIBUTION_ID: "ENGIBT49ANBXI"
-      CF_S3_BUCKET: "pmt-ui"
 
 tasks:
   backend:pull:
@@ -27,7 +13,14 @@ tasks:
   backend:build:
     deps:
       - backend:pull
-      - aws:ecr-build-push
+    cmds:
+      - task: aws:ecr-build-push
+        vars:
+          IMAGE_TAG: "development"
+          AWS_DEFAULT_REGION: "us-east-1"
+          ECR_REPOSITORY: "pmt"
+          PATH: "./backend"
+
   backend:start:
     deps:
     - backend:build
@@ -35,8 +28,15 @@ tasks:
       - docker compose -f docker-compose.prod.yml up -d
   
   ui:push:
-    deps:
-      - aws_ui:npm-build
+    cmds:
+    - task: aws:npm-build
+      vars:
+        PATH: "./ui"
+        BUILD_DIR: "out"
+        CF_PUSH: "true"
+        CF_DISTRIBUTION_ID: "ENGIBT49ANBXI"
+        CF_S3_BUCKET: "pmt-ui"
+
 
   docker:clean:
     cmds:
