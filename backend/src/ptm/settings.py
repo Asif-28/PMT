@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+
 import os
 from pathlib import Path
 
@@ -27,10 +28,15 @@ SECRET_KEY = os.getenv(
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = False if os.getenv("DISABLE_DEBUG","") == "true" else True
+DEBUG = False if os.getenv("DISABLE_DEBUG", "") == "true" else True
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ["https://*.trycloudflare.com", "https://foo.decopoint.co.in"]
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.trycloudflare.com",
+    "https://foo.decopoint.co.in",
+    "https://qandqlegacy.com",
+    "https://*.qandqlegacy.com",
+]
 
 # Application definition
 
