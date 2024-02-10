@@ -11,6 +11,7 @@ import AddNewClient from "./AddNewClient";
 import VendorSetup from "./VendorSetup";
 import ClientSetup from "./ClientSetup";
 import Form from "./Project";
+import { useMenu } from "@/context/MenuContext";
 
 interface SidebarItem {
   id: number;
@@ -23,15 +24,25 @@ interface SearchContextProps {
   setSearchResult: React.Dispatch<React.SetStateAction<number | undefined>>;
 }
 
+interface MenuContext {
+  isOpen: boolean;
+  toggleMenu: () => void;
+}
+
 const SidebarComplete = () => {
   const { searchResult, setSearchResult }: SearchContextProps = useSearch();
 
   const handleItemClick = (itemId: number) => {
     setSearchResult(itemId);
   };
+  const { isOpen, toggleMenu }: MenuContext = useMenu();
 
   return (
-    <div className="max-w-[1500px] mx-auto">
+    <div
+      className={`${
+        isOpen === true ? "blur-sm pointer-events-none" : ""
+      } max-w-[1500px] mx-auto `}
+    >
       <div className="flex lg:gap-8">
         <div className="z-100 overflow-x-visible bg-[rgb(255,255,255)] h-[100vh] sm:w-64 md:w-[19rem] rounded-3xl pt-8 hidden sm:block md:px-3 lg:px-0 ml-4 mt-12">
           {sidebarData.map((item: SidebarItem) => (

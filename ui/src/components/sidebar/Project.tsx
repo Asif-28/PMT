@@ -406,7 +406,7 @@ const Form: React.FC = () => {
               />
             </div>
 
-            <div className="relative inline-block text-left z-40 mb-4">
+            <div className="relative inline-block text-left z-50 mb-4">
               <label
                 htmlFor="target"
                 className="block text-gray-500 font-medium mb-4"
@@ -616,7 +616,7 @@ const Form: React.FC = () => {
         </form>
       </div>
       <div className="bg-white rounded-3xl px-6">
-        <h2 className="text-3xl text-gray-950 my-3 pt-10 font-semibold">
+        <h2 className="text-2xl sm:text-3xl text-gray-950 my-3 pt-10 font-semibold">
           Search Projects
         </h2>
         <div className="flex flex-col justify-center gap-5 py-4">
@@ -629,13 +629,13 @@ const Form: React.FC = () => {
           />
           <div className=" flex gap-3">
             <button
-              className="bg-black text-white font-bold py-3 px-3 rounded-md md:w-[150px] mb-3"
+              className="bg-black text-white font-bold py-3 px-3 rounded-md w-[100px] md:w-[150px] mb-3"
               onClick={handleSearch}
             >
               Search
             </button>
             <button
-              className="bg-black text-white font-bold py-3 px-3 rounded-md md:w-[150px] mb-3"
+              className="bg-black text-white font-bold py-3 px-3 rounded-md w-[100px] md:w-[150px] mb-3"
               onClick={handleClear}
             >
               clear

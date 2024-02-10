@@ -136,7 +136,7 @@ const Header: React.FC = () => {
       {/* Mobile View for the sidebar menu options */}
 
       <div className="">
-        <div className="sm:hidden flex justify-between py-1 px-3 ">
+        <div className={`sm:hidden flex justify-between py-1 px-3`}>
           <div
             onClick={toggleMenu}
             className="rounded-full  flex flex-col justify-center items-center cursor-pointer relative z-100 "
@@ -155,13 +155,15 @@ const Header: React.FC = () => {
                 transform: isOpen ? "translateX(0)" : "translateX(-100%)",
                 transition: "all 0.3s ease-out",
               }}
-              className="absolute top-12 -left-2 z-50  "
+              className={`${
+                isOpen === true ? "blur-none" : ""
+              } absolute top-12 -left-2 z-50`}
             >
               {isOpen && (
-                <div className="sm:hidden bg-[#fff] min-w-[60px] h-[100vh] rounded-3xl flex  flex-col  items-center py-4 mt-6">
+                <div className="sm:hidden bg-[#fff]  h-[90vh] rounded-3xl flex  flex-col  items-center py-4 pr-4 mt-6">
                   {data.map((item) => (
                     <div
-                      className={`cursor-pointer mb-3 py-3 `}
+                      className={`cursor-pointer mb-2 py-3 `}
                       key={item.id}
                       onClick={() => setSearchResult(item.id)}
                     >
@@ -172,13 +174,16 @@ const Header: React.FC = () => {
                             : ""
                         }`}
                       >
-                        <Image
-                          height={25}
-                          width={25}
-                          src={`/${item.img}`}
-                          alt="image-portfolio"
-                          className=""
-                        />
+                        <div className="flex min-w-[180px] gap-4">
+                          <Image
+                            height={25}
+                            width={25}
+                            src={`/${item.img}`}
+                            alt="image-portfolio"
+                            className=""
+                          />
+                          <h3>{item.title}</h3>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -201,7 +206,11 @@ const Header: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="flex items-center justify-center mb-4">
+        <div
+          className={`${
+            isOpen === true ? "blur-sm pointer-events-none" : ""
+          } flex items-center justify-center mb-4`}
+        >
           <div className="sm:hidden flex items-center mx-auto relative px-3 mt-2">
             <input
               placeholder="search"
@@ -210,7 +219,7 @@ const Header: React.FC = () => {
               value={searchTerm}
               onChange={handleSearch}
             />
-            <div className=" absolute left-8">
+            <div className="absolute left-8">
               <Image
                 src={`/search-normal.svg`}
                 alt="image"
@@ -218,20 +227,22 @@ const Header: React.FC = () => {
                 width={20}
               />
             </div>
-            <div className="absolute bg-white top-12 shadow-md w-[92%] rounded-3xl z-100 ">
-              <ul className="">
-                {searchResults.map((item) => (
-                  <li key={item.id}>
-                    <div
-                      onClick={() => handleSection(item.title)}
-                      className="px-7 border-b mt-2 pt-3 pb-3 cursor-pointer hover:bg-[#a367b1] hover:text-[#392467] font-medium rounded-xl w-full"
-                    >
-                      <button>{item.title}</button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {!isOpen && (
+              <div className="absolute bg-white top-12 shadow-md w-[92%] rounded-3xl z-50 ">
+                <ul className="">
+                  {searchResults.map((item) => (
+                    <li key={item.id}>
+                      <div
+                        onClick={() => handleSection(item.title)}
+                        className="px-7 border-b mt-2 pt-3 pb-3 cursor-pointer hover:bg-[#a367b1] hover:text-[#392467] font-medium rounded-xl w-full"
+                      >
+                        <button>{item.title}</button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </div>
