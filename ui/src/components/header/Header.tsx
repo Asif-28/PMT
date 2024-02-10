@@ -143,7 +143,7 @@ const Header: React.FC = () => {
           >
             <div className="flex items-center justify-center bg-white px-4 py-4 rounded-full">
               <Image
-                src={`/category.png`}
+                src={`/category.svg`}
                 alt="header"
                 height={30}
                 width={25}
