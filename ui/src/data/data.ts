@@ -445,27 +445,27 @@ export const data = [
   {
     id: 1,
     title: "Project Creation",
-    img: "1.png",
+    img: "1.svg",
   },
   {
     id: 2,
     title: "Client Setup",
-    img: "2.png",
+    img: "2.svg",
   },
   {
     id: 3,
     title: "Vendor Setup",
-    img: "shop.png",
+    img: "shop.svg",
   },
   {
     id: 4,
     title: "Add New Client",
-    img: "user-add.png",
+    img: "user-add.svg",
   },
   {
     id: 5,
     title: "Add New Vendor",
-    img: "people.png",
+    img: "people.svg",
   },
   {
     id: 6,
@@ -475,12 +475,12 @@ export const data = [
   {
     id: 7,
     title: "Data Export",
-    img: "document-upload.png",
+    img: "document-upload.svg",
   },
   {
     id: 8,
     title: "Project Allocation",
-    img: "flag.png",
+    img: "flag.svg",
   },
   // {
   //   id: 9,

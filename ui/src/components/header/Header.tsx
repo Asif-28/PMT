@@ -87,7 +87,7 @@ const Header: React.FC = () => {
       <div className="hidden sm:flex items-center justify-evenly gap-8 max-w-[1500px] mx-auto">
         <div className=" flex items-center sm:ml-0">
           <div className="rounded-full px-5 py-5 bg-white w-[4rem] flex cursor-pointer z-100">
-            <Image src={`/category.png`} alt="header" height={30} width={30} />
+            <Image src={`/category.svg`} alt="header" height={30} width={30} />
           </div>
         </div>
         <div className="hidden sm:flex items-center relative">
@@ -101,7 +101,7 @@ const Header: React.FC = () => {
 
           <div className=" absolute left-5">
             <Image
-              src={`/search-normal.png`}
+              src={`/search-normal.svg`}
               alt="image"
               height={10}
               width={20}
@@ -128,7 +128,7 @@ const Header: React.FC = () => {
             <h3 className="text-[14px] sm:text-base">Active </h3>
           </div>
           <div>
-            <Image src={`/Ellipse 2.png`} alt="image" height={70} width={70} />
+            <Image src={`/Ellipse 2.svg`} alt="image" height={70} width={70} />
           </div>
         </div>
       </div>
@@ -193,7 +193,7 @@ const Header: React.FC = () => {
             </div>
             <div>
               <Image
-                src={`/Ellipse 2.png`}
+                src={`/Ellipse 2.svg`}
                 alt="image"
                 height={60}
                 width={60}
@@ -212,7 +212,7 @@ const Header: React.FC = () => {
             />
             <div className=" absolute left-8">
               <Image
-                src={`/search-normal.png`}
+                src={`/search-normal.svg`}
                 alt="image"
                 height={10}
                 width={20}
