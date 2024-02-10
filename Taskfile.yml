@@ -8,9 +8,11 @@ includes:
 
 tasks:
   backend:pull:
+    desc: Pull the latest changes from the backend repository
     cmds:
       - git pull
   backend:build:
+    desc: Build the backend image and push it to ECR
     deps:
       - backend:pull
     cmds:
@@ -22,12 +24,14 @@ tasks:
           PATH: "./backend"
 
   backend:start:
+    desc: Start the backend container
     deps:
     - backend:build
     cmds:
       - docker compose -f docker-compose.prod.yml up -d
   
   ui:push:
+    desc: Push the UI changes to CloudFront
     cmds:
     - task: aws:npm-build
       vars:
@@ -39,5 +43,6 @@ tasks:
 
 
   docker:clean:
+    desc: Clean up dangling unwanted docker images and containers
     cmds:
       - docker system prune -f
