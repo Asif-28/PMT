@@ -14,7 +14,16 @@ function _django_config {
 
   if [[ "$STAGE" == "PRODUCTION" || "$STAGE" == "TESTING" ]]; then
     echo "------------ Running gunicorn ----------------"
-    gunicorn ptm.wsgi:application -b 0.0.0.0:$RUN_PORT
+    # gunicorn ptm.wsgi:application -b 0.0.0.0:$RUN_PORT
+    gunicorn ptm.wsgi:application --workers 4 \
+      -k gevent \
+      --timeout 30 \
+      --max-requests 1000 \
+      --max-requests-jitter 50 \
+      --graceful-timeout 10 \
+      --preload \
+      -b 0.0.0.0:$RUN_PORT
+
   else
     python3 manage.py runserver 0.0.0.0:$RUN_PORT
   fi
