@@ -11,7 +11,7 @@ includes:
       ECR_REPOSITORY: "pmt"
       PATH: "./backend"
 
-  ui:
+  aws_ui:
     taskfile: "./.taskci/task-templates/templates/aws.yml"
     vars:
       PATH: "./ui"
@@ -33,6 +33,10 @@ tasks:
     - backend:build
     cmds:
       - docker compose -f docker-compose.prod.yml up -d
+  
+  ui:push:
+    deps:
+      - aws_ui:npm-build
 
   docker:clean:
     cmds:
