@@ -150,12 +150,9 @@ const VendorSetup: React.FC = () => {
   useEffect(() => {
     async function getAllVendors() {
       try {
-        const vendorListResponse = await fetch(
-          "http://127.0.0.1:8000/vendor/list",
-          {
-            method: "GET",
-          }
-        );
+        const vendorListResponse = await fetch(`${baseUrl}vendor/list`, {
+          method: "GET",
+        });
         const vendorListData = await vendorListResponse.json();
         setVendors(vendorListData);
         setLoadingVendor(false);
