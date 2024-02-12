@@ -11,6 +11,7 @@ tasks:
     desc: Pull the latest changes from the backend repository
     cmds:
       - git pull
+  
   backend:build:
     desc: Build the backend image and push it to ECR
     deps:
@@ -40,7 +41,6 @@ tasks:
         CF_PUSH: "true"
         CF_DISTRIBUTION_ID: "ENGIBT49ANBXI"
         CF_S3_BUCKET: "pmt-ui"
-
 
   docker:clean:
     desc: Clean up dangling unwanted docker images and containers

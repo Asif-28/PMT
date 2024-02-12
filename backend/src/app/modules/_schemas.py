@@ -3,6 +3,7 @@ from .client import Client
 from .project_client import ProjectClient
 from .vendor import Vendor
 from .project_vendor import ProjectVendor
+from .app_user import User
 
 from ninja import ModelSchema
 
@@ -39,3 +40,10 @@ class ProjectVendorSchema(ModelSchema):
         model = ProjectVendor
         fields = "__all__"
         exclude = ["id", "project", "vendor", "index_key"]
+
+
+class UserSchema(ModelSchema):
+    class Meta:
+        model = User
+        fields = "__all__"
+        exclude = ["id"]
