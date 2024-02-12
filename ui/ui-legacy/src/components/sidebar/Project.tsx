@@ -9,26 +9,9 @@ import { options } from "../../data/data";
 import UseProjectCode from "../../hooks/ProjectCodeValue";
 import { FormData as FormData } from "../../utils/types";
 import UseProjectCreateList from "@/hooks/ProjectCreateList";
+import { ApiResponse } from "../../utils/types";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
-interface ApiResponse {
-  project_name: string;
-  project_code: string;
-  project_manager: string;
-  client_name: string;
-  client_project_manager: string;
-  incidence_rate: string;
-  loi: string;
-  target: string;
-  target_description: string;
-  status: string;
-  online: string;
-  methodology: string;
-  billing_comments: string;
-  security_check: boolean;
-  scope: number;
-}
 
 const Form: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
@@ -237,6 +220,7 @@ const Form: React.FC = () => {
       }
     }
   };
+  console.log();
   return (
     <main className="section">
       <ToastContainer
@@ -647,120 +631,112 @@ const Form: React.FC = () => {
           <div className="py-5">
             <ul>
               {searchResults.map((project) => (
-                <li className="" key={project.project_code}>
-                  <p>
-                    <span className="font-semibold text-[1.1rem]">
-                      Project Name:
-                    </span>
-                    <span className="ml-2 text-base text-gray-500">
-                      {project.project_name}
-                    </span>
-                  </p>
-                  <p>
-                    <span className="font-semibold text-[1.1rem]">
-                      Project Code:
-                    </span>
-                    <span className="ml-2 text-base text-gray-500">
-                      {project.project_code}
-                    </span>
-                  </p>
-                  <p>
-                    <span className="font-semibold text-[1.1rem]">
-                      project_manager:
-                    </span>
-                    <span className="ml-2 text-base text-gray-500">
-                      {project.project_manager}
-                    </span>
-                  </p>
-                  <p>
-                    <span className="font-semibold text-[1.1rem]">
-                      client_name:
-                    </span>
-                    <span className="ml-2 text-base text-gray-500">
-                      {project.client_name}
-                    </span>
-                  </p>
-                  <p>
-                    <span className="font-semibold text-[1.1rem]">
-                      client_project_manager :
-                    </span>
-                    <span className="ml-2 text-base text-gray-500">
-                      {project.client_project_manager}
-                    </span>
-                  </p>
-                  <p>
-                    <span className="font-semibold text-[1.1rem]">
-                      incidence_rate:
-                    </span>
-                    <span className="ml-2 text-base text-gray-500">
-                      {project.incidence_rate}
-                    </span>
-                  </p>
-                  <p>
-                    <span className="font-semibold text-[1.1rem]">loi:</span>
-                    <span className="ml-2 text-base text-gray-500">
-                      {project.loi}
-                    </span>
-                  </p>
-                  <p>
-                    <span className="font-semibold text-[1.1rem]">target:</span>
-                    <span className="ml-2 text-base text-gray-500">
-                      {project.target}
-                    </span>
-                  </p>
-                  <p>
-                    <span className="font-semibold text-[1.1rem]">
-                      target_description:
-                    </span>
-                    <span className="ml-2 text-base text-gray-500">
-                      {project.target_description}
-                    </span>
-                  </p>
-                  <p>
-                    <span className="font-semibold text-[1.1rem]">status:</span>
-                    <span className="ml-2 text-base text-gray-500">
-                      {project.status}
-                    </span>
-                  </p>
-                  <p>
-                    <span className="font-semibold text-[1.1rem]">online:</span>
-                    <span className="ml-2 text-base text-gray-500">
-                      {project.online}
-                    </span>
-                  </p>
-                  <p>
-                    <span className="font-semibold text-[1.1rem]">
-                      methodology:
-                    </span>
-                    <span className="ml-2 text-base text-gray-500">
-                      {project.methodology}
-                    </span>
-                  </p>
-                  <p>
-                    <span className="font-semibold text-[1.1rem]">
-                      billing_comments:
-                    </span>
-                    <span className="ml-2 text-base text-gray-500">
-                      {project.billing_comments}
-                    </span>
-                  </p>
-                  {/* Security Check  */}
-
-                  {/* <p>
-                    <span className="font-semibold text-[1.1rem]">
-                      security_check:
-                    </span>
-                    <span className="ml-2 text-base text-gray-500">
-                      {project.security_check}
-                    </span>
-                  </p> */}
-                  <p>
-                    <span className="font-semibold text-[1.1rem]">scope:</span>{" "}
-                    <span className="ml-2 text-base text-gray-500">
-                      {project.scope}
-                    </span>
-                  </p>
-                </li>
+                <div key={project.project_code} className="container mx-auto">
+                  <table className=" w-full border border-gray-300">
+                    <tbody>
+                      {" "}
+                      <tr>
+                        <th className="px-4 py-2 text-left border border-gray-300 bg-gray-200">
+                          Project Code:
+                        </th>
+                        <td className="px-4 py-2 border text-center border-gray-300">
+                          {project.project_code}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th className="px-4 py-2 text-left border border-gray-300 bg-gray-200">
+                          Project Name:
+                        </th>
+                        <td className="px-4 py-2 border text-center border-gray-300">
+                          {project.project_name}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th className="px-4 py-2 text-left border border-gray-300 bg-gray-200">
+                          Project Manager:
+                        </th>
+                        <td className="px-4 py-2 border text-center border-gray-300">
+                          {project.project_manager}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th className="px-4 py-2 text-left border border-gray-300 bg-gray-200">
+                          Client:
+                        </th>
+                        <td className="px-4 py-2 border text-center border-gray-300">
+                          {project.client_name}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th className="px-4 py-2 text-left border border-gray-300 bg-gray-200">
+                          Client PM:
+                        </th>
+                        <td className="px-4 py-2 border text-center border-gray-300">
+                          {project.client_project_manager}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th className="px-4 py-2 text-left border border-gray-300 bg-gray-200">
+                          Target:
+                        </th>
+                        <td className="px-4 py-2 border text-center border-gray-300">
+                          {project.target}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th className="px-4 py-2 text-left border border-gray-300 bg-gray-200">
+                          Target Description:
+                        </th>
+                        <td className="px-4 py-2 border text-center border-gray-300">
+                          {project.target_description}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th className="px-4 py-2 text-left border border-gray-300 bg-gray-200">
+                          IR:
+                        </th>
+                        <td className="px-4 py-2 border text-center border-gray-300">
+                          {project.incidence_rate}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th className="px-4 py-2 text-left border border-gray-300 bg-gray-200">
+                          LOI:
+                        </th>
+                        <td className="px-4 py-2 border text-center border-gray-300">
+                          {project.loi}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th className="px-4 py-2 text-left border border-gray-300 bg-gray-200">
+                          Scope:
+                        </th>
+                        <td className="px-4 py-2 border text-center border-gray-300">
+                          {project.scope}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th className="px-4 py-2 text-left border border-gray-300 bg-gray-200">
+                          Methodology:
+                        </th>
+                        <td className="px-4 py-2 border text-center border-gray-300">
+                          {project.online}
+                          {project.methodology && (
+                            <span> ( {project.methodology} )</span>
+                          )}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th className="px-4 py-2 text-left border border-gray-300 bg-gray-200">
+                          Billing Comments:
+                        </th>
+                        <td className="px-4 py-2 border text-center border-gray-300">
+                          {project.billing_comments}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               ))}
             </ul>
           </div>

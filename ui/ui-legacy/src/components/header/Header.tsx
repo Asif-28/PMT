@@ -4,6 +4,9 @@ import { useMenu } from "../../context/MenuContext";
 import { useEffect, useRef, useState } from "react";
 import { data } from "../../data/data";
 import { useSearch } from "../../context/SearchContext";
+import Avatar from "@mui/material/Avatar";
+import Stack from "@mui/material/Stack";
+import { deepOrange, deepPurple } from "@mui/material/colors";
 
 interface DataItem {
   id: number;
@@ -90,16 +93,16 @@ const Header: React.FC = () => {
             <Image src={`/category.svg`} alt="header" height={30} width={30} />
           </div>
         </div>
-        <div className="hidden sm:flex items-center relative">
+        <div className="hidden sm:flex items-center relative md:pl-16">
           <input
             placeholder="search"
-            className="text-[15px] border-none w-auto md:w-[500px] lg:min-w-[700px] px-10 py-3 sm:px-16 sm:py-4 rounded-full focus:outline-[#392467] focus:shadow-outline"
+            className="text-[15px] border-none w-auto md:w-[500px] lg:min-w-[700px] px-10 py-3 sm:px-16 sm:py-[.9rem] rounded-full focus:outline-[#392467] focus:shadow-outline"
             type="search"
             value={searchTerm}
             onChange={handleSearch}
           />
 
-          <div className=" absolute left-5">
+          <div className=" absolute left-[5.2rem]">
             <Image
               src={`/search-normal.svg`}
               alt="image"
@@ -107,7 +110,7 @@ const Header: React.FC = () => {
               width={20}
             />
           </div>
-          <div className="absolute bg-white top-16 w-full  rounded-3xl z-100">
+          <div className="absolute bg-white top-16 w-full rounded-3xl z-100">
             <ul>
               {searchResults.map((item) => (
                 <li key={item.id}>
@@ -123,12 +126,20 @@ const Header: React.FC = () => {
           </div>
         </div>
         <div className=" flex items-center gap-3 sm:gap-10">
-          <div className="flex gap-3 md:gap-6 lg:gap-8 border border-[#008000] px-4 py-2 md:px-4 md:py-[.7rem] lg:px-6 lg:py-[.8rem] items-center justify-center rounded-full">
+          <div className="flex gap-2 md:gap-3 lg:gap-3 border border-[#008000] px-4 py-2 md:px-4 md:py-[.7rem] lg:px-5 lg:py-[.6rem] items-center justify-center rounded-full">
             <div className="w-2 h-2 md:w-4 md:h-4 rounded-full bg-[#008000]"></div>
             <h3 className="text-[14px] sm:text-base">Active </h3>
           </div>
-          <div>
-            <Image src={`/Ellipse 2.svg`} alt="image" height={70} width={70} />
+          <div className=" flex gap-2 items-center ">
+            {/* <Image src={`/Ellipse 2.svg`} alt="image" height={70} width={60} /> */}
+            <Stack direction="row" spacing={2}>
+              <Avatar
+                sx={{ bgcolor: deepPurple[500], height: "55px", width: "55px" }}
+              >
+                OP
+              </Avatar>
+            </Stack>
+            <h1 className="font-semibold text-base text-gray-950">Name</h1>
           </div>
         </div>
       </div>
@@ -196,13 +207,25 @@ const Header: React.FC = () => {
               <div className="w-2 h-2 md:w-4 md:h-4 rounded-full bg-[#008000]"></div>
               <h3 className="text-[14px] sm:text-base">Active </h3>
             </div>
-            <div>
-              <Image
+            <div className="flex items-center gap-2 ">
+              {/* <Image
                 src={`/Ellipse 2.svg`}
                 alt="image"
                 height={60}
                 width={60}
-              />
+              /> */}
+              <Stack direction="row" spacing={2}>
+                <Avatar
+                  sx={{
+                    bgcolor: deepPurple[500],
+                    height: "45px",
+                    width: "45px",
+                  }}
+                >
+                  OP
+                </Avatar>
+              </Stack>
+              <h1 className="font-semibold text-base text-gray-950">Name</h1>
             </div>
           </div>
         </div>

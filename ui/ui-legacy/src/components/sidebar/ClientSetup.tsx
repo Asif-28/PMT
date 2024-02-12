@@ -482,10 +482,10 @@ const ClientSetup: React.FC = () => {
                         {item.country_code}
                       </td>
                       <td className="px-4 text-center py-6">{item.scope}</td>
-                      <td className="px-4 text-center py-6">
+                      <td className="px-4 text-center py-6 cursor-pointer">
                         <Link href={item.test_link}>Link</Link>
                       </td>
-                      <td className="px-4 text-center py-6">
+                      <td className="px-4 text-center py-6 cursor-pointer">
                         <Link href={item.live_link}>Link</Link>
                       </td>
                     </tr>

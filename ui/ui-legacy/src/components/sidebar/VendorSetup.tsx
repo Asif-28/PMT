@@ -466,13 +466,13 @@ const VendorSetup: React.FC = () => {
                         {item.vendor_name}
                       </td>
                       <td className="px-4 text-center py-6">{item.scope}</td>
-                      <td className="px-4 text-center py-6">
+                      <td className="px-4 text-center py-6 cursor-pointer">
                         <Link href={item.complete}>Link</Link>
                       </td>
-                      <td className="px-4 text-center py-6">
+                      <td className="px-4 text-center py-6 cursor-pointer">
                         <Link href={item.terminate}>Link</Link>
                       </td>
-                      <td className="px-4 text-center py-6">
+                      <td className="px-4 text-center py-6 cursor-pointer">
                         <Link href={item.over_quota}>Link</Link>
                       </td>
                     </tr>
