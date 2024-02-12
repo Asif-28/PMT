@@ -40,12 +40,3 @@ class ProjectVendorSchema(ModelSchema):
         model = ProjectVendor
         fields = "__all__"
         exclude = ["id", "project", "vendor", "index_key"]
-
-
-class AppUserSchema(ModelSchema):
-    class Meta:
-        model = AppUser
-        # fields = ["username", "email", "password"]
-        fields = "__all__"
-        exclude = ["id"]
-

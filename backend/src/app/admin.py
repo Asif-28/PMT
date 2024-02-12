@@ -6,6 +6,7 @@ from .models import (
     Vendor,
     ProjectVendor,
     ProjectSurveyTrace,
+    AppUser,
 )
 
 # Register your models here.
@@ -16,3 +17,4 @@ admin.site.register(ProjectClient)
 admin.site.register(Vendor)
 admin.site.register(ProjectVendor)
 admin.site.register(ProjectSurveyTrace)
+admin.site.register(AppUser)

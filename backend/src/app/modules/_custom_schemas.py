@@ -13,3 +13,9 @@ class IDReconciliationSchema(Schema):
     status: str
     project_code: str
     ids: list
+
+
+class AppUserSchema(Schema):
+    username: str
+    email: str
+    password: str
