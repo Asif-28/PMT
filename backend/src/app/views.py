@@ -61,7 +61,7 @@ def get_survey(request):
         check = {
             "fraud_score": 0,
             "message": "Test Survey",
-            "country_code": 'IN',
+            "country_code": "IN",
             "proxy": False,
             "region": "Test",
             "vpn": False,

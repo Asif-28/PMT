@@ -52,7 +52,12 @@ def get_request_ip(request):
     return ip
 
 
-def uniq_md5_hash():
+def uniq_md5_hash(value: str = None, value_only: bool = True):
+    if value and value_only:
+        return hashlib.md5(value).hexdigest()
+    elif value:
+        return hashlib.md5(value + str(time.time()).encode()).hexdigest()
+
     return hashlib.md5(str(time.time()).encode()).hexdigest()
 
 

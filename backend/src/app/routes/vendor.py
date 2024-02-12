@@ -1,18 +1,10 @@
 from ninja import Router
 from ..modules.vendor import Vendor
 from ..modules._schemas import VendorSchema
+from ..modules._custom_schemas import CreateVendorSchema
 from ..utils import JSONResponse, message
 
-from ninja import ModelSchema
-
 router = Router()
-
-
-class CreateVendorSchema(ModelSchema):
-    class Meta:
-        model = Vendor
-        fields = "__all__"
-        exclude = ["id"]
 
 
 @router.post("/create", response=JSONResponse)
