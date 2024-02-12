@@ -61,7 +61,7 @@ def get_survey(request):
         check = {
             "fraud_score": 0,
             "message": "Test Survey",
-            "country_code": 'IN',
+            "country_code": "IN",
             "proxy": False,
             "region": "Test",
             "vpn": False,
@@ -196,7 +196,7 @@ def get_survey(request):
 
 def complete_survey(request):
     """
-    GET /survey/complete?key=123&status=complete
+    GET /survey/status?key=123&status=complete
     """
     key = request.GET.get("key", None)
     status = request.GET.get("status", None)
