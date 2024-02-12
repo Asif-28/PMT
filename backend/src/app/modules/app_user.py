@@ -19,6 +19,8 @@ class AppUser(models.Model):
             raise ValueError("Username/Password cannot contain spaces")
         self.username = self.username.lower()
         self.email = self.email.lower()
+        if len(self.password) < 6:
+            raise ValueError("Password must be at least 6 characters long")
         super().save(*args, **kwargs)
 
     def __str__(self):
