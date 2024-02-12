@@ -1,6 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
-
 
 class AppUser(models.Model):
     email = models.EmailField(unique=True)
