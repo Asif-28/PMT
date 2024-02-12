@@ -6,21 +6,27 @@ from django.http import HttpRequest, HttpResponse
 from ..modules.app_user import AppUser
 from ..modules._custom_schemas import AppUserSchema
 from ..utils import uniq_md5_hash
-import time
+
+from ninja.security import APIKeyCookie
+
+
+
 
 router = Router()
 
+class CookieKey(APIKeyCookie):
+    
+    def __init__(self):
+        self.param_name = "X-API-KEY"
+        super().__init__()
 
-class AuthBearer(HttpBearer):
-    def authenticate(self, request: HttpRequest, token) -> Any:
-        # Normally, you would validate the token here
-        # For demonstration, we'll skip token validation
-        # check cookie
-        token = request.COOKIES.get("token")
+    def authenticate(self, request, token):
         if token:
             user = AppUser.objects.get(token=token)
             if user:
                 return token
+
+cookie_key = CookieKey()
 
 
 @router.post("/create")
@@ -40,19 +46,16 @@ def get_token(
     username: str = Form(...),
     password: str = Form(...),
 ):
-    from django.core import serializers
-    import json
-
     user = AppUser.objects.filter(username=username, password=password)
 
-    # return json.loads(data)
     if len(user) != 0:
         token = uniq_md5_hash(value=f"{username}{password}", value_only=False)
-        response.set_cookie("token", token, max_age=3600)
-        AppUser.objects.filter(username=username, password=password).update(token=token)
+        response.set_cookie("X-API-KEY", token, max_age=3600)
+        user.update(token=token)
+        
         return {"token": token}
 
 
-@router.get("/protected", auth=AuthBearer())
+@router.get("/protected", auth=cookie_key)
 def protected(request: HttpRequest):
     return {"protected_data": "You are under protection"}
