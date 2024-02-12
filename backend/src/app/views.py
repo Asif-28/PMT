@@ -196,7 +196,7 @@ def get_survey(request):
 
 def complete_survey(request):
     """
-    GET /survey/complete?key=123&status=complete
+    GET /survey/status?key=123&status=complete
     """
     key = request.GET.get("key", None)
     status = request.GET.get("status", None)
