@@ -53,6 +53,7 @@ def get_request_ip(request):
 
 
 def uniq_md5_hash(value: str = None, value_only: bool = True):
+    value = value.encode() if value else None
     if value and value_only:
         return hashlib.md5(value).hexdigest()
     elif value:
