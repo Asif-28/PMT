@@ -19,8 +19,9 @@ from django.urls import path
 from django.conf.urls import include
 
 from ninja import NinjaAPI, Redoc, Swagger
+from app.routes.auth import global_auth
 
-api = NinjaAPI(docs=Swagger(), docs_url="/docs")
+api = NinjaAPI(auth=global_auth, docs=Swagger(), docs_url="/docs", csrf=True)
 
 api.add_router("/", "app.urls.router")
 
