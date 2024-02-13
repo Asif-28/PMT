@@ -29,9 +29,24 @@ const IdReconciliation: React.FC = () => {
   };
 
   const [selectedReason, setSelectedReason] = useState<string | null>(null);
+  const [selectedReasonDisplay, setSelectedReasonDisplay] = useState<
+    string | null
+  >(null);
+
   const [isOpenReason, setIsOpenReason] = useState(false);
   const handleOptionReason = (reason: string) => {
-    setSelectedReason(reason);
+    setSelectedReasonDisplay(reason);
+    if (reason === "In Survey") {
+      setSelectedReason("insurvey");
+    } else if (reason === "Complete") {
+      setSelectedReason("complete");
+    } else if (reason === "Terminate") {
+      setSelectedReason("terminate");
+    } else if (reason === "Over Quota") {
+      setSelectedReason("overquota");
+    } else if (reason === "Rejected") {
+      setSelectedReason("rejected");
+    }
     setIsOpenReason(false);
   };
   const handleToggleReason = () => {
@@ -72,6 +87,7 @@ const IdReconciliation: React.FC = () => {
             status: selectedReason,
             project_code: projectCode,
             ids: id,
+            qc_remarks: qcRemarks,
           },
           {
             headers: {
@@ -79,7 +95,7 @@ const IdReconciliation: React.FC = () => {
             },
           }
         );
-        toast.success("Client Created Successfully");
+        toast.success("Submitted Successfully");
         if (data.status_code === 200) {
           setFormData({
             projectCode: "",
@@ -168,7 +184,9 @@ const IdReconciliation: React.FC = () => {
                     type="button"
                     className="inline-flex justify-center w-full  text-sm appearance-none  xl:min-w-[480px] border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
                   >
-                    {selectedReason ? selectedReason : "Choose from dropdown"}
+                    {selectedReason
+                      ? selectedReasonDisplay
+                      : "Choose from dropdown"}
                   </button>
                 </span>
               </div>
@@ -181,7 +199,7 @@ const IdReconciliation: React.FC = () => {
                     aria-orientation="vertical"
                     aria-labelledby="options-menu"
                   >
-                    {reasons.map((reason, index) => (
+                    {reasonDisplay.map((reason, index) => (
                       <div
                         key={index}
                         onClick={() => handleOptionReason(reason)}
@@ -189,7 +207,6 @@ const IdReconciliation: React.FC = () => {
                         role="menuitem"
                       >
                         {reason}
-                        {}
                       </div>
                     ))}
                   </div>
@@ -214,8 +231,6 @@ const IdReconciliation: React.FC = () => {
               />
             </div>
           </div>
-
-          {/* ... other fields in the same format ... */}
 
           <div className="flex items-center justify-center">
             <button
