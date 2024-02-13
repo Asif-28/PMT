@@ -40,3 +40,4 @@ class ProjectVendorSchema(ModelSchema):
         model = ProjectVendor
         fields = "__all__"
         exclude = ["id", "project", "vendor", "index_key"]
+

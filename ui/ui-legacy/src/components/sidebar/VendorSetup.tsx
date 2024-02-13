@@ -1,61 +1,44 @@
-import React, { useState, FormEvent, ChangeEvent } from "react";
-import { countrys } from "../../data/data";
-import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import Link from "next/link";
-import { ProjectCodeStore } from "@/store/ProjectCode";
+import React, { useState, FormEvent, ChangeEvent, useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import { VendorProjectCodeStore } from "@/store/VendorProjectCode";
 import UseProjectCodeList from "../../hooks/ProjectCodeList";
-import UseClientListData from "../../hooks/ClientList";
-import { ClientFormData as FormData } from "../../utils/types";
-import { countries } from "../../data/data";
+import UseVendorListData from "../../hooks/VendorList";
+import { VendorFormData as FormData } from "../../utils/types";
+import { VendorListApiResponse } from "../../utils/types";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+const VendorSetup: React.FC = () => {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-const ClientSetup: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
-    inputField: "",
-    countryCode: "",
+    vendorCode: "",
+    pauseVendor: false,
     scope: 0,
-    testLink: "",
-    liveLink: "",
-    checkcountry: false,
-    checkQuota: false,
+    complete: "",
+    terminate: "",
+    overQuota: "",
   });
 
-  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
-  const [isOpenCountry, setIsOpenCountry] = useState(false);
-
-  const [showClients, setShowClients] = useState<boolean>(false);
+  const [selectedVendor, setSelectedVendor] = useState<string | null>(null);
+  const [isOpenVendor, setIsOpenVendor] = useState<boolean>(false);
+  const [loadingVendor, setLoadingVendor] = useState<boolean>(true);
   const [suggestedProjectCode, setSuggestedProjectCode] = useState<string[]>(
     []
   );
+  const [vendors, setVendors] = useState<VendorListApiResponse[] | null>(null);
+  const [showVendors, setShowVendors] = useState<boolean>(false);
 
-  //Use the Client  Project Code Store
-
-  const ProjectCode = ProjectCodeStore((state: any) => state.ProjectCode);
-  const updateProjectCode = ProjectCodeStore(
-    (state: any) => state.updateProjectCode
+  // Use the store created for the vendor project code
+  const VendorProjectCode = VendorProjectCodeStore(
+    (state: any) => state.VendorProjectCode
+  );
+  const updateVendorProjectCode = VendorProjectCodeStore(
+    (state: any) => state.updateVendorProjectCode
   );
 
-  //Use the custom hook for the calling the project code list
-  const { list, loading } = UseProjectCodeList(ProjectCode);
-
-  // call the custom hook to get the list of the client of a particular project code
-  const { apiClientData, loadingData } = UseClientListData();
-  //  Filter the list of project_code from the api and input to show the list of available  projectcode
-  const filterProjectCodes = (enteredCode: string) => {
-    const filteredCodesSet = new Set<string>();
-
-    list?.forEach((item: any) => {
-      if (item.project_code.includes(enteredCode)) {
-        filteredCodesSet.add(item.project_code);
-      }
-    });
-
-    const filteredCodes = Array.from(filteredCodesSet);
-
-    setSuggestedProjectCode(enteredCode ? filteredCodes : []);
-  };
+  // use the custom hook to call the list of vendors data
+  const { apiVendorData, loadingData } = UseVendorListData();
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLInputElement>
@@ -70,52 +53,45 @@ const ClientSetup: React.FC = () => {
     setFormData({ ...formData, [name]: value });
 
     if (name === "projectCode") {
-      updateProjectCode({ ProjectCode: value });
+      updateVendorProjectCode({ ProjectCode: value });
 
-      // Call the function to filter project codes when projectCode is being changed
       filterProjectCodes(value);
     }
   };
 
-  const handleOptionCountry = (country: string) => {
-    const selectedCountryObject = countries.find((c) => c.name === country);
+  const { list, loading } = UseProjectCodeList(VendorProjectCode);
 
-    if (selectedCountryObject) {
-      setSelectedCountry(country);
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        countryCode: selectedCountryObject.code,
-      }));
-      setIsOpenCountry(false);
-    }
+  const filterProjectCodes = (enteredCode: string) => {
+    const filteredCodesSet = new Set<string>();
+
+    list?.forEach((item: any) => {
+      if (item.project_code.includes(enteredCode)) {
+        filteredCodesSet.add(item.project_code);
+      }
+    });
+
+    const filteredCodes = Array.from(filteredCodesSet);
+
+    setSuggestedProjectCode(enteredCode ? filteredCodes : []);
   };
 
-  const handleToggleCountry = () => {
-    setIsOpenCountry(!isOpenCountry);
+  const handleOptionVendor = (i: string) => {
+    setSelectedVendor(i);
+    setIsOpenVendor(false);
+  };
+  const handleToggleVendor = () => {
+    setIsOpenVendor(!isOpenVendor);
   };
 
-  const handleCheckCountryClick = () => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      checkcountry: !prevFormData.checkcountry,
-    }));
-  };
-  const handleCheckQuotaClick = () => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      checkQuota: !prevFormData.checkQuota,
-    }));
-  };
   const validateForm = () => {
     // Check if any field is empty
     if (
-      !ProjectCode.ProjectCode ||
-      !formData.inputField ||
+      !VendorProjectCode.ProjectCode ||
+      !formData.vendorCode ||
       !formData.scope ||
-      !formData.liveLink ||
-      !formData.testLink ||
-      !formData.countryCode ||
-      !selectedCountry
+      !formData.complete ||
+      !formData.terminate ||
+      !formData.overQuota
     ) {
       toast.error("Fill the necessary fields");
       return false;
@@ -124,30 +100,22 @@ const ClientSetup: React.FC = () => {
   };
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    const {
-      // projectCode,
-      inputField,
-      countryCode,
-      scope,
-      testLink,
-      liveLink,
-      checkcountry,
-      checkQuota,
-    } = formData;
+    event.preventDefault();
+    const { vendorCode, pauseVendor, scope, complete, terminate, overQuota } =
+      formData;
     try {
       if (validateForm()) {
         const { data } = await axios.post(
-          `${baseUrl}project_client/create`,
+          `${baseUrl}project_vendor/create`,
           {
-            project_code: ProjectCode.ProjectCode,
-            input_field: inputField,
-            country: selectedCountry,
-            country_code: countryCode,
+            project_code: VendorProjectCode.ProjectCode,
+            vendor_code: vendorCode,
             scope: scope,
-            test_link: testLink,
-            live_link: liveLink,
-            country_pause: checkcountry,
-            check_quota: checkQuota,
+            complete: complete,
+            terminate: terminate,
+            over_quota: overQuota,
+            pause_vendor: pauseVendor,
+            vendor_name: selectedVendor,
           },
           {
             headers: {
@@ -155,19 +123,18 @@ const ClientSetup: React.FC = () => {
             },
           }
         );
-        toast.success("Client Created Successfully");
+
+        toast.success("Vendor Created Successfully");
         if (data.status_code === 200) {
           setFormData({
-            inputField: "",
-            countryCode: "",
+            vendorCode: "",
+            pauseVendor: false,
             scope: 0,
-            testLink: "",
-            liveLink: "",
-            checkcountry: false,
-            checkQuota: false,
+            complete: "",
+            terminate: "",
+            overQuota: "",
           });
-          setSelectedCountry(null);
-          updateProjectCode({ ProjectCode: "" });
+          updateVendorProjectCode({ ProjectCode: "" });
         }
       }
       // Handle form submission logic here
@@ -179,6 +146,22 @@ const ClientSetup: React.FC = () => {
       }
     }
   };
+  // fetch all the vendor list
+  useEffect(() => {
+    async function getAllVendors() {
+      try {
+        const vendorListResponse = await fetch(`${baseUrl}vendor/list`, {
+          method: "GET",
+        });
+        const vendorListData = await vendorListResponse.json();
+        setVendors(vendorListData);
+        setLoadingVendor(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+    getAllVendors();
+  }, []);
 
   return (
     <main className="section">
@@ -194,7 +177,7 @@ const ClientSetup: React.FC = () => {
         pauseOnHover
         theme="light"
       />
-      <h2 className="text-2xl font-semibold text-[#000]">Client Setup</h2>
+      <h2 className="text-2xl font-semibold text-[#000] ">Vendor Setup</h2>
       <div className="section bg-white pl-5 pr-2 sm:pl-6 sm:pr-16 py-12 rounded-3xl mt-2 sm:mt-4  ">
         <form className="text-[14px] sm:text-[15px] " onSubmit={handleSubmit}>
           <h2 className="mb-10">Enter the following details</h2>
@@ -202,7 +185,7 @@ const ClientSetup: React.FC = () => {
             <div className="mb-4 relative">
               <label
                 htmlFor="projectCode"
-                className="block text-gray-500 font-medium mb-4 "
+                className="block text-gray-500 font-medium mb-4"
               >
                 Project Code *
               </label>
@@ -212,13 +195,12 @@ const ClientSetup: React.FC = () => {
                 id="projectCode"
                 name="projectCode"
                 autoComplete="off"
-                value={ProjectCode.ProjectCode}
+                value={VendorProjectCode.ProjectCode}
                 onChange={handleChange}
                 placeholder="Enter your project Code "
                 className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
-
-              {ProjectCode.ProjectCode && (
+              {VendorProjectCode.ProjectCode && (
                 <>
                   {loading ? (
                     <div className="absolute z-50 bg-white shadow-lg my-2 px-4 py-3 text-base text-gray-700 w-full font-semibold text-left rounded-xl  h-48 md:h-60  mt-2 sm:w-full ring-1 ring-black ring-opacity-5 max-h-60">
@@ -229,7 +211,7 @@ const ClientSetup: React.FC = () => {
                   ) : (
                     <>
                       {suggestedProjectCode.length > 0 && (
-                        <div className="absolute z-50 mt-2 sm:w-full rounded-3xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-y-auto max-h-60">
+                        <div className="absolute z-50 mt-2 sm:w-full rounded-3xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-y-auto max-h-60 w-full">
                           <div
                             className="py-1 w-full px-3 bg-white"
                             role="menu"
@@ -240,7 +222,9 @@ const ClientSetup: React.FC = () => {
                               <div
                                 key={index}
                                 onClick={() => {
-                                  updateProjectCode({ ProjectCode: code });
+                                  updateVendorProjectCode({
+                                    ProjectCode: code,
+                                  });
 
                                   setSuggestedProjectCode([]); // Clear the suggestion list
                                 }}
@@ -260,82 +244,70 @@ const ClientSetup: React.FC = () => {
             </div>
             <div className="mb-4">
               <label
-                htmlFor="inputField"
+                htmlFor="vendorCode"
                 className="block text-gray-500 font-medium mb-4"
               >
-                Input Field *
+                Vendor Code *
               </label>
               <input
                 required
                 type="text"
-                id="inputField"
-                name="inputField"
-                value={formData.inputField}
+                id="vendorCode"
+                name="vendorCode"
+                value={formData.vendorCode}
                 onChange={handleChange}
                 placeholder="Enter your Input Field"
                 className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
-
             <div className="relative inline-block text-left z-30">
               <label
-                htmlFor="country"
+                htmlFor="selectVendor"
                 className="block text-gray-500 font-medium mb-4"
               >
-                Country *
+                Select Vendor *
               </label>
               <div>
                 <span className="rounded-md shadow-sm">
                   <button
-                    onClick={handleToggleCountry}
+                    onClick={handleToggleVendor}
                     type="button"
                     className="inline-flex justify-center w-full  text-sm appearance-none border font-light border-gray-500 rounded-xl py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
                   >
-                    {selectedCountry ? selectedCountry : "Select a Country"}
+                    {selectedVendor ? selectedVendor : "Choose from dropdown"}
                   </button>
                 </span>
               </div>
 
-              {isOpenCountry && (
-                <div className="absolute mt-2 sm:w-full rounded-3xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-y-auto max-h-60">
+              {isOpenVendor && (
+                <div className="absolute mt-2 w-full rounded-3xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-y-auto max-h-60">
                   <div
                     className="py-1 w-full px-3 bg-white"
                     role="menu"
                     aria-orientation="vertical"
                     aria-labelledby="options-menu"
                   >
-                    {countries.map((country, index) => (
-                      <div
-                        key={index}
-                        onClick={() => handleOptionCountry(country.name)}
-                        className="block px-4 py-4 text-sm text-gray-700 w-full hover:bg-[#a367b1] hover:text-[#392467] font-semibold  text-left  my-2 rounded-xl"
-                        role="menuitem"
-                      >
-                        {country.name}
+                    {loadingVendor ? (
+                      // Show loading state if loading is true
+                      <div className="block px-4 py-4 text-sm text-gray-700 w-full my-2 rounded-xl">
+                        Loading...
                       </div>
-                    ))}
+                    ) : (
+                      // Show the options if loading is false
+                      vendors?.map((vendor) => (
+                        <div
+                          key={vendor.id}
+                          onClick={() => handleOptionVendor(vendor.name)}
+                          className="block px-4 py-4 text-sm text-gray-700 w-full hover:bg-[#a367b1] hover:text-[#392467] font-semibold text-left my-2 rounded-xl"
+                          role="menuitem"
+                        >
+                          {vendor.name}
+                        </div>
+                      ))
+                    )}
                   </div>
                 </div>
               )}
-            </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="countryCode"
-                className="block text-gray-500 font-medium mb-4"
-              >
-                Country Code *
-              </label>
-              <input
-                required
-                type="text"
-                id="countryCode"
-                name="countryCode"
-                value={formData.countryCode}
-                onChange={handleChange}
-                placeholder="Enter your Country Code"
-                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
-              />
             </div>
 
             <div className="mb-4">
@@ -361,19 +333,19 @@ const ClientSetup: React.FC = () => {
           <div className="grid grid-cols-1 gap-4">
             <div className="mb-4">
               <label
-                htmlFor="testLink"
+                htmlFor="complete"
                 className="block text-gray-500 font-medium mb-4"
               >
-                Test Link *
+                Complete *
               </label>
               <input
                 required
                 type="text"
-                id="testLink"
-                name="testLink"
-                value={formData.testLink}
+                id="complete"
+                name="complete"
+                value={formData.complete}
                 onChange={handleChange}
-                placeholder="Enter your test Link "
+                placeholder="Enter your status "
                 className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
@@ -382,16 +354,34 @@ const ClientSetup: React.FC = () => {
                 htmlFor="liveLink"
                 className="block text-gray-500 font-medium mb-4"
               >
-                Live Link *
+                Terminate *
               </label>
               <input
                 required
                 type="text"
-                id="liveLink"
-                name="liveLink"
-                value={formData.liveLink}
+                id="terminate"
+                name="terminate"
+                value={formData.terminate}
                 onChange={handleChange}
-                placeholder="Enter your live Link "
+                placeholder="Enter your status"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="overQuota"
+                className="block text-gray-500 font-medium mb-4"
+              >
+                Over Quota*
+              </label>
+              <input
+                required
+                type="text"
+                id="overQuota"
+                name="overQuota"
+                value={formData.overQuota}
+                onChange={handleChange}
+                placeholder="Enter your status"
                 className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
@@ -399,26 +389,21 @@ const ClientSetup: React.FC = () => {
               <label className="block text-gray-500 font-medium mb-4">
                 Quick Action *
               </label>
-              <div className="mt-2 md:flex gap-3">
+              <div className="mt-2 sm:flex gap-3">
                 <div
-                  onClick={handleCheckCountryClick}
+                  onClick={() =>
+                    setFormData((prevFormData) => ({
+                      ...prevFormData,
+                      pauseVendor: !prevFormData.pauseVendor,
+                    }))
+                  }
                   className={`${
-                    formData.checkcountry === true
+                    formData.pauseVendor === true
                       ? "bg-[#a367b1] text-[#392467]"
                       : "bg-white text-gray-500"
-                  } border border-gray-500 w-48 px-10 py-5 mt-2 rounded-2xl flex items-center justify-center cursor-pointer`}
+                  } border border-gray-500 w-52 px-10 py-5 mt-2 rounded-2xl flex items-center justify-center cursor-pointer`}
                 >
-                  Country Pause
-                </div>
-                <div
-                  onClick={handleCheckQuotaClick}
-                  className={`${
-                    formData.checkQuota === true
-                      ? "bg-[#a367b1] text-[#392467]"
-                      : "bg-white text-gray-500"
-                  } border border-gray-500 w-48 px-10 py-5 mt-2 rounded-2xl flex items-center justify-center cursor-pointer`}
-                >
-                  Quota Stop
+                  Pause Vendor
                 </div>
               </div>
             </div>
@@ -428,7 +413,7 @@ const ClientSetup: React.FC = () => {
 
           <div className="flex items-center justify-center">
             <button
-              type="submit"
+              onSubmit={handleSubmit}
               className="bg-[#000000] font-semibold text-base sm:text-[18px] w-[12rem] sm:w-[16.5rem] px-10 py-4 sm:px-16 sm:py-6 text-white rounded-lg mt-10 sm:mt-20"
             >
               Add
@@ -439,16 +424,16 @@ const ClientSetup: React.FC = () => {
 
       <div className="pb-12">
         <button
-          onClick={() => setShowClients(!showClients)}
+          onClick={() => setShowVendors(!showVendors)}
           className="bg-[#000000] font-semibold text-base sm:text-[18px] w-[12rem] sm:w-[16.5rem] px-10 py-4 sm:px-16 sm:py-6 text-white rounded-lg mt-10 sm:mt-20"
         >
-          {showClients && ProjectCode.ProjectCode
-            ? "Hide Clients"
-            : "Show Clients"}
+          {showVendors && VendorProjectCode.ProjectCode
+            ? "Hide Vendors"
+            : "Show Vendors"}
         </button>
       </div>
 
-      {showClients && ProjectCode.ProjectCode ? (
+      {showVendors && VendorProjectCode.ProjectCode ? (
         loadingData ? (
           // If loading is true, show loading state
           <div className="text-2xl mx-auto ">Loading...</div>
@@ -459,34 +444,36 @@ const ClientSetup: React.FC = () => {
               <table className="table-auto w-full">
                 <thead>
                   <tr>
-                    <th className="px-4 py-4">Input</th>
-                    <th className="px-4 py-4">Country</th>
-                    <th className="px-4 py-4">Country Code</th>
+                    <th className="px-4 py-4">Vendor Name</th>
+                    <th className="px-4 py-4">Vendor Code</th>
                     <th className="px-4 py-4">Scope</th>
-                    <th className="px-4 py-4">Test Link</th>
-                    <th className="px-4 py-4">Live Link</th>
+                    <th className="px-4 py-4">Complete</th>
+                    <th className="px-4 py-4">Terminate</th>
+                    <th className="px-4 py-4">Over Quota</th>
                   </tr>
                 </thead>
 
                 <tbody>
-                  {apiClientData?.map((item) => (
+                  {apiVendorData?.map((item) => (
                     <tr
                       key={item.project_code}
                       className="border-b border-gray-200 "
                     >
                       <td className="px-4 text-center py-6">
-                        {item.input_field}
+                        {item.vendor_code}
                       </td>
-                      <td className="px-4 text-center py-6">{item.country}</td>
                       <td className="px-4 text-center py-6">
-                        {item.country_code}
+                        {item.vendor_name}
                       </td>
                       <td className="px-4 text-center py-6">{item.scope}</td>
-                      <td className="px-4 text-center py-6">
-                        <Link href={item.test_link}>Link</Link>
+                      <td className="px-4 text-center py-6 cursor-pointer">
+                        <Link href={item.complete}>Link</Link>
                       </td>
-                      <td className="px-4 text-center py-6">
-                        <Link href={item.live_link}>Link</Link>
+                      <td className="px-4 text-center py-6 cursor-pointer">
+                        <Link href={item.terminate}>Link</Link>
+                      </td>
+                      <td className="px-4 text-center py-6 cursor-pointer">
+                        <Link href={item.over_quota}>Link</Link>
                       </td>
                     </tr>
                   ))}
@@ -500,24 +487,24 @@ const ClientSetup: React.FC = () => {
               <table className="table-auto w-full">
                 <thead>
                   <tr>
-                    <th className="px-2 py-3 text-center">Input</th>
-                    <th className="px-2 py-3 text-center">Country</th>
-                    <th className="px-2 py-3 text-center">Country Code</th>
+                    <th className="px-2 py-3 text-center">Vendor Name</th>
+                    <th className="px-2 py-3 text-center">Vendor Code </th>
+                    <th className="px-2 py-3 text-center">Scope</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {apiClientData?.map((item) => (
+                  {apiVendorData?.map((item) => (
                     <tr
                       key={item.project_code}
                       className="border-b border-gray-200 "
                     >
                       <td className="px-3 text-center py-5">
-                        {item.input_field}
+                        {item.vendor_name}
                       </td>
-                      <td className="px-3 text-center py-5">{item.country}</td>
                       <td className="px-3 text-center py-5">
-                        {item.country_code}
+                        {item.vendor_code}
                       </td>
+                      <td className="px-3 text-center py-5">{item.scope}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -525,23 +512,25 @@ const ClientSetup: React.FC = () => {
               <table className="table-auto w-full mt-8 ">
                 <thead>
                   <tr>
-                    <th className="px-2 py-3 text-center">Scope</th>
-                    <th className="px-2 py-3 text-center">Test Link</th>
-                    <th className="px-2 py-3 text-center">Live Link</th>
+                    <th className="px-2 py-3 text-center">Complete</th>
+                    <th className="px-2 py-3 text-center">Terminate</th>
+                    <th className="px-2 py-3 text-center">Over Quota</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {apiClientData?.map((item) => (
+                  {apiVendorData?.map((item) => (
                     <tr
                       key={item.project_code}
                       className="border-b border-gray-200 "
                     >
-                      <td className="px-3 text-center py-5">{item.scope}</td>
                       <td className="px-3 text-center py-5">
-                        <Link href={item.test_link}>Link </Link>
+                        <Link href={item.complete}>Link </Link>
                       </td>
                       <td className="px-3 text-center py-5">
-                        <Link href={item.live_link}>Link</Link>
+                        <Link href={item.terminate}>Link </Link>
+                      </td>
+                      <td className="px-3 text-center py-5">
+                        <Link href={item.over_quota}>Link</Link>
                       </td>
                     </tr>
                   ))}
@@ -555,4 +544,4 @@ const ClientSetup: React.FC = () => {
   );
 };
 
-export default ClientSetup;
+export default VendorSetup;
