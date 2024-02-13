@@ -7,25 +7,7 @@ from ..modules.app_user import AppUser
 from ..modules._custom_schemas import AppUserSchema
 from ..utils import uniq_md5_hash
 
-from ninja.security import APIKeyCookie
-
-
 router = Router()
-
-
-class CookieKey(APIKeyCookie):
-    def __init__(self):
-        self.param_name = "X-API-KEY"
-        super().__init__()
-
-    def authenticate(self, request, token):
-        if token:
-            user = AppUser.objects.get(token=token)
-            if user:
-                return token
-
-
-cookie_key = CookieKey()
 
 
 @router.post("/create")
@@ -38,7 +20,7 @@ def create_user(request, user_in: AppUserSchema):
     return {"id": user.id, "username": user.username, "email": user.email}
 
 
-@router.post("/token", auth=None)  # < overriding global auth
+@router.post("/generate_token", auth=None)  # < overriding global auth
 def get_token(
     request: HttpRequest,
     response: HttpResponse,
@@ -49,12 +31,18 @@ def get_token(
 
     if len(user) != 0:
         token = uniq_md5_hash(value=f"{username}{password}", value_only=False)
-        response.set_cookie("X-API-KEY", token, max_age=3600)
+        response.set_cookie("X-API-KEY", token, max_age=36000)
         user.update(token=token)
 
         return {"token": token}
 
 
-@router.get("/protected", auth=cookie_key)
+@router.post("/logout")
+def logout(request: HttpRequest, response: HttpResponse):
+    response.delete_cookie("X-API-KEY")
+    return {"message": "Logged out"}
+
+
+@router.get("/protected")
 def protected(request: HttpRequest):
     return {"protected_data": "You are under protection"}
