@@ -29,7 +29,13 @@ class ProjectSurveyTrace(models.Model):
     )
 
     def clean(self):
-        if self.status not in ("insurvey", "complete", "terminate", "overquota"):
+        if self.status not in (
+            "insurvey",
+            "complete",
+            "terminate",
+            "overquota",
+            "rejected",
+        ):
             return ValueError("Invalid status value")
         if self.end_time == None and self.status == "insurvey":
             return ValueError("Invalid status value")

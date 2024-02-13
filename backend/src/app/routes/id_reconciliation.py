@@ -13,6 +13,7 @@ def update_status_via_reconciliation(request, data: IDReconciliationSchema):
             key__in=data.ids, project_code=data.project_code
         ).update(
             status=data.status,
+            qc_remarks=data.qc_remarks,
         )
     except Exception as e:
         return message.error(f"{e}")

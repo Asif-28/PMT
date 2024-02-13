@@ -10,12 +10,10 @@ from ..utils import uniq_md5_hash
 from ninja.security import APIKeyCookie
 
 
-
-
 router = Router()
 
+
 class CookieKey(APIKeyCookie):
-    
     def __init__(self):
         self.param_name = "X-API-KEY"
         super().__init__()
@@ -25,6 +23,7 @@ class CookieKey(APIKeyCookie):
             user = AppUser.objects.get(token=token)
             if user:
                 return token
+
 
 cookie_key = CookieKey()
 
@@ -52,7 +51,7 @@ def get_token(
         token = uniq_md5_hash(value=f"{username}{password}", value_only=False)
         response.set_cookie("X-API-KEY", token, max_age=3600)
         user.update(token=token)
-        
+
         return {"token": token}
 
 
