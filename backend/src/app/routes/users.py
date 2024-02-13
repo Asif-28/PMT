@@ -42,7 +42,3 @@ def logout(request: HttpRequest, response: HttpResponse):
     response.delete_cookie("X-API-KEY")
     return {"message": "Logged out"}
 
-
-@router.get("/protected")
-def protected(request: HttpRequest):
-    return {"protected_data": "You are under protection"}
