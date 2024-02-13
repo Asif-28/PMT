@@ -229,7 +229,7 @@ const ClientSetup: React.FC = () => {
                   ) : (
                     <>
                       {suggestedProjectCode.length > 0 && (
-                        <div className="absolute z-50 mt-2 sm:w-full rounded-3xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-y-auto max-h-60">
+                        <div className="absolute z-50 mt-2 sm:w-full rounded-3xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-y-auto max-h-60 w-full">
                           <div
                             className="py-1 w-full px-3 bg-white"
                             role="menu"
@@ -482,10 +482,10 @@ const ClientSetup: React.FC = () => {
                         {item.country_code}
                       </td>
                       <td className="px-4 text-center py-6">{item.scope}</td>
-                      <td className="px-4 text-center py-6">
+                      <td className="px-4 text-center py-6 cursor-pointer">
                         <Link href={item.test_link}>Link</Link>
                       </td>
-                      <td className="px-4 text-center py-6">
+                      <td className="px-4 text-center py-6 cursor-pointer">
                         <Link href={item.live_link}>Link</Link>
                       </td>
                     </tr>

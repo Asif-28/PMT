@@ -36,3 +36,21 @@ export interface VendorListApiResponse {
   name: string;
   email: string;
 }
+
+export interface ApiResponse {
+  project_name: string;
+  project_code: string;
+  project_manager: string;
+  client_name: string;
+  client_project_manager: string;
+  incidence_rate: string;
+  loi: string;
+  target: string;
+  target_description: string;
+  status: string;
+  online: string;
+  methodology: string;
+  billing_comments: string;
+  security_check: boolean;
+  scope: number;
+}

@@ -9,10 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.15.10",
     "@types/react-google-recaptcha": "^2.1.8",
     "axios": "^1.6.2",
-    "mongodb": "^6.3.0",
-    "mongoose": "^8.0.3",
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
