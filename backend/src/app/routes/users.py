@@ -1,7 +1,6 @@
 from ninja import Router
 from ninja.security import HttpBearer
 from ninja import Form
-from typing import Any
 from django.http import HttpRequest, HttpResponse
 from ..modules.app_user import AppUser
 from ..modules._custom_schemas import AppUserSchema
