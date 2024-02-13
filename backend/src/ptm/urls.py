@@ -20,6 +20,8 @@ from django.conf.urls import include
 
 from ninja import NinjaAPI, Redoc, Swagger
 from app.routes.auth import global_auth
+from django.conf import settings
+from django.conf.urls.static import static
 
 api = NinjaAPI(auth=global_auth, docs=Swagger(), docs_url="/docs", csrf=True)
 
@@ -29,4 +31,4 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", api.urls),
     path("survey/", include("app.template_urls")),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
