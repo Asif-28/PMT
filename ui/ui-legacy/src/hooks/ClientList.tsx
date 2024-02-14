@@ -28,7 +28,12 @@ const UseClientListData = () => {
       try {
         setLoadingData(true); // Set loading to true before fetching data
 
-        const response = await axios.get(`${baseUrl}project_client/list`);
+        const response = await axios.get(`${baseUrl}project_client/list`, {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
         const data: ApiResponse[] = response.data;
 

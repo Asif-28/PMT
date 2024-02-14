@@ -9,7 +9,12 @@ const UseProjectCode = (reload: boolean) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${baseUrl}project/generate_code`);
+        const response = await axios.get(`${baseUrl}project/generate_code`, {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         const data = response.data;
         // console.log(data);
 

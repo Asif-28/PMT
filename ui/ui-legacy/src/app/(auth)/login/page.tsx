@@ -1,9 +1,14 @@
 "use client";
 import Image from "next/image";
-import React, { FormEvent, useState, useEffect } from "react";
+import React, { FormEvent, useState, useEffect, use } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { z } from "zod";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const passwordSchema = z
   .string()
@@ -20,6 +25,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     // Immediately display password error if it exists on initial render
@@ -39,14 +45,41 @@ const Login = () => {
     }
   };
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
     try {
       passwordSchema.parse(password);
+      console.log(passwordSchema.parse(password));
       // Assuming successful login logic would follow here
+
+      const response = await axios.post(
+        `${baseUrl}users/generate_token`,
+        {
+          username: email,
+          password: password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        Cookies.set("X-API-KEY", response.data.token);
+
+        router.push("/survey");
+      } else {
+        toast.error("Invalid Credentials");
+      }
     } catch (error: any) {
-      setPasswordError(error.issues[0].message);
+      if (error.errors) {
+        toast.error(error.errors[0].message);
+      } else {
+        toast.error("Invalid Credentials");
+      }
+      // console.log(error);
     }
   };
 
@@ -65,8 +98,10 @@ const Login = () => {
         theme="light"
       />
       <div className="flex justify-between items-center ">
-        <div className=" flex flex-col gap-8 w-full items-center">
-          <h1 className="text-[#000] text-3xl font-bold text-left">Login</h1>
+        <div className=" flex flex-col gap-8 w-full items-center bg-gray-100 md:bg-white h-[100vh] md:h-auto">
+          <h1 className="text-[#000] text-3xl font-bold text-left mt-[10%] md:mt-0">
+            Login
+          </h1>
           <form onSubmit={handleSubmit} className="">
             <div className="mb-4">
               <label
@@ -77,7 +112,7 @@ const Login = () => {
               </label>
               <input
                 required
-                type="email"
+                type="text"
                 id="email"
                 name="email"
                 value={email}
@@ -114,7 +149,7 @@ const Login = () => {
             </div>
           </form>
         </div>
-        <div className=" bg-[#392467] h-screen w-full max-w-2xl rounded-tl-[2.5rem] rounded-bl-[2.5rem] flex justify-center pt-20 relative">
+        <div className=" hidden bg-[#392467] h-screen w-full max-w-2xl rounded-tl-[2.5rem] rounded-bl-[2.5rem] md:flex justify-center pt-20 relative">
           <div className="absolute right-0 mt-14">
             <Image src="/login.svg" alt="background" height={600} width={600} />
           </div>

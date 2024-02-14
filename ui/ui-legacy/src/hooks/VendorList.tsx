@@ -31,7 +31,12 @@ const UseVendorListData = () => {
       try {
         setLoadingData(true); // Set loading to true before fetching data
 
-        const response = await axios.get(`${baseUrl}project_vendor/list`);
+        const response = await axios.get(`${baseUrl}project_vendor/list`, {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
         const data: ApiResponse[] = response.data;
 

@@ -10,10 +10,13 @@ import UseProjectCode from "../../hooks/ProjectCodeValue";
 import { FormData as FormData } from "../../utils/types";
 import UseProjectCreateList from "@/hooks/ProjectCreateList";
 import { ApiResponse } from "../../utils/types";
+import Cookies from "js-cookie";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const Form: React.FC = () => {
+  const value = Cookies.get("X-API-KEY");
+  // console.log(value);
   const [formData, setFormData] = useState<FormData>({
     projectName: "",
     projectCode: "",
@@ -165,6 +168,7 @@ const Form: React.FC = () => {
       if (validateForm()) {
         const { data } = await axios.post(
           `${baseUrl}project/create`,
+
           {
             project_name: projectName,
             project_code: projectCodeNo,
@@ -186,6 +190,7 @@ const Form: React.FC = () => {
             headers: {
               "Content-Type": "application/json",
             },
+            withCredentials: true,
           }
         );
         // console.log(data.level);

@@ -152,6 +152,10 @@ const VendorSetup: React.FC = () => {
       try {
         const vendorListResponse = await fetch(`${baseUrl}vendor/list`, {
           method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
         });
         const vendorListData = await vendorListResponse.json();
         setVendors(vendorListData);

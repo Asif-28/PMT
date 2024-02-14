@@ -13,7 +13,12 @@ const UseProjectCodeList = (ProjectCode: any) => {
     async function getAllList() {
       try {
         setLoading(true);
-        const response = await axios.get(`${baseUrl}project/list`);
+        const response = await axios.get(`${baseUrl}project/list`, {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         const data = response.data;
         const filteredData = data.filter((item: any) => {
           return item.project_code.includes(ProjectCode.ProjectCode);
