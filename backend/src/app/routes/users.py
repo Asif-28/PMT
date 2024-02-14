@@ -1,8 +1,14 @@
 from ninja import Router
 from ninja.security import HttpBearer
 from ninja import Form
+import json
 from django.http import HttpRequest, HttpResponse
-from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
+from django.shortcuts import render
+from django.views.decorators.csrf import (
+    csrf_exempt,
+    ensure_csrf_cookie,
+    requires_csrf_token,
+)
 from ..modules.app_user import AppUser
 from ..modules._custom_schemas import AppUserSchema
 from ..utils import uniq_md5_hash
@@ -17,16 +23,39 @@ def get_csrf_token(request):
     return HttpResponse()
 
 
+@router.get("/xcsrf", auth=None)
+@requires_csrf_token
+def read_user(request):
+    data: HttpResponse = render(request, "csrf.html", {})
+    # get csrf token from data
+    csrf_token = (
+        data.content.decode()
+        .split('name="csrfmiddlewaretoken" value="')[1]
+        .split('"')[0]
+    )
+    _d = {
+        "csrf_token": request.COOKIES.get("csrftoken"),
+        "x_csrf_token": csrf_token,
+    }
+
+    return HttpResponse(
+        content=json.dumps(_d),
+        content_type="application/json",
+        headers={"X-CSRFToken": csrf_token},
+    )
+
+
 @router.post("/create")
 def create_user(request, user_in: AppUserSchema):
     # get token from request
-    # token = request.cookies.get("X-API-KEY")
-    # if not token:
-    #     return {"error": "Not authenticated"}
-    # user = AppUser.objects.filter(token=token).first()
+    token = request.COOKIES.get("X-API-KEY")
+    if not token:
+        return {"error": "Not authenticated"}
 
-    # if user.role != "admin":
-    #     return {"error": f"Not {user.role} authorized to create user"}
+    user = AppUser.objects.filter(token=token).first()
+
+    if user.role.lower() != "admin":
+        return {"error": f"Not {user.role} authorized to create user"}
 
     user = AppUser.objects.create(
         username=user_in.username,
