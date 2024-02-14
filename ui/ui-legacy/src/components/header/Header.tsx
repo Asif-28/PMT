@@ -7,6 +7,8 @@ import { useSearch } from "../../context/SearchContext";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 import { deepOrange, deepPurple } from "@mui/material/colors";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 interface DataItem {
   id: number;
@@ -32,6 +34,12 @@ const Header: React.FC = () => {
   const { isOpen, toggleMenu }: MenuContext = useMenu();
 
   const [selectedItemId, setSelectedItemId] = useState<number>(1);
+  const router = useRouter();
+
+  const handleLogout = () => {
+    Cookies.remove("X-API-KEY");
+    router.push("/");
+  };
 
   const handleSection = (i: any) => {
     const newSelectedItemId = getSelectedItemId(i);
@@ -126,9 +134,12 @@ const Header: React.FC = () => {
           </div>
         </div>
         <div className=" flex items-center gap-3 sm:gap-10">
-          <div className="flex gap-2 md:gap-3 lg:gap-3 border border-[#008000] px-4 py-2 md:px-4 md:py-[.7rem] lg:px-5 lg:py-[.6rem] items-center justify-center rounded-full">
-            <div className="w-2 h-2 md:w-4 md:h-4 rounded-full bg-[#008000]"></div>
-            <h3 className="text-[14px] sm:text-base">Active </h3>
+          <div className="flex gap-2 md:gap-3 lg:gap-3 border border-[#a367b1] px-4 py-2 md:px-4 md:py-[.7rem] lg:px-5 lg:py-[.6rem] items-center justify-center rounded-full">
+            {/* <div className="w-2 h-2 md:w-4 md:h-4 rounded-full bg-[#008000]"></div> */}
+            <button onClick={handleLogout} className="font-bold">
+              Log Out
+            </button>
+            {/* <h3 className="text-[14px] sm:text-base">Active </h3> */}
           </div>
           <div className=" flex gap-2 items-center ">
             {/* <Image src={`/Ellipse 2.svg`} alt="image" height={70} width={60} /> */}
@@ -139,7 +150,7 @@ const Header: React.FC = () => {
                 OP
               </Avatar>
             </Stack>
-            <h1 className="font-semibold text-base text-gray-950">Name</h1>
+            <h1 className="font-semibold text-base text-gray-950">John</h1>
           </div>
         </div>
       </div>
@@ -204,8 +215,11 @@ const Header: React.FC = () => {
           </div>
           <div className=" flex items-center gap-3 sm:gap-10">
             <div className="flex gap-3 md:gap-6 lg:gap-10 border border-[#008000] px-4 py-2 md:px-6 md:py-3 lg:px-8 lg:py-[1.2rem] items-center justify-center rounded-full">
-              <div className="w-2 h-2 md:w-4 md:h-4 rounded-full bg-[#008000]"></div>
-              <h3 className="text-[14px] sm:text-base">Active </h3>
+              {/* <div className="w-2 h-2 md:w-4 md:h-4 rounded-full bg-[#008000]"></div>
+              <h3 className="text-[14px] sm:text-base">Active </h3> */}
+              <button onClick={handleLogout} className="sm:font-bold text-sm ">
+                Log Out
+              </button>
             </div>
             <div className="flex items-center gap-2 ">
               {/* <Image
@@ -225,7 +239,7 @@ const Header: React.FC = () => {
                   OP
                 </Avatar>
               </Stack>
-              <h1 className="font-semibold text-base text-gray-950">Name</h1>
+              <h1 className="font-semibold text-base text-gray-950">John</h1>
             </div>
           </div>
         </div>

@@ -1,5 +1,4 @@
 import React, { useState, FormEvent, ChangeEvent } from "react";
-import { countrys } from "../../data/data";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import Link from "next/link";
@@ -134,6 +133,7 @@ const ClientSetup: React.FC = () => {
       checkcountry,
       checkQuota,
     } = formData;
+
     try {
       if (validateForm()) {
         const { data } = await axios.post(
@@ -153,6 +153,7 @@ const ClientSetup: React.FC = () => {
             headers: {
               "Content-Type": "application/json",
             },
+            withCredentials: true,
           }
         );
         toast.success("Client Created Successfully");
