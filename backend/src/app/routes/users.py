@@ -16,6 +16,7 @@ router = Router()
 def get_csrf_token(request):
     return HttpResponse()
 
+
 @router.post("/create")
 def create_user(request, user_in: AppUserSchema):
     # get token from request

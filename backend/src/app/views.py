@@ -242,6 +242,7 @@ def complete_survey(request):
 
     return redirect(redirect_url)
 
+
 @csrf_exempt
 @ensure_csrf_cookie
 def health(request):
