@@ -48,13 +48,14 @@ def read_user(request):
 @router.post("/create")
 def create_user(request, user_in: AppUserSchema):
     # get token from request
-    # token = request.cookies.get("X-API-KEY")
-    # if not token:
-    #     return {"error": "Not authenticated"}
-    # user = AppUser.objects.filter(token=token).first()
+    token = request.COOKIES.get("X-API-KEY")
+    if not token:
+        return {"error": "Not authenticated"}
 
-    # if user.role != "admin":
-    #     return {"error": f"Not {user.role} authorized to create user"}
+    user = AppUser.objects.filter(token=token).first()
+
+    if user.role.lower() != "admin":
+        return {"error": f"Not {user.role} authorized to create user"}
 
     user = AppUser.objects.create(
         username=user_in.username,
