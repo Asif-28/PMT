@@ -19,11 +19,11 @@ from django.urls import path
 from django.conf.urls import include
 
 from ninja import NinjaAPI, Redoc, Swagger
-from app.routes.auth import global_auth
+from app.routes.auth import CookieAuth
 from django.conf import settings
 from django.conf.urls.static import static
 
-api = NinjaAPI(auth=global_auth, docs=Swagger(), docs_url="/docs", csrf=True)
+api = NinjaAPI(auth=CookieAuth(), docs=Swagger(), docs_url="/docs", csrf=True)
 
 api.add_router("/", "app.urls.router")
 
