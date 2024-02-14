@@ -17,6 +17,7 @@ router = Router()
 #     return HttpResponse()
 
 @router.get("/csrf_token", auth=None)
+@csrf_exempt
 def csrf_token(request: HttpRequest, response: HttpResponse):
     token = get_csrf_token(request)
     # response = HttpResponse('{"csrfToken": "%s"}' % token, content_type="application/json")
@@ -44,6 +45,7 @@ def create_user(request, user_in: AppUserSchema):
 
 
 @router.post("/generate_token", auth=None)  # < overriding global auth
+@ensure_csrf_cookie
 def get_token(
     request: HttpRequest,
     response: HttpResponse,
