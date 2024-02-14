@@ -45,7 +45,6 @@ def create_user(request, user_in: AppUserSchema):
 
 
 @router.post("/generate_token", auth=None)  # < overriding global auth
-@ensure_csrf_cookie
 def get_token(
     request: HttpRequest,
     response: HttpResponse,
