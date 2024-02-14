@@ -1,8 +1,14 @@
 from ninja import Router
 from ninja.security import HttpBearer
 from ninja import Form
+import json
 from django.http import HttpRequest, HttpResponse
-from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
+from django.shortcuts import render
+from django.views.decorators.csrf import (
+    csrf_exempt,
+    ensure_csrf_cookie,
+    requires_csrf_token,
+)
 from ..modules.app_user import AppUser
 from ..modules._custom_schemas import AppUserSchema
 from ..utils import uniq_md5_hash
@@ -15,6 +21,28 @@ router = Router()
 @csrf_exempt
 def get_csrf_token(request):
     return HttpResponse()
+
+
+@router.get("/xcsrf", auth=None)
+@requires_csrf_token
+def read_user(request):
+    data: HttpResponse = render(request, "csrf.html", {})
+    # get csrf token from data
+    csrf_token = (
+        data.content.decode()
+        .split('name="csrfmiddlewaretoken" value="')[1]
+        .split('"')[0]
+    )
+    _d = {
+        "csrf_token": request.COOKIES.get("csrftoken"),
+        "x_csrf_token": csrf_token,
+    }
+
+    return HttpResponse(
+        content=json.dumps(_d),
+        content_type="application/json",
+        headers={"X-CSRFToken": csrf_token},
+    )
 
 
 @router.post("/create")
