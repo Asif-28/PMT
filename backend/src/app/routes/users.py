@@ -18,7 +18,7 @@ router = Router()
 
 @router.get("/csrf-token", auth=None)
 def csrf_token(request: HttpRequest, response: HttpResponse):
-    token = get_token(request)
+    token = get_csrf_token(request)
     # response = HttpResponse('{"csrfToken": "%s"}' % token, content_type="application/json")
     response.set_cookie('csrftoken', token, max_age=60*60*24*365*10, samesite='Lax')
     return response
