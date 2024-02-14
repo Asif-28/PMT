@@ -64,7 +64,11 @@ const AddNewClient: React.FC = () => {
       }
       // Handle form submission logic here
     } catch (error: any) {
-      toast.error(error);
+      {
+        error.message === "Request failed with status code 400"
+          ? toast.error(error.response.data.detail)
+          : toast.error("Error in Submitting");
+      }
     }
   };
 

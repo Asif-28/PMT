@@ -31,7 +31,7 @@ const AddNewVendor: React.FC = () => {
     event.preventDefault();
     const { vendorEmail, vendorName } = formData;
     // Handle form submission logic here
-    console.log(formData); // Replace with actual submission logic
+
     try {
       if (validateForm()) {
         const { data } = await axios.post(
@@ -57,7 +57,11 @@ const AddNewVendor: React.FC = () => {
       }
       // Handle form submission logic here
     } catch (error: any) {
-      toast.error(error);
+      {
+        error.message === "Request failed with status code 400"
+          ? toast.error(error.response.data.detail)
+          : toast.error("Error in Submitting");
+      }
     }
   };
 
@@ -95,7 +99,7 @@ const AddNewVendor: React.FC = () => {
                 value={formData.vendorName}
                 onChange={handleChange}
                 placeholder="Enter Vendor Name "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
             <div className="mb-4">
@@ -113,7 +117,7 @@ const AddNewVendor: React.FC = () => {
                 value={formData.vendorEmail}
                 onChange={handleChange}
                 placeholder="Enter Vendor Email address "
-                className=" appearance-none  xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
+                className=" appearance-none font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467] focus:shadow-outline"
               />
             </div>
           </div>

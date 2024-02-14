@@ -4,6 +4,9 @@ import React, { FormEvent, useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { z } from "zod";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const passwordSchema = z
   .string()
@@ -39,14 +42,29 @@ const Login = () => {
     }
   };
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
     try {
-      passwordSchema.parse(password);
+      // passwordSchema.parse(password);
       // Assuming successful login logic would follow here
+
+      const { data } = await axios.post(
+        `${baseUrl}users/generate_token`,
+        {
+          username: email,
+          password: password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+      console.log(data);
     } catch (error: any) {
-      setPasswordError(error.issues[0].message);
+      // setPasswordError(error.issues[0].message);
+      console.log(error);
     }
   };
 
@@ -77,7 +95,7 @@ const Login = () => {
               </label>
               <input
                 required
-                type="email"
+                type="text"
                 id="email"
                 name="email"
                 value={email}
