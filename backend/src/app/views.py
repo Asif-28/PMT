@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from hashlib import md5
 from django.db.models import Count
-
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 import time
 import datetime
 from .modules.project_survey_trace import ProjectSurveyTrace
@@ -241,3 +241,8 @@ def complete_survey(request):
     logging.info(f"Redirecting to: {redirect_url}")
 
     return redirect(redirect_url)
+
+@csrf_exempt
+@ensure_csrf_cookie
+def health(request):
+    return HttpResponse("OK", status=200)

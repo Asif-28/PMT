@@ -16,15 +16,6 @@ router = Router()
 # def get_csrf_token(request):
 #     return HttpResponse()
 
-@router.get("/csrf_token", auth=None)
-@csrf_exempt
-def csrf_token(request: HttpRequest, response: HttpResponse):
-    token = get_csrf_token(request)
-    # response = HttpResponse('{"csrfToken": "%s"}' % token, content_type="application/json")
-    response.set_cookie('csrftoken', token, max_age=60*60*24*365*10, samesite='Lax')
-    return {"success": True}
-
-
 @router.post("/create")
 def create_user(request, user_in: AppUserSchema):
     # get token from request

@@ -2,7 +2,7 @@ from ninja.security import APIKeyCookie
 from ..modules.app_user import AppUser
 
 
-class CookieKey(APIKeyCookie):
+class CookieAuth(APIKeyCookie):
     def __init__(self):
         self.param_name = "X-API-KEY"
         super().__init__()
@@ -12,6 +12,3 @@ class CookieKey(APIKeyCookie):
             user = AppUser.objects.get(token=token)
             if user:
                 return token
-
-
-global_auth = CookieKey()
