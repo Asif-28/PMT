@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class AppUser(models.Model):
@@ -20,6 +21,13 @@ class AppUser(models.Model):
         self.email = self.email.lower()
         if len(self.password) < 6:
             raise ValueError("Password must be at least 6 characters long")
+
+        # Check if the token has changed and update last_token_refresh accordingly
+        if self.pk is not None:  # Check if the object already exists in the database
+            original = AppUser.objects.get(pk=self.pk)
+            if self.token != original.token:
+                self.last_token_refresh = timezone.now()
+
         super().save(*args, **kwargs)
 
     def __str__(self):
