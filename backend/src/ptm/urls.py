@@ -23,7 +23,7 @@ from app.routes.auth import CookieAuth
 from django.conf import settings
 from django.conf.urls.static import static
 
-api = NinjaAPI(auth=CookieAuth(), docs=Swagger(), docs_url="/docs", csrf=True)
+api = NinjaAPI(auth=CookieAuth(), docs=Swagger(), docs_url="/docs", csrf=False)
 
 api.add_router("/", "app.urls.router")
 
