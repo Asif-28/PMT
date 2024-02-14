@@ -16,7 +16,7 @@ router = Router()
 # def get_csrf_token(request):
 #     return HttpResponse()
 
-@router.get("/csrf-token")
+@router.get("/csrf-token", auth=None)
 def csrf_token(request: HttpRequest, response: HttpResponse):
     token = get_token(request)
     # response = HttpResponse('{"csrfToken": "%s"}' % token, content_type="application/json")
