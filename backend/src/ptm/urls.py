@@ -26,7 +26,7 @@ from django.conf.urls.static import static
 if not settings.DEBUG:
     auth = CookieAuth()
 else:
-    auth = None
+    auth = CookieAuth()
 
 api = NinjaAPI(auth=auth, docs=Swagger(), docs_url="/docs", csrf=False)
 
