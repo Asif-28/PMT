@@ -14,9 +14,9 @@ import Cookies from "js-cookie";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
+axios.defaults.headers.post["X-CSRFToken"] = Cookies.get("csrftoken");
+
 const Form: React.FC = () => {
-  const value = Cookies.get("X-API-KEY");
-  // console.log(value);
   const [formData, setFormData] = useState<FormData>({
     projectName: "",
     projectCode: "",

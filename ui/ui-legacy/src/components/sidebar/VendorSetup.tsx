@@ -7,10 +7,13 @@ import UseProjectCodeList from "../../hooks/ProjectCodeList";
 import UseVendorListData from "../../hooks/VendorList";
 import { VendorFormData as FormData } from "../../utils/types";
 import { VendorListApiResponse } from "../../utils/types";
+import Cookies from "js-cookie";
+
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
+axios.defaults.headers.post["X-CSRFToken"] = Cookies.get("csrftoken");
 
 const VendorSetup: React.FC = () => {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
   const [formData, setFormData] = useState<FormData>({
     vendorCode: "",
     pauseVendor: false,
@@ -121,6 +124,7 @@ const VendorSetup: React.FC = () => {
             headers: {
               "Content-Type": "application/json",
             },
+            withCredentials: true,
           }
         );
 

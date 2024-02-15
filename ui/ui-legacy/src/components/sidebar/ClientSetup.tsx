@@ -7,8 +7,11 @@ import UseProjectCodeList from "../../hooks/ProjectCodeList";
 import UseClientListData from "../../hooks/ClientList";
 import { ClientFormData as FormData } from "../../utils/types";
 import { countries } from "../../data/data";
+import Cookies from "js-cookie";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
+axios.defaults.headers.post["X-CSRFToken"] = Cookies.get("csrftoken");
 
 const ClientSetup: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
@@ -152,6 +155,7 @@ const ClientSetup: React.FC = () => {
           {
             headers: {
               "Content-Type": "application/json",
+              // "X-CSRFToken": value,
             },
             withCredentials: true,
           }
