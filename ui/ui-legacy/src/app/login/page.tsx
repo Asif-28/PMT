@@ -22,10 +22,16 @@ const passwordSchema = z
   );
 
 const Login = () => {
+  const value = Cookies.get("csrftoken");
+  const { push } = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const router = useRouter();
+
+  useEffect(() => {
+    Cookies.get("X-API-KEY") ? push("/survey") : push("/");
+  }, [push]);
 
   useEffect(() => {
     // Immediately display password error if it exists on initial render
@@ -52,6 +58,8 @@ const Login = () => {
       passwordSchema.parse(password);
       console.log(passwordSchema.parse(password));
       // Assuming successful login logic would follow here
+      const responseCsrf = await axios.post(`${baseUrl}users/csrf`);
+      console.log(responseCsrf);
 
       const response = await axios.post(
         `${baseUrl}users/generate_token`,
@@ -62,6 +70,7 @@ const Login = () => {
         {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
+            // "X-CSRFToken": value,
           },
         }
       );
