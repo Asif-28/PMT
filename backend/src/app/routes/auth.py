@@ -1,11 +1,9 @@
-from ninja.security import APIKeyCookie
+from ninja.security import HttpBearer
 from ..modules.app_user import AppUser
 
 
-class CookieAuth(APIKeyCookie):
+class HeaderAuth(HttpBearer):
     def __init__(self):
-        self.param_name = "X-API-KEY"
-        self.csrf = False
         super().__init__()
 
     def authenticate(self, request, token):

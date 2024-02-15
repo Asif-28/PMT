@@ -19,14 +19,14 @@ from django.urls import path
 from django.conf.urls import include
 
 from ninja import NinjaAPI, Redoc, Swagger
-from app.routes.auth import CookieAuth
+from app.routes.auth import HeaderAuth
 from django.conf import settings
 from django.conf.urls.static import static
 
 if not settings.DEBUG:
-    auth = CookieAuth()
+    auth = HeaderAuth()
 else:
-    auth = CookieAuth()
+    auth = HeaderAuth()
 
 api = NinjaAPI(auth=auth, docs=Swagger(), docs_url="/docs", csrf=False)
 
