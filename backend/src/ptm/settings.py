@@ -36,6 +36,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://foo.decopoint.co.in",
     "https://qandqlegacy.com",
     "https://*.qandqlegacy.com",
+    "http://localhost:3000",
 ]
 
 # Application definition
@@ -65,7 +66,9 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+if not os.getenv("STAGE"):
+    CORS_ALLOW_ALL_ORIGINS = True
+
 CORS_ALLOW_CREDENTIALS = True
 
 # CORS_ALLOWED_ORIGINS = [
