@@ -41,7 +41,7 @@ class ProjectSurveyTrace(models.Model):
             return ValueError("Invalid status value")
 
     def total_duration(self):
-        if self.start_time and self.end_time:
+        if self.start_time != None and self.end_time != None:
             return self.end_time - self.start_time
         else:
             # Handle cases where times are missing or invalid

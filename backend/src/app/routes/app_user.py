@@ -20,6 +20,10 @@ router = Router()
 @ensure_csrf_cookie
 @csrf_exempt
 def get_csrf_token(request):
+    """
+    Implementing CSRF token for the frontend
+    ref: https://github.com/vitalik/django-ninja/issues/908
+    """
     return HttpResponse()
 
 
@@ -86,3 +90,7 @@ def get_token(
 def logout(request: HttpRequest, response: HttpResponse):
     response.delete_cookie("X-API-KEY")
     return {"message": "Logged out"}
+
+@router.get("/verify_token")
+def verify_token(request: HttpRequest):
+    return {"message": "Token is valid"}
