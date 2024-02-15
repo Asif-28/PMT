@@ -29,15 +29,30 @@ const Login = () => {
   const [passwordError, setPasswordError] = useState("");
   const router = useRouter();
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const responseCsrf = await axios.get(
+  //         "http://localhost:8000/survey/health",
+  //         { withCredentials: true }
+  //       );
+  //       console.log(responseCsrf);
+  //     } catch (error) {
+  //       console.error("Error fetching CSRF token:", error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseCsrf = await axios.post(`${baseUrl}users/csrf`, {
-          // withCredentials: true,
+        const responseXCsrf = await axios.get(`${baseUrl}users/xcsrf`, {
+          withCredentials: true,
         });
-        console.log(responseCsrf);
-      } catch (error) {
-        console.error("Error fetching CSRF token:", error);
+      } catch (error: any) {
+        throw new Error("Error fetching CSRF token:", error);
       }
     };
 
@@ -83,7 +98,6 @@ const Login = () => {
         {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
-            // "X-CSRFToken": value,
           },
         }
       );
@@ -101,7 +115,6 @@ const Login = () => {
       } else {
         toast.error("Invalid Credentials");
       }
-      // console.log(error);
     }
   };
 
