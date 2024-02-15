@@ -70,7 +70,9 @@ def get_token(
 
     if len(user) != 0:
         token = uniq_md5_hash(value=f"{username}{password}", value_only=False)
-        response.set_cookie("X-API-KEY", token, max_age=36000)
+        response.set_cookie(
+            "X-API-KEY", token, max_age=36000, samesite=None, secure=True
+        )
         user.update(token=token)
 
         return {"token": token}
@@ -80,6 +82,7 @@ def get_token(
 def logout(request: HttpRequest, response: HttpResponse):
     response.delete_cookie("X-API-KEY")
     return {"message": "Logged out"}
+
 
 @router.get("/verify_token")
 def verify_token(request: HttpRequest):
