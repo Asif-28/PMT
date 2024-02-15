@@ -29,6 +29,7 @@ def get_csrf_token(request: HttpRequest, response: HttpResponse):
 
 
 @router.get("/xcsrf", auth=None)
+@csrf_exempt
 @requires_csrf_token
 def read_user(request):
     data: HttpResponse = render(request, "csrf.html", {})
