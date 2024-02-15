@@ -24,10 +24,40 @@ const passwordSchema = z
 const Login = () => {
   const value = Cookies.get("csrftoken");
   const { push } = useRouter();
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const router = useRouter();
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const responseCsrf = await axios.get(
+  //         "http://localhost:8000/survey/health",
+  //         { withCredentials: true }
+  //       );
+  //       console.log(responseCsrf);
+  //     } catch (error) {
+  //       console.error("Error fetching CSRF token:", error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const responseXCsrf = await axios.get(`${baseUrl}users/xcsrf`, {
+          withCredentials: true,
+        });
+      } catch (error: any) {
+        throw new Error("Error fetching CSRF token:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     Cookies.get("X-API-KEY") ? push("/survey") : push("/");
@@ -43,8 +73,8 @@ const Login = () => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
 
-    if (name === "email") {
-      setEmail(value);
+    if (name === "username") {
+      setUsername(value);
     } else if (name === "password") {
       setPassword(value);
       setPasswordError("");
@@ -58,19 +88,16 @@ const Login = () => {
       passwordSchema.parse(password);
       console.log(passwordSchema.parse(password));
       // Assuming successful login logic would follow here
-      const responseCsrf = await axios.post(`${baseUrl}users/csrf`);
-      console.log(responseCsrf);
 
       const response = await axios.post(
         `${baseUrl}users/generate_token`,
         {
-          username: email,
+          username: username,
           password: password,
         },
         {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
-            // "X-CSRFToken": value,
           },
         }
       );
@@ -88,7 +115,6 @@ const Login = () => {
       } else {
         toast.error("Invalid Credentials");
       }
-      // console.log(error);
     }
   };
 
@@ -114,19 +140,19 @@ const Login = () => {
           <form onSubmit={handleSubmit} className="">
             <div className="mb-4">
               <label
-                htmlFor="email"
+                htmlFor="username"
                 className="block text-gray-500 font-medium mb-4"
               >
-                Email Id *
+                Username *
               </label>
               <input
                 required
                 type="text"
-                id="email"
-                name="email"
-                value={email}
+                id="username"
+                name="username"
+                value={username}
                 onChange={handleChange}
-                placeholder="Enter your Email address"
+                placeholder="Enter your username"
                 className="appearance-none xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#392467]focus:shadow-outline"
               />
             </div>
