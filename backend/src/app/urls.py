@@ -5,7 +5,7 @@ from .routes.client import router as client_router
 from .routes.utils import router as utils_router
 from .routes.project_vendor import router as project_vendor_router
 from .routes.id_reconciliation import router as id_reconciliation_router
-from .routes.users import router as users_router
+from .routes.app_user import router as users_router
 
 
 from ninja import Router
