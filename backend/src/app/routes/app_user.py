@@ -86,3 +86,7 @@ def get_token(
 def logout(request: HttpRequest, response: HttpResponse):
     response.delete_cookie("X-API-KEY")
     return {"message": "Logged out"}
+
+@router.get("/verify_token")
+def verify_token(request: HttpRequest):
+    return {"message": "Token is valid"}
