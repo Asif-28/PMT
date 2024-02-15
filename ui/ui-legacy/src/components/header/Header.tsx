@@ -38,6 +38,7 @@ const Header: React.FC = () => {
 
   const handleLogout = () => {
     Cookies.remove("X-API-KEY");
+    Cookies.remove("csrftoken");
     router.push("/");
   };
 
@@ -110,7 +111,7 @@ const Header: React.FC = () => {
             onChange={handleSearch}
           />
 
-          <div className=" absolute left-[5.2rem]">
+          <div className=" absolute left-[2rem] md:left-[5.2rem]">
             <Image
               src={`/search-normal.svg`}
               alt="image"

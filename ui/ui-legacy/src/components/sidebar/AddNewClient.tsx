@@ -1,12 +1,16 @@
 import axios from "axios";
 import React, { useState, FormEvent, ChangeEvent } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import Cookies from "js-cookie";
 
 interface FormData {
   clientName: string;
   clientProjectManager: string;
   email: string;
 }
+
+axios.defaults.headers.post["X-CSRFToken"] = Cookies.get("csrftoken");
+
 const AddNewClient: React.FC = () => {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -50,6 +54,7 @@ const AddNewClient: React.FC = () => {
             headers: {
               "Content-Type": "application/json",
             },
+            withCredentials: true,
           }
         );
         // console.log(data.level, "success");

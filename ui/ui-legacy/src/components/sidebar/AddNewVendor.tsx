@@ -1,11 +1,15 @@
 import axios from "axios";
 import React, { useState, FormEvent, ChangeEvent } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import Cookies from "js-cookie";
 
 interface FormData {
   vendorName: string;
   vendorEmail: string;
 }
+
+axios.defaults.headers.post["X-CSRFToken"] = Cookies.get("csrftoken");
+
 const AddNewVendor: React.FC = () => {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -44,6 +48,7 @@ const AddNewVendor: React.FC = () => {
             headers: {
               "Content-Type": "application/json",
             },
+            withCredentials: true,
           }
         );
 
