@@ -20,6 +20,10 @@ router = Router()
 @ensure_csrf_cookie
 @csrf_exempt
 def get_csrf_token(request):
+    """
+    Implementing CSRF token for the frontend
+    ref: https://github.com/vitalik/django-ninja/issues/908
+    """
     return HttpResponse()
 
 
