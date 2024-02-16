@@ -15,9 +15,9 @@ def read_live_portal(request, status: str = "live"):
     Get all projects
     """
     all_projects = ProjectCreation.objects.filter(status=status)
-    
+
     projects_data = dict()
-    
+
     for i in all_projects:
         projects_data[i.project_code] = {
             "project_name": i.project_name,
@@ -78,6 +78,52 @@ def project_data_summary(request, project_code: str):
                 GROUP BY
                     vendor_code,
                     status
+            """
+            )
+
+            return dictfetchall(cursor)
+
+    return execute_raw_query(project_code)
+
+
+@router.get("/project_survey_dashboard/")
+def project_survey_dashboard(request, project_code: str):
+    """
+    Get project survey dashboard
+    """
+
+    def execute_raw_query(project_code):
+        with connection.cursor() as cursor:
+            cursor.execute(
+                f"""
+                SELECT 
+                    aggregated.just_date, 
+                    aggregated.vendor_code, 
+                    aggregated.counts, 
+                    ap2.vendor_name, 
+                    ap2.scope
+                FROM 
+                    (
+                        SELECT 
+                            DATE(ap.start_time) AS just_date, 
+                            ap.vendor_code, 
+                            COUNT(*) AS counts
+                        FROM 
+                            app_projectsurveytrace ap
+                        WHERE 
+                            ap.status = 'complete' 
+                            AND ap.test = 0 
+                            AND ap.project_code = '{project_code}'
+                        GROUP BY 
+                            just_date, 
+                            ap.vendor_code
+                    ) AS aggregated
+                LEFT JOIN 
+                    app_projectvendor ap2 
+                    ON aggregated.vendor_code = ap2.vendor_code
+                WHERE 
+                    ap2.project_code = '{project_code}';
+                    
             """
             )
 
