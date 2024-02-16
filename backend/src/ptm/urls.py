@@ -26,7 +26,7 @@ from django.conf.urls.static import static
 if not settings.DEBUG:
     auth = HeaderAuth()
 else:
-    auth = None  # HeaderAuth()
+    auth = HeaderAuth()
 
 api = NinjaAPI(auth=auth, docs=Swagger(), docs_url="/docs", csrf=False)
 
