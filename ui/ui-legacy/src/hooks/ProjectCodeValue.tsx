@@ -5,6 +5,7 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const UseProjectCode = (reload: boolean) => {
   const [projectCodeNo, setProjectCodeNo] = useState<string>("");
+  const authorizationToken = localStorage.getItem("Authorization");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -13,6 +14,7 @@ const UseProjectCode = (reload: boolean) => {
           withCredentials: true,
           headers: {
             "Content-Type": "application/json",
+            Authorization: authorizationToken,
           },
         });
         const data = response.data;

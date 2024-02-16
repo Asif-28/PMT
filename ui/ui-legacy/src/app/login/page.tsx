@@ -45,23 +45,23 @@ const Login = () => {
   //   fetchData();
   // }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const responseXCsrf = await axios.get(`${baseUrl}users/xcsrf`, {
-          withCredentials: true,
-        });
-      } catch (error: any) {
-        throw new Error("Error fetching CSRF token:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const responseXCsrf = await axios.get(`${baseUrl}users/xcsrf`, {
+  //         withCredentials: true,
+  //       });
+  //     } catch (error: any) {
+  //       throw new Error("Error fetching CSRF token:", error);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
-  useEffect(() => {
-    Cookies.get("X-API-KEY") ? push("/survey") : push("/");
-  }, [push]);
+  // useEffect(() => {
+  //   Cookies.get("X-API-KEY") ? push("/survey") : push("/");
+  // }, [push]);
 
   useEffect(() => {
     // Immediately display password error if it exists on initial render
@@ -86,7 +86,6 @@ const Login = () => {
 
     try {
       passwordSchema.parse(password);
-      console.log(passwordSchema.parse(password));
       // Assuming successful login logic would follow here
 
       const response = await axios.post(
@@ -104,6 +103,7 @@ const Login = () => {
 
       if (response.status === 200) {
         Cookies.set("X-API-KEY", response.data.token);
+        localStorage.setItem("Authorization", "Bearer " + response.data.token);
 
         router.push("/survey");
       } else {

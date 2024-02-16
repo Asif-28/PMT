@@ -39,6 +39,7 @@ const Header: React.FC = () => {
   const handleLogout = () => {
     Cookies.remove("X-API-KEY");
     Cookies.remove("csrftoken");
+    localStorage.removeItem("Authorization");
     router.push("/");
   };
 
@@ -144,14 +145,22 @@ const Header: React.FC = () => {
           </div>
           <div className=" flex gap-2 items-center ">
             {/* <Image src={`/Ellipse 2.svg`} alt="image" height={70} width={60} /> */}
-            <Stack direction="row" spacing={2}>
-              <Avatar
-                sx={{ bgcolor: deepPurple[500], height: "55px", width: "55px" }}
-              >
-                OP
-              </Avatar>
-            </Stack>
-            <h1 className="font-semibold text-base text-gray-950">John</h1>
+            <div className="flex gap-2">
+              <Stack direction="row" spacing={2}>
+                <Avatar
+                  sx={{
+                    bgcolor: deepPurple[500],
+                    height: "55px",
+                    width: "55px",
+                  }}
+                >
+                  OP
+                </Avatar>
+              </Stack>
+              <div className="flex items-center gap-2">
+                <h1 className="font-semibold text-base text-gray-950">John</h1>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -229,18 +238,24 @@ const Header: React.FC = () => {
                 height={60}
                 width={60}
               /> */}
-              <Stack direction="row" spacing={2}>
-                <Avatar
-                  sx={{
-                    bgcolor: deepPurple[500],
-                    height: "45px",
-                    width: "45px",
-                  }}
-                >
-                  OP
-                </Avatar>
-              </Stack>
-              <h1 className="font-semibold text-base text-gray-950">John</h1>
+              <div className="flex gap-2">
+                <Stack direction="row" spacing={2}>
+                  <Avatar
+                    sx={{
+                      bgcolor: deepPurple[500],
+                      height: "45px",
+                      width: "45px",
+                    }}
+                  >
+                    OP
+                  </Avatar>
+                </Stack>
+                <div className="flex justify-center items-center">
+                  <h1 className="font-semibold text-base text-gray-950">
+                    John
+                  </h1>
+                </div>
+              </div>
             </div>
           </div>
         </div>

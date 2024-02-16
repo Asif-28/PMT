@@ -8,11 +8,11 @@ interface FormData {
   vendorEmail: string;
 }
 
+const authorizationToken = localStorage.getItem("Authorization");
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 axios.defaults.headers.post["X-CSRFToken"] = Cookies.get("csrftoken");
 
 const AddNewVendor: React.FC = () => {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
   const [formData, setFormData] = useState<FormData>({
     vendorName: "",
     vendorEmail: "",
@@ -47,6 +47,7 @@ const AddNewVendor: React.FC = () => {
           {
             headers: {
               "Content-Type": "application/json",
+              Authorization: authorizationToken,
             },
             withCredentials: true,
           }

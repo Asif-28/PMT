@@ -8,6 +8,7 @@ const UseProjectCodeList = (ProjectCode: any) => {
   const [list, setList] = useState([]);
   const debouncedSearch = useDebounce(ProjectCode.ProjectCode);
   const [loading, setLoading] = useState<boolean>(true);
+  const authorizationToken = localStorage.getItem("Authorization");
 
   useEffect(() => {
     async function getAllList() {
@@ -17,6 +18,7 @@ const UseProjectCodeList = (ProjectCode: any) => {
           withCredentials: true,
           headers: {
             "Content-Type": "application/json",
+            Authorization: authorizationToken,
           },
         });
         const data = response.data;
