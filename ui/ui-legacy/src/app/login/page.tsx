@@ -103,7 +103,6 @@ const Login = () => {
 
       if (response.status === 200) {
         Cookies.set("X-API-KEY", response.data.token);
-        console.log(response.data.token);
         localStorage.setItem("Authorization", "Bearer " + response.data.token);
 
         router.push("/survey");
