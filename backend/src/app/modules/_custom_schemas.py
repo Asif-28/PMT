@@ -27,3 +27,9 @@ class AppUserSchema(Schema):
     username: str
     email: str
     password: str
+
+
+class ExportDataResponse(Schema):
+    project_code: str
+    file_url: str
+    is_cached: bool
