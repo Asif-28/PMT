@@ -13,7 +13,6 @@ import { ApiResponse } from "../../utils/types";
 import Cookies from "js-cookie";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
 axios.defaults.headers.post["X-CSRFToken"] = Cookies.get("csrftoken");
 const authorizationToken = localStorage.getItem("Authorization");
 

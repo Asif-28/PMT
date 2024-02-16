@@ -45,23 +45,23 @@ const Login = () => {
   //   fetchData();
   // }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const responseXCsrf = await axios.get(`${baseUrl}users/xcsrf`, {
-          withCredentials: true,
-        });
-      } catch (error: any) {
-        throw new Error("Error fetching CSRF token:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const responseXCsrf = await axios.get(`${baseUrl}users/xcsrf`, {
+  //         withCredentials: true,
+  //       });
+  //     } catch (error: any) {
+  //       throw new Error("Error fetching CSRF token:", error);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
-  useEffect(() => {
-    Cookies.get("X-API-KEY") ? push("/survey") : push("/");
-  }, [push]);
+  // useEffect(() => {
+  //   Cookies.get("X-API-KEY") ? push("/survey") : push("/");
+  // }, [push]);
 
   useEffect(() => {
     // Immediately display password error if it exists on initial render

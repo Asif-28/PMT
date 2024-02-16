@@ -10,12 +10,10 @@ import { countries } from "../../data/data";
 import Cookies from "js-cookie";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
 axios.defaults.headers.post["X-CSRFToken"] = Cookies.get("csrftoken");
+const authorizationToken = localStorage.getItem("Authorization");
 
 const ClientSetup: React.FC = () => {
-  const authorizationToken = localStorage.getItem("Authorization");
-
   const [formData, setFormData] = useState<FormData>({
     inputField: "",
     countryCode: "",

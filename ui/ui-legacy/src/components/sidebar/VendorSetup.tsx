@@ -10,12 +10,10 @@ import { VendorListApiResponse } from "../../utils/types";
 import Cookies from "js-cookie";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
+const authorizationToken = localStorage.getItem("Authorization");
 axios.defaults.headers.post["X-CSRFToken"] = Cookies.get("csrftoken");
 
 const VendorSetup: React.FC = () => {
-  const authorizationToken = localStorage.getItem("Authorization");
-
   const [formData, setFormData] = useState<FormData>({
     vendorCode: "",
     pauseVendor: false,

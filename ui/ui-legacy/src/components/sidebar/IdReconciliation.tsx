@@ -3,7 +3,6 @@ import React, { useState, FormEvent, ChangeEvent } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import Cookies from "js-cookie";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 interface FormData {
   projectCode: string;
@@ -11,10 +10,11 @@ interface FormData {
   id: (string | null)[];
 }
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 axios.defaults.headers.post["X-CSRFToken"] = Cookies.get("csrftoken");
+const authorizationToken = localStorage.getItem("Authorization");
 
 const IdReconciliation: React.FC = () => {
-  const authorizationToken = localStorage.getItem("Authorization");
 
   const [formData, setFormData] = useState<FormData>({
     projectCode: "",
