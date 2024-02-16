@@ -14,6 +14,8 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 axios.defaults.headers.post["X-CSRFToken"] = Cookies.get("csrftoken");
 
 const VendorSetup: React.FC = () => {
+  const authorizationToken = localStorage.getItem("Authorization");
+
   const [formData, setFormData] = useState<FormData>({
     vendorCode: "",
     pauseVendor: false,
@@ -123,6 +125,7 @@ const VendorSetup: React.FC = () => {
           {
             headers: {
               "Content-Type": "application/json",
+              Authorization: authorizationToken,
             },
             withCredentials: true,
           }
@@ -150,24 +153,25 @@ const VendorSetup: React.FC = () => {
       }
     }
   };
-  // fetch all the vendor list
+
   useEffect(() => {
     async function getAllVendors() {
       try {
-        const vendorListResponse = await fetch(`${baseUrl}vendor/list`, {
-          method: "GET",
+        const vendorListResponse = await axios.get(`${baseUrl}vendor/list`, {
           headers: {
             "Content-Type": "application/json",
+            Authorization: authorizationToken,
           },
-          credentials: "include",
+          withCredentials: true,
         });
-        const vendorListData = await vendorListResponse.json();
+        const vendorListData = vendorListResponse.data;
         setVendors(vendorListData);
         setLoadingVendor(false);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     }
+
     getAllVendors();
   }, []);
 

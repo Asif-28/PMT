@@ -14,6 +14,8 @@ interface FormData {
 axios.defaults.headers.post["X-CSRFToken"] = Cookies.get("csrftoken");
 
 const IdReconciliation: React.FC = () => {
+  const authorizationToken = localStorage.getItem("Authorization");
+
   const [formData, setFormData] = useState<FormData>({
     projectCode: "",
     qcRemarks: "",
@@ -96,6 +98,7 @@ const IdReconciliation: React.FC = () => {
           {
             headers: {
               "Content-Type": "application/json",
+              Authorization: authorizationToken,
             },
             withCredentials: true,
           }

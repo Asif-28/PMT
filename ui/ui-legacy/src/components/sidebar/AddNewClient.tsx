@@ -13,6 +13,7 @@ axios.defaults.headers.post["X-CSRFToken"] = Cookies.get("csrftoken");
 
 const AddNewClient: React.FC = () => {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const authorizationToken = localStorage.getItem("Authorization");
 
   const [formData, setFormData] = useState<FormData>({
     clientName: "",
@@ -53,6 +54,7 @@ const AddNewClient: React.FC = () => {
           {
             headers: {
               "Content-Type": "application/json",
+              Authorization: authorizationToken,
             },
             withCredentials: true,
           }

@@ -25,6 +25,7 @@ const UseVendorListData = () => {
   );
   const debouncedSearch = useDebounce(VendorProjectCode.ProjectCode);
   const [loadingData, setLoadingData] = useState<boolean>(false); // Start loading as false
+  const authorizationToken = localStorage.getItem("Authorization");
 
   useEffect(() => {
     async function getAllList() {
@@ -35,6 +36,7 @@ const UseVendorListData = () => {
           withCredentials: true,
           headers: {
             "Content-Type": "application/json",
+            Authorization: authorizationToken,
           },
         });
 

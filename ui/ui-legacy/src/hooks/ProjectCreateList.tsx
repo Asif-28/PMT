@@ -27,6 +27,7 @@ const UseProjectCreateList = () => {
   >([]);
 
   const [loadingData, setLoadingData] = useState<boolean>(false); // Start loading as false
+  const authorizationToken = localStorage.getItem("Authorization");
 
   useEffect(() => {
     async function getAllList() {
@@ -37,6 +38,7 @@ const UseProjectCreateList = () => {
           withCredentials: true,
           headers: {
             "Content-Type": "application/json",
+            Authorization: authorizationToken,
           },
         });
 

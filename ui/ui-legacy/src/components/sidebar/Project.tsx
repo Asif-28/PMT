@@ -15,6 +15,7 @@ import Cookies from "js-cookie";
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 axios.defaults.headers.post["X-CSRFToken"] = Cookies.get("csrftoken");
+const authorizationToken = localStorage.getItem("Authorization");
 
 const Form: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
@@ -189,6 +190,7 @@ const Form: React.FC = () => {
           {
             headers: {
               "Content-Type": "application/json",
+              Authorization: authorizationToken,
             },
             withCredentials: true,
           }
