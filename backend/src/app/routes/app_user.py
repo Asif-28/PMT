@@ -1,6 +1,8 @@
 from ninja import Router
 from ninja.security import HttpBearer
 from ninja import Form
+from django.utils import timezone
+
 import json
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
@@ -16,19 +18,16 @@ from ..utils import uniq_md5_hash
 router = Router()
 
 
-@router.post("/csrf", auth=None)
-@ensure_csrf_cookie
-@csrf_exempt
-def get_csrf_token(request: HttpRequest, response: HttpResponse):
+def get_header_bearer(request: HttpRequest):
     """
-    Implementing CSRF token for the frontend
-    ref: https://github.com/vitalik/django-ninja/issues/908
+    # get token from request
+    # -H 'Authorization: Bearer kj3h4kj2h42kjh2g34f'
     """
-    response.set_cookie("test", "restricted")
-    return HttpResponse(content=json.dumps({}), content_type="application/json")
+    return request.headers.get("Authorization", "").split("Bearer ")[-1]
 
 
 @router.get("/xcsrf", auth=None)
+@csrf_exempt
 @requires_csrf_token
 def read_user(request):
     data: HttpResponse = render(request, "csrf.html", {})
@@ -52,8 +51,7 @@ def read_user(request):
 
 @router.post("/create")
 def create_user(request, user_in: AppUserSchema):
-    # get token from request
-    token = request.COOKIES.get("X-API-KEY")
+    token = get_header_bearer(request)
     if not token:
         return {"error": "Not authenticated"}
 
@@ -67,13 +65,13 @@ def create_user(request, user_in: AppUserSchema):
         email=user_in.email,
         password=user_in.password,
     )
+
     return {"id": user.id, "username": user.username, "email": user.email}
 
 
 @router.post("/generate_token", auth=None)  # < overriding global auth
 def get_token(
     request: HttpRequest,
-    response: HttpResponse,
     username: str = Form(...),
     password: str = Form(...),
 ):
@@ -81,16 +79,18 @@ def get_token(
 
     if len(user) != 0:
         token = uniq_md5_hash(value=f"{username}{password}", value_only=False)
-        response.set_cookie("X-API-KEY", token, max_age=36000)
-        user.update(token=token)
+
+        user.update(token=token, last_token_refresh=timezone.now())
 
         return {"token": token}
 
 
 @router.post("/logout")
-def logout(request: HttpRequest, response: HttpResponse):
-    response.delete_cookie("X-API-KEY")
+def logout(request: HttpRequest):
+    token = get_header_bearer(request)
+    AppUser.objects.filter(token=token).update(token=None)
     return {"message": "Logged out"}
+
 
 @router.get("/verify_token")
 def verify_token(request: HttpRequest):
