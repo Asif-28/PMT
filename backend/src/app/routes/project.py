@@ -27,6 +27,21 @@ def create_project(request, project: ProjectCreationSchema):
         return message.error(text=str(e))
 
 
+@router.post("/update", response=JSONResponse)
+def update_project(request, project_code: str, status: str, security_check: bool):
+    """
+    Create a new project -> Depends_on: Client
+    """
+    try:
+        project = ProjectCreation.objects.get(project_code=project_code)
+        project.status = status
+        project.security_check = security_check
+        project.save()
+        return message.success(text=f"Project {project_code} updated")
+    except Exception as e:  # Assuming IntegrityError is imported
+        return message.error(text=str(e))
+
+
 @router.get("/list", response=List[ProjectCreationSchema])
 def list_projects(request):
     projects = ProjectCreation.objects.all()

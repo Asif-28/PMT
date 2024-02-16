@@ -9,10 +9,9 @@ class HeaderAuth(HttpBearer):
         super().__init__()
 
     def authenticate(self, request, token):
-
         # seconds
         max_age = 36000.0
-        
+
         if token:
             user = AppUser.objects.get(token=token)
             if user:
@@ -21,4 +20,3 @@ class HeaderAuth(HttpBearer):
                     return token
                 else:
                     raise message.error("Token expired")
-

@@ -51,7 +51,6 @@ def read_user(request):
 
 @router.post("/create")
 def create_user(request, user_in: AppUserSchema):
-
     token = get_header_bearer(request)
     if not token:
         return {"error": "Not authenticated"}
@@ -66,7 +65,7 @@ def create_user(request, user_in: AppUserSchema):
         email=user_in.email,
         password=user_in.password,
     )
-    
+
     return {"id": user.id, "username": user.username, "email": user.email}
 
 

@@ -39,7 +39,7 @@ class ProjectCreation(models.Model):
         if self.target not in ("HCP", "B2B", "B2C"):
             raise ValueError("'target' must be one of HCP, B2B, B2C")
         if self.status not in ("live", "end", "paused"):
-            raise ValueError("'status' must be one of active, closed")
+            raise ValueError("'status' must be one of live, end, paused")
 
     def save(self, *args, **kwargs):
         # Custom save method to handle data cleaning

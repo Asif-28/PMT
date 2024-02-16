@@ -42,6 +42,17 @@ tasks:
           CF_DISTRIBUTION_ID: "ENGIBT49ANBXI"
           CF_S3_BUCKET: "pmt-ui"
 
+  live_reporter_ui:push:
+    desc: Push the Liverepotal UI changes to CloudFront
+    cmds:
+      - task: aws:npm-build
+        vars:
+          PATH: "./ui/ui-live-portal"
+          BUILD_DIR: "out"
+          CF_PUSH: "true"
+          CF_DISTRIBUTION_ID: "E3FS30O47VD7QD"
+          CF_S3_BUCKET: "pmt-ui-live-portal"
+
   docker:clean:
     desc: Clean up dangling unwanted docker images and containers
     cmds:
