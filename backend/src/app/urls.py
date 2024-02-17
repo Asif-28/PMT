@@ -7,6 +7,8 @@ from .routes.project_vendor import router as project_vendor_router
 from .routes.id_reconciliation import router as id_reconciliation_router
 from .routes.app_user import router as users_router
 from .routes.live_portal import router as live_portal_router
+from .routes.export_data import router as export_data_router
+
 
 from ninja import Router
 
@@ -21,3 +23,4 @@ router.add_router("project_vendor", project_vendor_router)
 router.add_router("id_reconciliation", id_reconciliation_router)
 router.add_router("users", users_router)
 router.add_router("live_portal", live_portal_router)
+router.add_router("export_data", export_data_router)

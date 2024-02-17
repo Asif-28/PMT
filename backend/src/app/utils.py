@@ -2,7 +2,9 @@ import time
 import hashlib
 from typing import Any
 import random
-
+import boto3
+import datetime as dt
+from datetime import datetime
 from ninja import Schema
 from ninja.errors import HttpError
 
@@ -71,3 +73,24 @@ def dictfetchall(cursor):
     """Return all rows from a cursor as a dict"""
     columns = [col[0] for col in cursor.description]
     return [dict(zip(columns, row)) for row in cursor.fetchall()]
+
+
+def s3_get_object_date(
+    s3, bucket_name: str, file_key: str, expiry_seconds: int = 300
+) -> datetime | None:
+    try:
+        # Retrieve the metadata of the object
+        response = s3.head_object(Bucket=bucket_name, Key=file_key)
+        # Extract the LastModified date
+        last_modified: datetime = response["LastModified"]
+
+    except s3.exceptions.ClientError as e:
+        return None
+
+    # If the object is older than the expiry time, return None
+    if datetime.utcnow() - last_modified.utcnow() > dt.timedelta(
+        seconds=expiry_seconds
+    ):
+        return None
+
+    return last_modified
