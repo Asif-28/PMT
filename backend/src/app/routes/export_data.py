@@ -1,5 +1,5 @@
 import csv
-
+import os
 import boto3
 from ninja import Router
 from django.db import connection
@@ -15,7 +15,7 @@ def export_data(request, project_code: str):
     Export data to csv of a project eg. QQ_12024_001
     """
     s3 = boto3.client("s3")
-    s3_bucket_name = "pmt-reports"
+    s3_bucket_name = os.environ.get("S3_BUCKET_NAME", "test-pmt-export-data")
     s3_object_expiry = 3600
     file_name = f"{project_code}.csv"
     file_path = f"/tmp/{file_name}"
