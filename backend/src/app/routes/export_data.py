@@ -21,18 +21,18 @@ def export_data(request, project_code: str):
     file_path = f"/tmp/{file_name}"
 
     # check if file exists in s3 and return url if its less than expiry_seconds old
-    s3_file = s3_get_object_date(s3, s3_bucket_name, file_name, expiry_seconds=1)
-    if s3_file:
-        object_url = s3.generate_presigned_url(
-            ClientMethod="get_object",
-            Params={"Bucket": s3_bucket_name, "Key": file_name},
-            ExpiresIn=s3_object_expiry,
-        )
-        return ExportDataResponse(
-            project_code=project_code,
-            file_url=object_url,
-            is_cached=True,
-        )
+    # s3_file = s3_get_object_date(s3, s3_bucket_name, file_name, expiry_seconds=1)
+    # if s3_file:
+    #     object_url = s3.generate_presigned_url(
+    #         ClientMethod="get_object",
+    #         Params={"Bucket": s3_bucket_name, "Key": file_name},
+    #         ExpiresIn=s3_object_expiry,
+    #     )
+    #     return ExportDataResponse(
+    #         project_code=project_code,
+    #         file_url=object_url,
+    #         is_cached=True,
+    #     )
 
     # get all data from project survey trace
     def execute_query(project_code):
