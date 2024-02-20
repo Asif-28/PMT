@@ -99,7 +99,6 @@ const LiveProjects = () => {
 
   useEffect(() => {
     async function FetchData() {
-      const apiUrl = "http://localhost:8000/live_portal/projects";
       const status = "live";
 
       try {
@@ -114,7 +113,6 @@ const LiveProjects = () => {
     }
     FetchData();
   }, [useStatus]);
-  console.log(data);
   return (
     <div>
       <Suspense
