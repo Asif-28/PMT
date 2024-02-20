@@ -1,5 +1,26 @@
+"use client";
 import LiveProjectComponent from "@/components/liveprojects/LiveProject";
-import React from "react";
+import axios from "axios";
+import React, { Suspense, useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import Image from "next/image";
+import { useAuthTokenStore } from "../store/AuthToken";
+import axiosWrapper from "../hooks/DataFetch";
+import { set } from "zod";
+import { Project } from "@/types/types";
+
+// interface Project {
+//   project_code: string;
+//   count: number;
+//   scope: number;
+//   status: string;
+//   loi: string;
+//   project_name: string;
+//   total: number;
+// }
+
+// axios.defaults.headers.post["X-CSRFToken"] = Cookies.get("csrftoken");
+
 const projects = [
   {
     name: "B2B Decision Makers Survey 2023",
@@ -84,9 +105,37 @@ const projects = [
   },
 ];
 const LiveProjects = () => {
+  const [data, setdata] = useState<Project[]>([]);
+
+  useEffect(() => {
+    async function FetchData() {
+      const apiUrl = "http://localhost:8000/live_portal/projects";
+      const status = "live";
+
+      try {
+        const response = await axiosWrapper<Project[]>("/projects", "get", {
+          status,
+        });
+        setdata(response);
+        return response;
+      } catch (error) {
+        return { props: { error } };
+      }
+    }
+    FetchData();
+  }, []);
+  console.log(data);
   return (
     <div>
-      <LiveProjectComponent projects={projects} />
+      <Suspense
+        fallback={
+          <div className="min-h-[100vh]">
+            <Image src={`/loader.svg`} alt="loading" height={100} width={100} />
+          </div>
+        }
+      >
+        <LiveProjectComponent liveprojects={data} />
+      </Suspense>
     </div>
   );
 };

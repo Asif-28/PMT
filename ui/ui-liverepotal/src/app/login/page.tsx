@@ -4,6 +4,12 @@ import React, { FormEvent, useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { z } from "zod";
 import "react-toastify/dist/ReactToastify.css";
+import Cookies from "js-cookie";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useAuthTokenStore } from "../store/AuthToken";
+
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const passwordSchema = z
   .string()
@@ -17,9 +23,12 @@ const passwordSchema = z
   );
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const router = useRouter();
+  const { push } = useRouter();
+  // const value = Cookies.get("csrftoken");
 
   useEffect(() => {
     // Immediately display password error if it exists on initial render
@@ -31,24 +40,56 @@ const Login = () => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
 
-    if (name === "email") {
-      setEmail(value);
+    if (name === "username") {
+      setUsername(value);
     } else if (name === "password") {
       setPassword(value);
       setPasswordError("");
     }
   };
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-
     try {
       passwordSchema.parse(password);
       // Assuming successful login logic would follow here
+
+      const response = await axios.post(
+        `${baseUrl}users/generate_token`,
+        {
+          username: username,
+          password: password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          withCredentials: true,
+        }
+      );
+
+      if (response.status === 200) {
+        Cookies.set("X-API-KEY", response.data.token);
+        // useAuthTokenStore.setState({ token: response.data.token });
+
+        localStorage.setItem("Authorization", "Bearer " + response.data.token);
+
+        router.push("/");
+      } else {
+        toast.error("Invalid Credentials");
+      }
     } catch (error: any) {
-      setPasswordError(error.issues[0].message);
+      if (error.errors) {
+        toast.error(error.errors[0].message);
+      } else {
+        toast.error("Invalid Credentials");
+      }
     }
   };
+
+  useEffect(() => {
+    Cookies.get("X-API-KEY") ? push("/") : push("/login");
+  }, [push]);
 
   return (
     <main className="bg-white ">
@@ -70,19 +111,19 @@ const Login = () => {
           <form onSubmit={handleSubmit} className="">
             <div className="mb-10">
               <label
-                htmlFor="email"
+                htmlFor="username"
                 className="block text-gray-500 sm:font-medium md:font-bold mb-4"
               >
-                Email Id *
+                Username *
               </label>
               <input
                 required
-                type="email"
-                id="email"
-                name="email"
-                value={email}
+                type="username"
+                id="username"
+                name="username"
+                value={username}
                 onChange={handleChange}
-                placeholder="Enter your Email address"
+                placeholder="Enter your Username"
                 className="appearance-none xl:min-w-[480px] font-light border border-gray-500 rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-[#5C2081] focus:shadow-outline  bg-[#FAF7F7]"
               />
             </div>
