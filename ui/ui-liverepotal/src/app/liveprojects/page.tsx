@@ -4,22 +4,11 @@ import axios from "axios";
 import React, { Suspense, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import Image from "next/image";
-import { useAuthTokenStore } from "../store/AuthToken";
-import axiosWrapper from "../hooks/DataFetch";
+import { useAuthTokenStore } from "../../store/AuthToken";
+import axiosWrapper from "../../hooks/DataFetch";
 import { set } from "zod";
 import { Project } from "@/types/types";
-
-// interface Project {
-//   project_code: string;
-//   count: number;
-//   scope: number;
-//   status: string;
-//   loi: string;
-//   project_name: string;
-//   total: number;
-// }
-
-// axios.defaults.headers.post["X-CSRFToken"] = Cookies.get("csrftoken");
+import { useStatusStore } from "@/store/Status";
 
 const projects = [
   {
@@ -106,6 +95,7 @@ const projects = [
 ];
 const LiveProjects = () => {
   const [data, setdata] = useState<Project[]>([]);
+  const useStatus = useStatusStore((state: any) => state.status);
 
   useEffect(() => {
     async function FetchData() {
@@ -123,7 +113,7 @@ const LiveProjects = () => {
       }
     }
     FetchData();
-  }, []);
+  }, [useStatus]);
   console.log(data);
   return (
     <div>

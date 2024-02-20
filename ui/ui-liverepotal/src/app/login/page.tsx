@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useAuthTokenStore } from "../store/AuthToken";
+import { useAuthTokenStore } from "../../store/AuthToken";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
