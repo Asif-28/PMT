@@ -39,7 +39,7 @@ const Header: React.FC = () => {
           </ul>
           <div
             onClick={handleLogout}
-            className="bg-white rounded-full text-[#5C2081] px-4 py-2 font-semibold cursor-pointer"
+            className="bg-white rounded-full text-[#5C2081] px-4 py-2 font-semibold cursor-pointer hidden sm:block"
           >
             Logout
           </div>
@@ -63,6 +63,12 @@ const Header: React.FC = () => {
           onChange={handleSearchChange}
         />
       </div> */}
+      <div
+        onClick={handleLogout}
+        className="sm:hidden rounded-full bg-[#5C2081] text-[#fff] px-4 py-2 font-semibold cursor-pointer flex items-center justify-center w-28 mt-4"
+      >
+        Logout
+      </div>
     </div>
   );
 };

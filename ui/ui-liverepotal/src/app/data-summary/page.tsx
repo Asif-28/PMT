@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -6,6 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { Project } from "@/types/types";
 
 function createData(
   name: string,
@@ -25,42 +27,32 @@ const rows = [
   createData("Gingerbread", 356, 16.0, 49, 3.9),
 ];
 
-export default function BasicTable() {
+export default function BasicTable(project: any) {
   return (
     <div className="section">
       <h1 className="font-semibold text-2xl py-4 mt-10">Data Group Summary</h1>
       <h2 className="text-gray-600 pb-8">
         Infant Milk Formula in Spain - AZ190_IMFI_0823
       </h2>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Dessert (100g serving)</TableCell>
-              <TableCell align="center">Calories</TableCell>
-              <TableCell align="center">Fat&nbsp;(g)</TableCell>
-              <TableCell align="center">Carbs&nbsp;(g)</TableCell>
-              <TableCell align="center">Protein&nbsp;(g)</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow
-                key={row.name}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {row.name}
-                </TableCell>
-                <TableCell align="center">{row.calories}</TableCell>
-                <TableCell align="center">{row.fat}</TableCell>
-                <TableCell align="center">{row.carbs}</TableCell>
-                <TableCell align="center">{row.protein}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <table className="table-auto w-full">
+          <thead>
+            <tr>
+              <th className="px-4 py-2 text-left">Status</th>
+              <th className="px-4 py-2 text-left">IO%</th>
+              <th className="px-4 py-2 text-left">EL%</th>
+              <th className="px-4 py-2 text-left">RK%</th>
+              <th className="px-4 py-2 text-left">CT%</th>
+              <th className="px-4 py-2 text-left">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="hover:bg-gray-100">
+              {/* <td className="px-4 py-2 text-left"></td> */}
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

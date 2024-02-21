@@ -3,12 +3,20 @@ import axios from "axios";
 import { useStatusStore } from "@/store/Status";
 import { useProjectCodeStore } from "@/store/ProjectCode";
 
+interface ApiResponse {
+  // Define the properties you expect in the response
+  // For example, you can have data, status, etc.
+  data: any;
+  status: number;
+  // Add other properties as needed
+}
+
 const useUpdateProject = ({ security }: any) => {
   const useStatus = useStatusStore((state: any) => state.status);
   const useProjectCode = useProjectCodeStore(
     (state: any) => state.project_code
   );
-  const [res, setRes] = useState(null);
+  const [res, setRes] = useState<ApiResponse | null>(null);
 
   useEffect(() => {
     const updateProject = async () => {

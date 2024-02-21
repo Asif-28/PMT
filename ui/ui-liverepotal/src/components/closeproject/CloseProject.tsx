@@ -5,7 +5,6 @@ import DropDown from "../utils/DropDown";
 import Image from "next/image";
 import axiosWrapper from "@/hooks/DataFetch";
 import useUpdateProject from "@/hooks/UpdateProjectLive";
-import { set } from "zod";
 
 const ClosedProjectComponent: React.FC = () => {
   const [projectsdata, setProjectsData] = useState<Project[]>([]);

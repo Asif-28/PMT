@@ -5,12 +5,15 @@ import DropDown from "../utils/DropDown";
 import Image from "next/image";
 import useUpdateProject from "@/hooks/UpdateProjectLive";
 import axiosWrapper from "@/hooks/DataFetch";
+import { useRouter } from "next/navigation";
+import BasicTable from "@/app/data-summary/page";
 
 const LiveProjectComponent: React.FC = () => {
   const [projectsdata, setProjectsData] = useState<Project[]>([]);
+  const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);
   const res = useUpdateProject({ security: true });
-  console.log(res + " value");
+  // console.log(res + " value");
 
   useEffect(() => {
     async function FetchData() {
@@ -29,6 +32,11 @@ const LiveProjectComponent: React.FC = () => {
     }
     FetchData();
   }, [res]);
+
+  const handleSummary = ({ project }: any) => {
+    // BasicTable({ ...project });
+    router.push("/data-summary");
+  };
 
   return (
     <div className="max-w-[1550px] mx-auto">
@@ -86,8 +94,14 @@ const LiveProjectComponent: React.FC = () => {
 
           <tbody className="bg-white divide-y-4 divide-gray-200">
             {projectsdata.map((project: any) => (
-              <tr key={project.project_code} className="whitespace-nowrap">
-                <td className="px-3 md:px-6 py-2 sm:py-4">
+              <tr
+                key={project.project_code}
+                className="whitespace-nowrap cursor-pointer"
+              >
+                <td
+                  onClick={() => handleSummary({ project })}
+                  className="px-3 md:px-6 py-2 sm:py-4"
+                >
                   {project.project_name}
                 </td>
                 <td className="px-3 md:px-6 py-2 sm:py-4">
