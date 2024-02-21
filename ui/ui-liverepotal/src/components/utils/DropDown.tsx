@@ -8,7 +8,8 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useStatusStore } from "@/store/Status";
 import { useProjectCodeStore } from "@/store/ProjectCode";
 
-const DropDown = ({ value1, value2, status, project_code }: any) => {
+const DropDown = ({ value1, value2, value3, status, project_code }: any) => {
+  const [statusValue, setStatusValue] = useState("live");
   const useStatus = useStatusStore((state: any) => state.status);
   const updataStatus = useStatusStore((state: any) => state.setStatus);
   const useProjectCode = useProjectCodeStore(
@@ -19,10 +20,9 @@ const DropDown = ({ value1, value2, status, project_code }: any) => {
   );
 
   const handleChange = (event: SelectChangeEvent) => {
-    // setcheckStatus(event.target.value as string);
+    setStatusValue(event.target.value as string);
     updataStatus(event.target.value as string);
     updataProjectCode(project_code);
-    // console.log(useProjectCode);
   };
 
   return (
@@ -30,16 +30,17 @@ const DropDown = ({ value1, value2, status, project_code }: any) => {
       <div className="w-28">
         <Box sx={{ maxWidth: 100 }}>
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">{status}</InputLabel>
+            <InputLabel id="demo-simple-select-label">Live</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={useStatus}
+              value={statusValue}
               label="Status"
               onChange={handleChange}
             >
               <MenuItem value={value1}>{value1}</MenuItem>
               <MenuItem value={value2}>{value2}</MenuItem>
+              <MenuItem value={value3}>{value3}</MenuItem>
             </Select>
           </FormControl>
         </Box>

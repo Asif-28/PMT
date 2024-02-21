@@ -10,89 +10,6 @@ import { set } from "zod";
 import { Project } from "@/types/types";
 import { useStatusStore } from "@/store/Status";
 
-const projects = [
-  {
-    name: "B2B Decision Makers Survey 2023",
-    ir: 38,
-    loi: 22,
-    scope: 20,
-    achieved: 200,
-    remaining: 109,
-    status: "Live",
-  },
-  {
-    name: "B2B Decision Makers Survey 2023",
-    ir: 38,
-    loi: 22,
-    scope: 20,
-    achieved: 200,
-    remaining: 109,
-    status: "Live",
-  },
-  {
-    name: "B2B Decision Makers Survey 2023",
-    ir: 38,
-    loi: 22,
-    scope: 20,
-    achieved: 200,
-    remaining: 109,
-    status: "Live",
-  },
-  {
-    name: "B2B Decision Makers Survey 2023",
-    ir: 38,
-    loi: 22,
-    scope: 20,
-    achieved: 200,
-    remaining: 109,
-    status: "Live",
-  },
-  {
-    name: "B2B Decision Makers Survey 2023",
-    ir: 38,
-    loi: 22,
-    scope: 20,
-    achieved: 200,
-    remaining: 109,
-    status: "Live",
-  },
-  {
-    name: "B2B Decision Makers Survey 2023",
-    ir: 38,
-    loi: 22,
-    scope: 20,
-    achieved: 200,
-    remaining: 109,
-    status: "Live",
-  },
-  {
-    name: "B2B Decision Makers Survey 2023",
-    ir: 38,
-    loi: 22,
-    scope: 20,
-    achieved: 200,
-    remaining: 109,
-    status: "Live",
-  },
-  {
-    name: "B2B Decision Makers Survey 2023",
-    ir: 38,
-    loi: 22,
-    scope: 20,
-    achieved: 200,
-    remaining: 109,
-    status: "Live",
-  },
-  {
-    name: "B2B Decision Makers Survey 2023",
-    ir: 38,
-    loi: 22,
-    scope: 20,
-    achieved: 200,
-    remaining: 109,
-    status: "Live",
-  },
-];
 const LiveProjects = () => {
   const [data, setdata] = useState<Project[]>([]);
   const useStatus = useStatusStore((state: any) => state.status);
@@ -115,15 +32,15 @@ const LiveProjects = () => {
   }, [useStatus]);
   return (
     <div>
-      <Suspense
+      {/* <Suspense
         fallback={
           <div className="min-h-[100vh]">
             <Image src={`/loader.svg`} alt="loading" height={100} width={100} />
           </div>
         }
       >
-        <LiveProjectComponent liveprojects={data} />
-      </Suspense>
+      </Suspense> */}
+      <LiveProjectComponent liveprojects={data} />
     </div>
   );
 };

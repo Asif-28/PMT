@@ -1,53 +1,53 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { ProjectsProps } from "@/types/types";
 import DropDown from "../utils/DropDown";
 import Image from "next/image";
 import { useStatusStore } from "@/store/Status";
-import axiosWrapper from "@/hooks/DataFetch";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { useProjectCodeStore } from "@/store/ProjectCode";
 
 const LiveProjectComponent: React.FC<ProjectsProps> = ({
   liveprojects,
 }: ProjectsProps) => {
-  // console.log(liveprojects.length);
   const useStatus = useStatusStore((state: any) => state.status);
   const useProjectCode = useProjectCodeStore(
     (state: any) => state.project_code
   );
-  // console.log(useStatus);
-  console.log(useProjectCode);
 
   useEffect(() => {
     const value = localStorage.getItem("Authorization");
-    const postData = async () => {
-      const url = "http://localhost:8000/project/update";
-      const params = {
-        project_code: useProjectCode,
-        status: useStatus,
-        security_check: true,
+
+    // Check if both useProjectCode and useStatus are selected
+    if (useProjectCode && useStatus) {
+      const postData = async () => {
+        const url = "http://localhost:8000/project/update";
+        const params = {
+          project_code: useProjectCode,
+          status: useStatus,
+          security_check: true,
+        };
+        const headers = {
+          accept: "application/json",
+          Authorization: value,
+        };
+
+        try {
+          const response = await axios.post(url, null, {
+            params,
+            headers,
+          });
+
+          console.log("Response:", response.status);
+        } catch (error) {
+          console.error("Error:", error);
+        }
       };
-      const headers = {
-        accept: "application/json",
-        Authorization: value,
-      };
 
-      try {
-        const response = await axios.post(url, null, {
-          params,
-          headers,
-        });
+      postData();
+    }
+  }, [useProjectCode, useStatus]);
 
-        console.log("Response:", response.data);
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
-
-    postData();
-  }, [useStatus, useProjectCode]);
   return (
     <div className="max-w-[1550px] mx-auto">
       <h1 className="text-3xl font-semibold text-center mt-20 mb-5">
@@ -121,6 +121,7 @@ const LiveProjectComponent: React.FC<ProjectsProps> = ({
                   <DropDown
                     value1="end"
                     value2="paused"
+                    value3="live"
                     status={project.status}
                     project_code={project.project_code}
                   ></DropDown>
