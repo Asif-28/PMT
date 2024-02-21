@@ -8,6 +8,7 @@ import axiosWrapper from "@/hooks/DataFetch";
 
 const LiveProjectComponent: React.FC = () => {
   const [projectsdata, setProjectsData] = useState<Project[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const res = useUpdateProject({ security: true });
   console.log(res + " value");
 
@@ -20,6 +21,7 @@ const LiveProjectComponent: React.FC = () => {
           status,
         });
         setProjectsData(response);
+        setLoading(false);
         return response;
       } catch (error) {
         return { props: { error } };
@@ -112,7 +114,10 @@ const LiveProjectComponent: React.FC = () => {
         </table>
       ) : (
         <div className=" flex justify-center items-center">
-          <Image src={`/loader.svg`} height={100} width={100} alt="" />
+          {loading === true && (
+            <Image src={`/loader.svg`} height={100} width={100} alt="" />
+          )}
+          {loading === false && <h1>No Records</h1>}
         </div>
       )}
     </div>

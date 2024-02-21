@@ -5,9 +5,11 @@ import DropDown from "../utils/DropDown";
 import Image from "next/image";
 import axiosWrapper from "@/hooks/DataFetch";
 import useUpdateProject from "@/hooks/UpdateProjectLive";
+import { set } from "zod";
 
 const ClosedProjectComponent: React.FC = () => {
   const [projectsdata, setProjectsData] = useState<Project[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const res = useUpdateProject({ security: false });
   console.log(res + " value");
 
@@ -20,6 +22,7 @@ const ClosedProjectComponent: React.FC = () => {
           status,
         });
         setProjectsData(response);
+        setLoading(false);
         return response;
       } catch (error) {
         return { props: { error } };
@@ -112,7 +115,10 @@ const ClosedProjectComponent: React.FC = () => {
         </table>
       ) : (
         <div className=" flex justify-center items-center">
-          <Image src={`/loader.svg`} height={100} width={100} alt="" />
+          {loading === true && (
+            <Image src={`/loader.svg`} height={100} width={100} alt="" />
+          )}
+          {loading === false && <h1>No Records</h1>}
         </div>
       )}
     </div>
