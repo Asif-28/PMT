@@ -1,23 +1,32 @@
 "use client";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { ProjectsProps } from "@/types/types";
+import React, { useEffect, useState } from "react";
+import { Project } from "@/types/types";
 import DropDown from "../utils/DropDown";
 import Image from "next/image";
 import useUpdateProject from "@/hooks/UpdateProjectLive";
+import axiosWrapper from "@/hooks/DataFetch";
 
-interface IProps extends ProjectsProps {
-  setRefresh: Dispatch<SetStateAction<boolean>>;
-}
-const LiveProjectComponent: React.FC<IProps> = ({
-  setRefresh,
-  projectsdata,
-}: IProps) => {
-  const response = useUpdateProject();
-  // console.log(response);
+const LiveProjectComponent: React.FC = () => {
+  const [projectsdata, setProjectsData] = useState<Project[]>([]);
+  const res = useUpdateProject({ security: true });
+  console.log(res + " value");
 
-  if (response) {
-    setRefresh(true);
-  }
+  useEffect(() => {
+    async function FetchData() {
+      const status = "live";
+
+      try {
+        const response = await axiosWrapper<Project[]>("/projects", "get", {
+          status,
+        });
+        setProjectsData(response);
+        return response;
+      } catch (error) {
+        return { props: { error } };
+      }
+    }
+    FetchData();
+  }, [res]);
 
   return (
     <div className="max-w-[1550px] mx-auto">

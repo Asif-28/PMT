@@ -3,7 +3,7 @@ import axios from "axios";
 import { useStatusStore } from "@/store/Status";
 import { useProjectCodeStore } from "@/store/ProjectCode";
 
-const useUpdateProject = () => {
+const useUpdateProject = ({ security }: any) => {
   const useStatus = useStatusStore((state: any) => state.status);
   const useProjectCode = useProjectCodeStore(
     (state: any) => state.project_code
@@ -20,7 +20,7 @@ const useUpdateProject = () => {
         const params = {
           project_code: useProjectCode,
           status: useStatus,
-          security_check: true,
+          security_check: security,
         };
         const headers = {
           accept: "application/json",

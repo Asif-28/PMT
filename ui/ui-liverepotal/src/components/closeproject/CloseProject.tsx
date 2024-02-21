@@ -1,11 +1,33 @@
-import React from "react";
-import { ProjectsProps } from "@/types/types";
+"use client";
+import React, { useEffect, useState } from "react";
+import { Project } from "@/types/types";
 import DropDown from "../utils/DropDown";
 import Image from "next/image";
+import axiosWrapper from "@/hooks/DataFetch";
+import useUpdateProject from "@/hooks/UpdateProjectLive";
 
-const ClosedProjectComponent: React.FC<ProjectsProps> = ({
-  projectsdata,
-}: ProjectsProps) => {
+const ClosedProjectComponent: React.FC = () => {
+  const [projectsdata, setProjectsData] = useState<Project[]>([]);
+  const res = useUpdateProject({ security: false });
+  console.log(res + " value");
+
+  useEffect(() => {
+    async function FetchData() {
+      const status = "end";
+
+      try {
+        const response = await axiosWrapper<Project[]>("/projects", "get", {
+          status,
+        });
+        setProjectsData(response);
+        return response;
+      } catch (error) {
+        return { props: { error } };
+      }
+    }
+    FetchData();
+  }, [res]);
+
   return (
     <div className="max-w-[1550px] mx-auto">
       <h1 className="text-3xl font-semibold text-center mt-20 mb-5">

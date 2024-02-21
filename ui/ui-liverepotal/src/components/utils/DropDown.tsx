@@ -22,10 +22,8 @@ const DropDown = ({ value1, value2, value3, status, project_code }: any) => {
   const handleChange = (event: SelectChangeEvent) => {
     setStatusValue(event.target.value as string);
 
+    updataProjectCode(project_code);
     updataStatus(event.target.value as string);
-    setTimeout(() => {
-      updataProjectCode(project_code);
-    }, 100);
   };
 
   return (
