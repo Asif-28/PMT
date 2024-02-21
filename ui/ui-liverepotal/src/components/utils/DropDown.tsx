@@ -9,7 +9,7 @@ import { useStatusStore } from "@/store/Status";
 import { useProjectCodeStore } from "@/store/ProjectCode";
 
 const DropDown = ({ value1, value2, value3, status, project_code }: any) => {
-  const [statusValue, setStatusValue] = useState("live");
+  const [statusValue, setStatusValue] = useState(status);
   const useStatus = useStatusStore((state: any) => state.status);
   const updataStatus = useStatusStore((state: any) => state.setStatus);
   const useProjectCode = useProjectCodeStore(
@@ -21,8 +21,11 @@ const DropDown = ({ value1, value2, value3, status, project_code }: any) => {
 
   const handleChange = (event: SelectChangeEvent) => {
     setStatusValue(event.target.value as string);
+
     updataStatus(event.target.value as string);
-    updataProjectCode(project_code);
+    setTimeout(() => {
+      updataProjectCode(project_code);
+    }, 100);
   };
 
   return (
@@ -30,7 +33,7 @@ const DropDown = ({ value1, value2, value3, status, project_code }: any) => {
       <div className="w-28">
         <Box sx={{ maxWidth: 100 }}>
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Live</InputLabel>
+            <InputLabel id="demo-simple-select-label">{status}</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"

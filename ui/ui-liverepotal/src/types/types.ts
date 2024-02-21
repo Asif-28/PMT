@@ -9,5 +9,5 @@ export interface Project {
 }
 
 export interface ProjectsProps {
-  liveprojects: Project[];
+  projectsdata: Project[];
 }

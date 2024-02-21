@@ -1,85 +1,33 @@
+"use client";
 import ClosedProjectComponent from "@/components/closeproject/CloseProject";
-import React from "react";
-
-const projects = [
-  {
-    name: "B2B Decision Makers Survey 2023",
-    ir: 38,
-    loi: 22,
-    scope: 20,
-    achieved: 200,
-    remaining: 109,
-    status: "Closed",
-  },
-  {
-    name: "B2B Decision Makers Survey 2023",
-    ir: 38,
-    loi: 22,
-    scope: 20,
-    achieved: 200,
-    remaining: 109,
-    status: "Closed",
-  },
-  {
-    name: "B2B Decision Makers Survey 2023",
-    ir: 38,
-    loi: 22,
-    scope: 20,
-    achieved: 200,
-    remaining: 109,
-    status: "Closed",
-  },
-  {
-    name: "B2B Decision Makers Survey 2023",
-    ir: 38,
-    loi: 22,
-    scope: 20,
-    achieved: 200,
-    remaining: 109,
-    status: "Closed",
-  },
-  {
-    name: "B2B Decision Makers Survey 2023",
-    ir: 38,
-    loi: 22,
-    scope: 20,
-    achieved: 200,
-    remaining: 109,
-    status: "Closed",
-  },
-  {
-    name: "B2B Decision Makers Survey 2023",
-    ir: 38,
-    loi: 22,
-    scope: 20,
-    achieved: 200,
-    remaining: 109,
-    status: "Closed",
-  },
-  {
-    name: "B2B Decision Makers Survey 2023",
-    ir: 38,
-    loi: 22,
-    scope: 20,
-    achieved: 200,
-    remaining: 109,
-    status: "Closed",
-  },
-  {
-    name: "B2B Decision Makers Survey 2023",
-    ir: 38,
-    loi: 22,
-    scope: 20,
-    achieved: 200,
-    remaining: 109,
-    status: "Closed",
-  },
-];
+import axiosWrapper from "@/hooks/DataFetch";
+import { useStatusStore } from "@/store/Status";
+import { Project } from "@/types/types";
+import React, { useEffect, useState } from "react";
 
 const ClosedProjects = () => {
+  const [data, setdata] = useState<Project[]>([]);
+  const useStatus = useStatusStore((state: any) => state.status);
+
+  useEffect(() => {
+    async function FetchData() {
+      const status = "end";
+
+      try {
+        const response = await axiosWrapper<Project[]>("/projects", "get", {
+          status,
+        });
+        setdata(response);
+        return response;
+      } catch (error) {
+        return { props: { error } };
+      }
+    }
+    FetchData();
+  }, [useStatus]);
   return (
     <div>
-      <ClosedProjectComponent projects={projects} />
+      <ClosedProjectComponent projectsdata={data} />
     </div>
   );
 };

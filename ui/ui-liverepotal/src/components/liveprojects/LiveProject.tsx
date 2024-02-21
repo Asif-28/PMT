@@ -1,59 +1,30 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ProjectsProps } from "@/types/types";
 import DropDown from "../utils/DropDown";
 import Image from "next/image";
-import { useStatusStore } from "@/store/Status";
-import axios from "axios";
-import { useProjectCodeStore } from "@/store/ProjectCode";
+import useUpdateProject from "@/hooks/UpdateProjectLive";
 
-const LiveProjectComponent: React.FC<ProjectsProps> = ({
-  liveprojects,
-}: ProjectsProps) => {
-  const useStatus = useStatusStore((state: any) => state.status);
-  const useProjectCode = useProjectCodeStore(
-    (state: any) => state.project_code
-  );
+interface IProps extends ProjectsProps {
+  setRefresh: Dispatch<SetStateAction<boolean>>;
+}
+const LiveProjectComponent: React.FC<IProps> = ({
+  setRefresh,
+  projectsdata,
+}: IProps) => {
+  const response = useUpdateProject();
+  // console.log(response);
 
-  useEffect(() => {
-    const value = localStorage.getItem("Authorization");
-
-    // Check if both useProjectCode and useStatus are selected
-    if (useProjectCode && useStatus) {
-      const postData = async () => {
-        const url = "http://localhost:8000/project/update";
-        const params = {
-          project_code: useProjectCode,
-          status: useStatus,
-          security_check: true,
-        };
-        const headers = {
-          accept: "application/json",
-          Authorization: value,
-        };
-
-        try {
-          const response = await axios.post(url, null, {
-            params,
-            headers,
-          });
-
-          console.log("Response:", response.status);
-        } catch (error) {
-          console.error("Error:", error);
-        }
-      };
-
-      postData();
-    }
-  }, [useProjectCode, useStatus]);
+  if (response) {
+    setRefresh(true);
+  }
 
   return (
     <div className="max-w-[1550px] mx-auto">
       <h1 className="text-3xl font-semibold text-center mt-20 mb-5">
         Live Projects
       </h1>
-      {liveprojects.length != 0 ? (
+      {projectsdata.length != 0 ? (
         <table className="w-full divide-y divide-gray-200 text-center">
           <thead className="bg-[#5C2081] text-[#fff] h-16">
             <tr className="text-center">
@@ -103,7 +74,7 @@ const LiveProjectComponent: React.FC<ProjectsProps> = ({
           </thead>
 
           <tbody className="bg-white divide-y-4 divide-gray-200">
-            {liveprojects.map((project: any) => (
+            {projectsdata.map((project: any) => (
               <tr key={project.project_code} className="whitespace-nowrap">
                 <td className="px-3 md:px-6 py-2 sm:py-4">
                   {project.project_name}
