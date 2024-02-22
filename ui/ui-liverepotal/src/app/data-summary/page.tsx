@@ -8,6 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Project } from "@/types/types";
+import { useDataSummaryStore } from "@/store/DataSummary";
 
 function createData(
   name: string,
@@ -28,6 +29,9 @@ const rows = [
 ];
 
 export default function BasicTable(project: any) {
+  const dataSummary = useDataSummaryStore((state: any) => state.dataSummary);
+
+  console.log(dataSummary);
   return (
     <div className="section">
       <h1 className="font-semibold text-2xl py-4 mt-10">Data Group Summary</h1>
@@ -48,7 +52,9 @@ export default function BasicTable(project: any) {
           </thead>
           <tbody>
             <tr className="hover:bg-gray-100">
-              {/* <td className="px-4 py-2 text-left"></td> */}
+              <td className="px-4 py-2 text-left">
+                {dataSummary.project_code}
+              </td>
             </tr>
           </tbody>
         </table>

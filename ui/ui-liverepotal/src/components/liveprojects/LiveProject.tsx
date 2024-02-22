@@ -7,6 +7,8 @@ import useUpdateProject from "@/hooks/UpdateProjectLive";
 import axiosWrapper from "@/hooks/DataFetch";
 import { useRouter } from "next/navigation";
 import BasicTable from "@/app/data-summary/page";
+import { useDataSummaryStore } from "@/store/DataSummary";
+import { data } from "../linechart/LineChart";
 
 const LiveProjectComponent: React.FC = () => {
   const [projectsdata, setProjectsData] = useState<Project[]>([]);
@@ -33,8 +35,15 @@ const LiveProjectComponent: React.FC = () => {
     FetchData();
   }, [res]);
 
+  const dataSummary = useDataSummaryStore((state: any) => state.dataSummary);
+  const updateDataSummary = useDataSummaryStore(
+    (state: any) => state.setDataSummary
+  );
+  console.log(dataSummary);
+
   const handleSummary = ({ project }: any) => {
     // BasicTable({ ...project });
+    updateDataSummary(project.project_code);
     router.push("/data-summary");
   };
 
