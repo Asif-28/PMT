@@ -3,14 +3,13 @@ import React, { useEffect, useState } from "react";
 import { Project } from "@/types/types";
 import DropDown from "../utils/DropDown";
 import Image from "next/image";
-import useUpdateProject from "@/hooks/UpdateProjectLive";
 import axiosWrapper from "@/hooks/DataFetch";
-import { set } from "zod";
+import useUpdateProjectPauseClose from "@/hooks/UpdatePauseAndClose";
 
 const PauseProjectComponent: React.FC = () => {
   const [projectsdata, setProjectsData] = useState<Project[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const res = useUpdateProject({ security: false });
+  const res = useUpdateProjectPauseClose({ security: false });
   console.log(res + " value");
 
   useEffect(() => {

@@ -4,18 +4,19 @@ import { useStatusStore } from "@/store/Status";
 import { useProjectCodeStore } from "@/store/ProjectCode";
 
 interface ApiResponse {
+  // Define the properties you expect in the response
+  // For example, you can have data, status, etc.
   data: any;
   status: number;
+  // Add other properties as needed
 }
 
-const useUpdateProject = () => {
-  const [security_check, setSecurityCheck] = useState(false);
+const useUpdateProjectPauseClose = ({ security }: any) => {
   const useStatus = useStatusStore((state: any) => state.status);
   const useProjectCode = useProjectCodeStore(
     (state: any) => state.project_code
   );
   const [res, setRes] = useState<ApiResponse | null>(null);
-  // console.log(security_check);
 
   useEffect(() => {
     const updateProject = async () => {
@@ -23,24 +24,11 @@ const useUpdateProject = () => {
 
       // Check if both useProjectCode and useStatus are selected
       if (useProjectCode && useStatus) {
-        // Fetching the localStorage toggleValue
-        const toggleValueString = localStorage.getItem("toggleValue");
-        const toggleValue = toggleValueString
-          ? JSON.parse(toggleValueString)
-          : {};
-
-        // Check if useProjectCode matches with any key in toggleValue
-        if (toggleValue[useProjectCode] !== undefined) {
-          // Use the updated value of security_check
-          setSecurityCheck(toggleValue[useProjectCode]);
-        }
-        console.log(toggleValue[useProjectCode]);
-
         const url = "http://localhost:8000/project/update";
         const params = {
           project_code: useProjectCode,
           status: useStatus,
-          security_check: toggleValue[useProjectCode] ? true : false,
+          security_check: security,
         };
         const headers = {
           accept: "application/json",
@@ -53,6 +41,7 @@ const useUpdateProject = () => {
             headers,
           });
 
+          // console.log("Response:", response.status);
           setRes(response);
         } catch (error) {
           console.error("Error:", error);
@@ -63,7 +52,7 @@ const useUpdateProject = () => {
     updateProject();
   }, [useProjectCode, useStatus]);
 
-  return res;
+  return res; // If you need to expose these values in the component using this hook
 };
 
-export default useUpdateProject;
+export default useUpdateProjectPauseClose;

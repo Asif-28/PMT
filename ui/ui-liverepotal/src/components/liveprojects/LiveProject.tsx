@@ -14,9 +14,11 @@ const LiveProjectComponent: React.FC = () => {
   const [projectsdata, setProjectsData] = useState<Project[]>([]);
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);
-  const res = useUpdateProject({ security: true });
-  // console.log(res + " value");
-
+  const [toggleState, setToggleState] = useState<{ [key: string]: boolean }>(
+    {}
+  );
+  const res = useUpdateProject({ security: true, toggleValue: toggleState });
+  // console.log(toggleState);
   useEffect(() => {
     async function FetchData() {
       const status = "live";
@@ -45,6 +47,36 @@ const LiveProjectComponent: React.FC = () => {
     // BasicTable({ ...project });
     updateDataSummary(project.project_code);
     router.push("/data-summary");
+  };
+
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+
+  // const handleToggle = (projectCode: string) => {
+  //   setToggleState((prevState) => ({
+  //     ...prevState,
+  //     [projectCode]: !prevState[projectCode] || false,
+  //   }));
+  // };
+
+  useEffect(() => {
+    const storedToggleValue = localStorage.getItem("toggleValue");
+
+    if (storedToggleValue) {
+      const parsedToggleValue = JSON.parse(storedToggleValue);
+      setToggleState(parsedToggleValue);
+    }
+  }, []);
+
+  const handleToggle = (projectCode: string) => {
+    setToggleState((prevState) => {
+      const newState = {
+        ...prevState,
+        [projectCode]: !prevState[projectCode] || false,
+      };
+      // Update localStorage
+      localStorage.setItem("toggleValue", JSON.stringify(newState));
+      return newState;
+    });
   };
 
   return (
@@ -98,6 +130,12 @@ const LiveProjectComponent: React.FC = () => {
               >
                 Project Status
               </th>
+              <th
+                scope="col"
+                className="px-3 sm:px-6 py-2 sm:py-3 font-medium uppercase tracking-wider"
+              >
+                Security Check
+              </th>
             </tr>
           </thead>
 
@@ -130,6 +168,33 @@ const LiveProjectComponent: React.FC = () => {
                     status={project.status}
                     project_code={project.project_code}
                   ></DropDown>
+                </td>
+                <td className="px-3 md:px-6 py-2 sm:py-4">
+                  <div className="flex justify-center">
+                    <input
+                      type="checkbox"
+                      className="hidden"
+                      checked={toggleState[project.project_code] || false}
+                      onChange={() => handleToggle(project.project_code)}
+                      id={`toggle-${project.project_code}`}
+                    />
+                    <label
+                      htmlFor={`toggle-${project.project_code}`}
+                      className={`cursor-pointer relative w-10 h-4 rounded-full ${
+                        toggleState[project.project_code]
+                          ? "bg-[#5C2081]"
+                          : "bg-gray-400"
+                      }`}
+                    >
+                      <div
+                        className={`toggle__dot absolute w-6 h-6 bg-white rounded-full shadow inset-y-0 -top-1 left-0 transform ${
+                          toggleState[project.project_code]
+                            ? "translate-x-full"
+                            : "translate-x-0"
+                        } transition-transform duration-300 ease-in-out`}
+                      ></div>
+                    </label>
+                  </div>
                 </td>
               </tr>
             ))}
