@@ -71,7 +71,7 @@ export default function BasicTable() {
     <div className="section">
       <h1 className="font-semibold text-2xl py-4 mt-10">Data Group Summary</h1>
       <h2 className="text-gray-600 pb-8">
-        Infant Milk Formula in Spain - {projectKeyValue}
+        Infant Milk Formula in Spain - AZ190_IMFI_0823
       </h2>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <table className="table-auto w-full">
@@ -88,18 +88,7 @@ export default function BasicTable() {
           </thead>
           <tbody>
             <tr className="hover:bg-gray-100">
-              <td className="px-4 py-2 text-left">Complete</td>
-              {data?.map((item) => (
-                <td className="px-4 py-2 text-left" key={item.vendor_code}>
-                  {item.complete_count}
-                </td>
-              ))}
-              <td className="px-4 py-2 text-left">
-                {data?.reduce((total, item) => total + item.complete_count, 0)}
-              </td>
-            </tr>
-            <tr className="hover:bg-gray-100">
-              <td className="px-4 py-2 text-left">Terminate</td>
+              <td className="px-4 py-2 text-left">Client Terminate</td>
               {data?.map((item) => (
                 <td className="px-4 py-2 text-left" key={item.vendor_code}>
                   {item.client_terminate}
@@ -113,7 +102,51 @@ export default function BasicTable() {
               </td>
             </tr>
             <tr className="hover:bg-gray-100">
-              <td className="px-4 py-2 text-left">Over-Quota</td>
+              <td className="px-4 py-2 text-left">DFP Terminate</td>
+              {data?.map((item) => (
+                <td className="px-4 py-2 text-left" key={item.vendor_code}>
+                  {item.DFP_terminate}
+                </td>
+              ))}
+              <td className="px-4 py-2 text-left">
+                {data?.reduce((total, item) => total + item.DFP_terminate, 0)}
+              </td>
+            </tr>
+            <tr className="hover:bg-gray-100">
+              <td className="px-4 py-2 text-left">Complete Count</td>
+              {data?.map((item) => (
+                <td className="px-4 py-2 text-left" key={item.vendor_code}>
+                  {item.complete_count}
+                </td>
+              ))}
+              <td className="px-4 py-2 text-left">
+                {data?.reduce((total, item) => total + item.complete_count, 0)}
+              </td>
+            </tr>
+            <tr className="hover:bg-gray-100">
+              <td className="px-4 py-2 text-left">Insurvey Count</td>
+              {data?.map((item) => (
+                <td className="px-4 py-2 text-left" key={item.vendor_code}>
+                  {item.insurvey_count}
+                </td>
+              ))}
+              <td className="px-4 py-2 text-left">
+                {data?.reduce((total, item) => total + item.insurvey_count, 0)}
+              </td>
+            </tr>
+            <tr className="hover:bg-gray-100">
+              <td className="px-4 py-2 text-left">Rejected Count</td>
+              {data?.map((item) => (
+                <td className="px-4 py-2 text-left" key={item.vendor_code}>
+                  {item.rejected_count}
+                </td>
+              ))}
+              <td className="px-4 py-2 text-left">
+                {data?.reduce((total, item) => total + item.rejected_count, 0)}
+              </td>
+            </tr>
+            <tr className="hover:bg-gray-100">
+              <td className="px-4 py-2 text-left">Over-Quota Count</td>
               {data?.map((item) => (
                 <td className="px-4 py-2 text-left" key={item.vendor_code}>
                   {item.over_quota_count}
@@ -124,6 +157,28 @@ export default function BasicTable() {
                   (total, item) => total + item.over_quota_count,
                   0
                 )}
+              </td>
+            </tr>
+            <tr className="hover:bg-gray-100">
+              <td className="px-4 py-2 text-left">Total Hits</td>
+              {data?.map((item) => (
+                <td className="px-4 py-2 text-left" key={item.vendor_code}>
+                  {item.Total_hits}
+                </td>
+              ))}
+              <td className="px-4 py-2 text-left">
+                {data?.reduce((total, item) => total + item.Total_hits, 0)}
+              </td>
+            </tr>
+            <tr className="hover:bg-gray-100">
+              <td className="px-4 py-2 text-left">Avg Duration</td>
+              {data?.map((item) => (
+                <td className="px-4 py-2 text-left" key={item.vendor_code}>
+                  {item.avg_duration}
+                </td>
+              ))}
+              <td className="px-4 py-2 text-left">
+                {data?.reduce((total, item) => total + item.avg_duration, 0)}
               </td>
             </tr>
           </tbody>
