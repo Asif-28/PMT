@@ -34,7 +34,7 @@ tasks:
   ui:push:
     desc: Push the UI changes to CloudFront
     cmds:
-      - task: aws:npm-build
+      - task: aws:cloudfront:deploy
         vars:
           PATH: "./ui/ui-legacy"
           BUILD_DIR: "out"
@@ -45,7 +45,7 @@ tasks:
   live_reporter_ui:push:
     desc: Push the Liverepotal UI changes to CloudFront
     cmds:
-      - task: aws:npm-build
+      - task: aws:cloudfront:deploy
         vars:
           PATH: "./ui/ui-live-portal"
           BUILD_DIR: "out"
