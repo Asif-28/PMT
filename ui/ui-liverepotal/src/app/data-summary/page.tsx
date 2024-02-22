@@ -74,27 +74,33 @@ export default function BasicTable() {
         Infant Milk Formula in Spain - AZ190_IMFI_0823
       </h2>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <table className="table-auto w-full">
+        <table className="table-auto w-full border-collapse border">
           <thead>
             <tr>
-              <th className="px-4 py-2 text-left">Status</th>
+              <th className="px-4 py-2 text-left border">Status</th>
               {data?.map((item) => (
-                <th className="px-4 py-2 text-left" key={item.vendor_code}>
+                <th
+                  className="px-4 py-2 text-left border"
+                  key={item.vendor_code}
+                >
                   {item.vendor_code}
                 </th>
               ))}
-              <th className="px-4 py-2 text-left">Total</th>
+              <th className="px-4 py-2 text-left border">Total</th>
             </tr>
           </thead>
           <tbody>
             <tr className="hover:bg-gray-100">
-              <td className="px-4 py-2 text-left">Client Terminate</td>
+              <td className="px-4 py-2 text-left border">Client Terminate</td>
               {data?.map((item) => (
-                <td className="px-4 py-2 text-left" key={item.vendor_code}>
+                <td
+                  className="px-4 py-2 text-left border"
+                  key={item.vendor_code}
+                >
                   {item.client_terminate}
                 </td>
               ))}
-              <td className="px-4 py-2 text-left">
+              <td className="px-4 py-2 text-left border">
                 {data?.reduce(
                   (total, item) => total + item.client_terminate,
                   0
@@ -102,57 +108,72 @@ export default function BasicTable() {
               </td>
             </tr>
             <tr className="hover:bg-gray-100">
-              <td className="px-4 py-2 text-left">DFP Terminate</td>
+              <td className="px-4 py-2 text-left border">DFP Terminate</td>
               {data?.map((item) => (
-                <td className="px-4 py-2 text-left" key={item.vendor_code}>
+                <td
+                  className="px-4 py-2 text-left border"
+                  key={item.vendor_code}
+                >
                   {item.DFP_terminate}
                 </td>
               ))}
-              <td className="px-4 py-2 text-left">
+              <td className="px-4 py-2 text-left border">
                 {data?.reduce((total, item) => total + item.DFP_terminate, 0)}
               </td>
             </tr>
             <tr className="hover:bg-gray-100">
-              <td className="px-4 py-2 text-left">Complete Count</td>
+              <td className="px-4 py-2 text-left border">Complete Count</td>
               {data?.map((item) => (
-                <td className="px-4 py-2 text-left" key={item.vendor_code}>
+                <td
+                  className="px-4 py-2 text-left border"
+                  key={item.vendor_code}
+                >
                   {item.complete_count}
                 </td>
               ))}
-              <td className="px-4 py-2 text-left">
+              <td className="px-4 py-2 text-left border">
                 {data?.reduce((total, item) => total + item.complete_count, 0)}
               </td>
             </tr>
             <tr className="hover:bg-gray-100">
-              <td className="px-4 py-2 text-left">Insurvey Count</td>
+              <td className="px-4 py-2 text-left border">Insurvey Count</td>
               {data?.map((item) => (
-                <td className="px-4 py-2 text-left" key={item.vendor_code}>
+                <td
+                  className="px-4 py-2 text-left border"
+                  key={item.vendor_code}
+                >
                   {item.insurvey_count}
                 </td>
               ))}
-              <td className="px-4 py-2 text-left">
+              <td className="px-4 py-2 text-left border">
                 {data?.reduce((total, item) => total + item.insurvey_count, 0)}
               </td>
             </tr>
             <tr className="hover:bg-gray-100">
-              <td className="px-4 py-2 text-left">Rejected Count</td>
+              <td className="px-4 py-2 text-left border">Rejected Count</td>
               {data?.map((item) => (
-                <td className="px-4 py-2 text-left" key={item.vendor_code}>
+                <td
+                  className="px-4 py-2 text-left border"
+                  key={item.vendor_code}
+                >
                   {item.rejected_count}
                 </td>
               ))}
-              <td className="px-4 py-2 text-left">
+              <td className="px-4 py-2 text-left border">
                 {data?.reduce((total, item) => total + item.rejected_count, 0)}
               </td>
             </tr>
             <tr className="hover:bg-gray-100">
-              <td className="px-4 py-2 text-left">Over-Quota Count</td>
+              <td className="px-4 py-2 text-left border">Over-Quota Count</td>
               {data?.map((item) => (
-                <td className="px-4 py-2 text-left" key={item.vendor_code}>
+                <td
+                  className="px-4 py-2 text-left border"
+                  key={item.vendor_code}
+                >
                   {item.over_quota_count}
                 </td>
               ))}
-              <td className="px-4 py-2 text-left">
+              <td className="px-4 py-2 text-left border">
                 {data?.reduce(
                   (total, item) => total + item.over_quota_count,
                   0
@@ -160,24 +181,30 @@ export default function BasicTable() {
               </td>
             </tr>
             <tr className="hover:bg-gray-100">
-              <td className="px-4 py-2 text-left">Total Hits</td>
+              <td className="px-4 py-2 text-left border">Total Hits</td>
               {data?.map((item) => (
-                <td className="px-4 py-2 text-left" key={item.vendor_code}>
+                <td
+                  className="px-4 py-2 text-left border"
+                  key={item.vendor_code}
+                >
                   {item.Total_hits}
                 </td>
               ))}
-              <td className="px-4 py-2 text-left">
+              <td className="px-4 py-2 text-left border">
                 {data?.reduce((total, item) => total + item.Total_hits, 0)}
               </td>
             </tr>
             <tr className="hover:bg-gray-100">
-              <td className="px-4 py-2 text-left">Avg Duration</td>
+              <td className="px-4 py-2 text-left border">Avg Duration</td>
               {data?.map((item) => (
-                <td className="px-4 py-2 text-left" key={item.vendor_code}>
+                <td
+                  className="px-4 py-2 text-left border"
+                  key={item.vendor_code}
+                >
                   {item.avg_duration}
                 </td>
               ))}
-              <td className="px-4 py-2 text-left">
+              <td className="px-4 py-2 text-left border">
                 {data?.reduce((total, item) => total + item.avg_duration, 0)}
               </td>
             </tr>
