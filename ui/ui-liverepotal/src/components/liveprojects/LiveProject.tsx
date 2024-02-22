@@ -1,14 +1,24 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Project } from "@/types/types";
 import DropDown from "../utils/DropDown";
 import Image from "next/image";
 import useUpdateProject from "@/hooks/UpdateProjectLive";
 import axiosWrapper from "@/hooks/DataFetch";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useDataSummaryStore } from "@/store/DataSummary";
+import Cookies from "js-cookie";
 
 const LiveProjectComponent: React.FC = () => {
+  // useLayoutEffect(() => {
+  //   const cookie = Cookies.get("X-API-KEY");
+  //   if (cookie) {
+  //     redirect("/");
+  //   } else {
+  //     redirect("/login");
+  //   }
+  // }, []);
+
   const [projectsdata, setProjectsData] = useState<Project[]>([]);
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);

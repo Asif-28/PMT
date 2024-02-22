@@ -1,12 +1,12 @@
 "use client";
 import Image from "next/image";
-import React, { FormEvent, useState, useEffect } from "react";
+import React, { FormEvent, useState, useEffect, useLayoutEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { z } from "zod";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useAuthTokenStore } from "../../store/AuthToken";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
@@ -74,7 +74,7 @@ const Login = () => {
 
         localStorage.setItem("Authorization", "Bearer " + response.data.token);
 
-        router.push("/");
+        router.push("/liveprojects");
       } else {
         toast.error("Invalid Credentials");
       }
@@ -87,9 +87,18 @@ const Login = () => {
     }
   };
 
-  useEffect(() => {
-    Cookies.get("X-API-KEY") ? push("/") : push("/login");
-  }, [push]);
+  // useEffect(() => {
+  //   Cookies.get("X-API-KEY") ? push("/liveprojects") : push("/");
+  // }, [push]);
+
+  // useLayoutEffect(() => {
+  //   const cookie = Cookies.get("X-API-KEY");
+  //   if (cookie) {
+  //     redirect("/liveprojects");
+  //   } else {
+  //     redirect("/login");
+  //   }
+  // }, []);
 
   return (
     <main className="bg-white ">
