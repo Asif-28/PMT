@@ -13,9 +13,11 @@ const Header: React.FC = () => {
     setSearchValue(e.target.value);
   };
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("Authorization");
+    localStorage.removeItem("toggleValue");
     Cookies.remove("X-API-KEY");
     Cookies.remove("csrftoken");
+
     router.push("/login");
   };
   return (

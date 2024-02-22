@@ -6,9 +6,7 @@ import Image from "next/image";
 import useUpdateProject from "@/hooks/UpdateProjectLive";
 import axiosWrapper from "@/hooks/DataFetch";
 import { useRouter } from "next/navigation";
-import BasicTable from "@/app/data-summary/page";
 import { useDataSummaryStore } from "@/store/DataSummary";
-import { data } from "../linechart/LineChart";
 
 const LiveProjectComponent: React.FC = () => {
   const [projectsdata, setProjectsData] = useState<Project[]>([]);
@@ -17,8 +15,7 @@ const LiveProjectComponent: React.FC = () => {
   const [toggleState, setToggleState] = useState<{ [key: string]: boolean }>(
     {}
   );
-  const res = useUpdateProject({ security: true, toggleValue: toggleState });
-  // console.log(toggleState);
+  const res = useUpdateProject();
   useEffect(() => {
     async function FetchData() {
       const status = "live";
@@ -44,19 +41,9 @@ const LiveProjectComponent: React.FC = () => {
   console.log(dataSummary);
 
   const handleSummary = ({ project }: any) => {
-    // BasicTable({ ...project });
     updateDataSummary(project.project_code);
     router.push("/data-summary");
   };
-
-  const [isChecked, setIsChecked] = useState<boolean>(false);
-
-  // const handleToggle = (projectCode: string) => {
-  //   setToggleState((prevState) => ({
-  //     ...prevState,
-  //     [projectCode]: !prevState[projectCode] || false,
-  //   }));
-  // };
 
   useEffect(() => {
     const storedToggleValue = localStorage.getItem("toggleValue");
@@ -140,7 +127,7 @@ const LiveProjectComponent: React.FC = () => {
           </thead>
 
           <tbody className="bg-white divide-y-4 divide-gray-200">
-            {projectsdata.map((project: any) => (
+            {projectsdata?.map((project: any) => (
               <tr
                 key={project.project_code}
                 className="whitespace-nowrap cursor-pointer"
@@ -187,7 +174,7 @@ const LiveProjectComponent: React.FC = () => {
                       }`}
                     >
                       <div
-                        className={`toggle__dot absolute w-6 h-6 bg-white rounded-full shadow inset-y-0 -top-1 left-0 transform ${
+                        className={`toggle__dot absolute w-6 h-6 bg-slate-100 rounded-full shadow inset-y-0 -top-1 left-0 transform ${
                           toggleState[project.project_code]
                             ? "translate-x-full"
                             : "translate-x-0"

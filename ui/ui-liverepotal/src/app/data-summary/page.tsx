@@ -1,37 +1,54 @@
 "use client";
-import * as React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { Project } from "@/types/types";
+
+import axiosWrapper from "@/hooks/DataFetch";
 import { useDataSummaryStore } from "@/store/DataSummary";
+import { useEffect, useState } from "react";
 
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number
-) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
-
-export default function BasicTable(project: any) {
+export default function BasicTable() {
   const dataSummary = useDataSummaryStore((state: any) => state.dataSummary);
 
-  console.log(dataSummary);
+  const [isLocalStorageSet, setIsLocalStorageSet] = useState(false);
+  const [projectKeyValue, setProjectKeyValue] = useState(null);
+
+  // Store dataSummary in local storage on component mount
+  useEffect(() => {
+    if (dataSummary != "" && !isLocalStorageSet) {
+      localStorage.setItem("dataSummary", JSON.stringify(dataSummary));
+      setIsLocalStorageSet(true);
+    }
+  }, [dataSummary, isLocalStorageSet]);
+
+  // Retrieve dataSummary from local storage on component mount
+  useEffect(() => {
+    if (!isLocalStorageSet) {
+      const storedDataSummary = localStorage.getItem("dataSummary");
+      if (storedDataSummary) {
+        const parsedDataSummary = JSON.parse(storedDataSummary);
+        setProjectKeyValue(parsedDataSummary);
+        setIsLocalStorageSet(true);
+      }
+    }
+  }, [isLocalStorageSet]);
+
+  // Fetch data using projectKeyValue
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axiosWrapper("/project_summary", "get", {
+          project_code: projectKeyValue,
+        });
+        console.log(response);
+        return response;
+      } catch (error) {
+        return { props: { error } };
+      }
+    }
+
+    if (projectKeyValue != null) {
+      fetchData();
+    }
+  }, [projectKeyValue]);
+
   return (
     <div className="section">
       <h1 className="font-semibold text-2xl py-4 mt-10">Data Group Summary</h1>
