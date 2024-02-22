@@ -59,10 +59,6 @@ const Login = () => {
   //   fetchData();
   // }, []);
 
-  // useEffect(() => {
-  //   Cookies.get("X-API-KEY") ? push("/survey") : push("/");
-  // }, [push]);
-
   useEffect(() => {
     // Immediately display password error if it exists on initial render
     if (passwordError) {
@@ -98,6 +94,7 @@ const Login = () => {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
           },
+          withCredentials: true,
         }
       );
 
@@ -117,6 +114,10 @@ const Login = () => {
       }
     }
   };
+
+  useEffect(() => {
+    Cookies.get("X-API-KEY") ? push("/survey") : push("/");
+  }, [push]);
 
   return (
     <main className="h-[100vh] bg-white ">
