@@ -54,7 +54,7 @@ const LiveProjectComponent: React.FC = () => {
   const updateDataSummary = useDataSummaryStore(
     (state: any) => state.setDataSummary
   );
-  console.log(dataSummary);
+  // console.log(dataSummary);
 
   const handleSummary = ({ project }: any) => {
     updateDataSummary(project.project_code);
