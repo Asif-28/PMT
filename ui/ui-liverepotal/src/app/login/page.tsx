@@ -168,7 +168,7 @@ const Login = () => {
         <div className=" bg-[#5C2081] h-screen w-full max-w-2xl rounded-tr-[2.5rem] rounded-br-[2.5rem] flex justify-center pt-20 relative">
           <div className="absolute right-0 top-64">
             <Image
-              src="/legacy-bg.png"
+              src="/legacy-background.svg"
               alt="background"
               height={600}
               width={550}
