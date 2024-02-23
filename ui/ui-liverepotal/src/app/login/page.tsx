@@ -174,7 +174,7 @@ const Login = () => {
               width={550}
             />
           </div>
-          <h1 className="text-[#fff] text-5xl font-bold">LEGACY REPOTAL</h1>
+          <h1 className="text-[#fff] text-5xl font-bold">LEGACY REPORTAL</h1>
         </div>
       </div>
     </main>
@@ -182,4 +182,3 @@ const Login = () => {
 };
 
 export default loginAuth(Login);
-// export default Login;

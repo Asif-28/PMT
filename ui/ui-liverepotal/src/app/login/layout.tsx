@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Login",
-  description: "Live Repotal",
+  title: "Live Reportal",
+  description: "Live Reportal",
 };
 
 export default function RootLayout({

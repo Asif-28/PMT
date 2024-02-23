@@ -5,26 +5,11 @@ import DropDown from "../utils/DropDown";
 import Image from "next/image";
 import useUpdateProject from "@/hooks/UpdateProjectLive";
 import axiosWrapper from "@/hooks/DataFetch";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useDataSummaryStore } from "@/store/DataSummary";
-import Cookies from "js-cookie";
 import withAuth from "../withAuth/withAuth";
-import dynamic from "next/dynamic";
-
-const Live = dynamic(() => import("./LiveProject"), {
-  ssr: false,
-});
 
 const LiveProjectComponent: React.FC = () => {
-  // useLayoutEffect(() => {
-  //   const cookie = Cookies.get("X-API-KEY");
-  //   if (cookie) {
-  //     redirect("/");
-  //   } else {
-  //     redirect("/login");
-  //   }
-  // }, []);
-
   const [projectsdata, setProjectsData] = useState<Project[]>([]);
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);
@@ -54,7 +39,6 @@ const LiveProjectComponent: React.FC = () => {
   const updateDataSummary = useDataSummaryStore(
     (state: any) => state.setDataSummary
   );
-  // console.log(dataSummary);
 
   const handleSummary = ({ project }: any) => {
     updateDataSummary(project.project_code);
@@ -215,5 +199,4 @@ const LiveProjectComponent: React.FC = () => {
   );
 };
 
-// export default withAuth(LiveProjectComponent);
-export default LiveProjectComponent;
+export default withAuth(LiveProjectComponent);

@@ -14,7 +14,6 @@ const ClosedProjectComponent: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const res = useUpdateProjectPauseClose({ security: false });
   const router = useRouter();
-  // console.log(res + " value");
 
   useEffect(() => {
     async function FetchData() {
@@ -38,7 +37,6 @@ const ClosedProjectComponent: React.FC = () => {
   const updateDataSummary = useDataSummaryStore(
     (state: any) => state.setDataSummary
   );
-  console.log(dataSummary);
 
   const handleSummary = ({ project }: any) => {
     updateDataSummary(project.project_code);
@@ -142,5 +140,4 @@ const ClosedProjectComponent: React.FC = () => {
   );
 };
 
-// export default withAuth(ClosedProjectComponent);
-export default ClosedProjectComponent;
+export default withAuth(ClosedProjectComponent);
