@@ -142,7 +142,7 @@ const LiveProjectComponent: React.FC = () => {
             </tr>
           </thead>
 
-          <tbody className="bg-white divide-y-4 divide-gray-200">
+          <tbody className="bg-white divide-y-4 divide-gray-200 md:font-semibold">
             {projectsdata?.map((project: any) => (
               <tr
                 key={project.project_code}
