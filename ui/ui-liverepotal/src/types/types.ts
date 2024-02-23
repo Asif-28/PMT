@@ -1,13 +1,13 @@
 export interface Project {
-  name: string;
-  ir: number;
-  loi: number;
+  project_code: string;
+  count: number;
   scope: number;
-  achieved: number;
-  remaining: number;
   status: string;
+  loi: string;
+  project_name: string;
+  total: number;
 }
 
 export interface ProjectsProps {
-  projects: Project[];
+  projectsdata: Project[];
 }

@@ -1,66 +1,216 @@
-import * as React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+"use client";
 
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number
-) {
-  return { name, calories, fat, carbs, protein };
+import axiosWrapper from "@/hooks/DataFetch";
+import { useDataSummaryStore } from "@/store/DataSummary";
+import { useEffect, useState } from "react";
+
+interface VendorStats {
+  vendor_code: string;
+  client_terminate: number;
+  DFP_terminate: number;
+  complete_count: number;
+  insurvey_count: number;
+  rejected_count: number;
+  over_quota_count: number;
+  Total_hits: number;
+  avg_duration: number;
 }
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
-
 export default function BasicTable() {
+  const dataSummary = useDataSummaryStore((state: any) => state.dataSummary);
+  const [data, setData] = useState<VendorStats[]>();
+  console.log(data);
+
+  const [isLocalStorageSet, setIsLocalStorageSet] = useState(false);
+  const [projectKeyValue, setProjectKeyValue] = useState(null);
+
+  // Store dataSummary in local storage on component mount
+  useEffect(() => {
+    if (dataSummary != "" && !isLocalStorageSet) {
+      localStorage.setItem("dataSummary", JSON.stringify(dataSummary));
+      setIsLocalStorageSet(true);
+    }
+  }, [dataSummary, isLocalStorageSet]);
+
+  // Retrieve dataSummary from local storage on component mount
+  useEffect(() => {
+    if (!isLocalStorageSet) {
+      const storedDataSummary = localStorage.getItem("dataSummary");
+      if (storedDataSummary) {
+        const parsedDataSummary = JSON.parse(storedDataSummary);
+        setProjectKeyValue(parsedDataSummary);
+        setIsLocalStorageSet(true);
+      }
+    }
+  }, [isLocalStorageSet]);
+
+  // Fetch data using projectKeyValue
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axiosWrapper<VendorStats[]>(
+          "/project_summary",
+          "get",
+          {
+            project_code: projectKeyValue,
+          }
+        );
+        // console.log(response);
+        setData(response);
+        return response;
+      } catch (error) {
+        return { props: { error } };
+      }
+    }
+
+    if (projectKeyValue != null) {
+      fetchData();
+    }
+  }, [projectKeyValue]);
+
   return (
     <div className="section">
       <h1 className="font-semibold text-2xl py-4 mt-10">Data Group Summary</h1>
       <h2 className="text-gray-600 pb-8">
         Infant Milk Formula in Spain - AZ190_IMFI_0823
       </h2>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Dessert (100g serving)</TableCell>
-              <TableCell align="center">Calories</TableCell>
-              <TableCell align="center">Fat&nbsp;(g)</TableCell>
-              <TableCell align="center">Carbs&nbsp;(g)</TableCell>
-              <TableCell align="center">Protein&nbsp;(g)</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow
-                key={row.name}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {row.name}
-                </TableCell>
-                <TableCell align="center">{row.calories}</TableCell>
-                <TableCell align="center">{row.fat}</TableCell>
-                <TableCell align="center">{row.carbs}</TableCell>
-                <TableCell align="center">{row.protein}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <table className="table-auto w-full border-collapse border">
+          <thead>
+            <tr>
+              <th className="px-4 py-2 text-left border">Status</th>
+              {data?.map((item) => (
+                <th
+                  className="px-4 py-2 text-left border"
+                  key={item.vendor_code}
+                >
+                  {item.vendor_code}
+                </th>
+              ))}
+              <th className="px-4 py-2 text-left border">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="hover:bg-gray-100">
+              <td className="px-4 py-2 text-left border">Client Terminate</td>
+              {data?.map((item) => (
+                <td
+                  className="px-4 py-2 text-left border"
+                  key={item.vendor_code}
+                >
+                  {item.client_terminate}
+                </td>
+              ))}
+              <td className="px-4 py-2 text-left border">
+                {data?.reduce(
+                  (total, item) => total + item.client_terminate,
+                  0
+                )}
+              </td>
+            </tr>
+            <tr className="hover:bg-gray-100">
+              <td className="px-4 py-2 text-left border">DFP Terminate</td>
+              {data?.map((item) => (
+                <td
+                  className="px-4 py-2 text-left border"
+                  key={item.vendor_code}
+                >
+                  {item.DFP_terminate}
+                </td>
+              ))}
+              <td className="px-4 py-2 text-left border">
+                {data?.reduce((total, item) => total + item.DFP_terminate, 0)}
+              </td>
+            </tr>
+            <tr className="hover:bg-gray-100">
+              <td className="px-4 py-2 text-left border">Complete Count</td>
+              {data?.map((item) => (
+                <td
+                  className="px-4 py-2 text-left border"
+                  key={item.vendor_code}
+                >
+                  {item.complete_count}
+                </td>
+              ))}
+              <td className="px-4 py-2 text-left border">
+                {data?.reduce((total, item) => total + item.complete_count, 0)}
+              </td>
+            </tr>
+            <tr className="hover:bg-gray-100">
+              <td className="px-4 py-2 text-left border">Insurvey Count</td>
+              {data?.map((item) => (
+                <td
+                  className="px-4 py-2 text-left border"
+                  key={item.vendor_code}
+                >
+                  {item.insurvey_count}
+                </td>
+              ))}
+              <td className="px-4 py-2 text-left border">
+                {data?.reduce((total, item) => total + item.insurvey_count, 0)}
+              </td>
+            </tr>
+            <tr className="hover:bg-gray-100">
+              <td className="px-4 py-2 text-left border">Rejected Count</td>
+              {data?.map((item) => (
+                <td
+                  className="px-4 py-2 text-left border"
+                  key={item.vendor_code}
+                >
+                  {item.rejected_count}
+                </td>
+              ))}
+              <td className="px-4 py-2 text-left border">
+                {data?.reduce((total, item) => total + item.rejected_count, 0)}
+              </td>
+            </tr>
+            <tr className="hover:bg-gray-100">
+              <td className="px-4 py-2 text-left border">Over-Quota Count</td>
+              {data?.map((item) => (
+                <td
+                  className="px-4 py-2 text-left border"
+                  key={item.vendor_code}
+                >
+                  {item.over_quota_count}
+                </td>
+              ))}
+              <td className="px-4 py-2 text-left border">
+                {data?.reduce(
+                  (total, item) => total + item.over_quota_count,
+                  0
+                )}
+              </td>
+            </tr>
+            <tr className="hover:bg-gray-100">
+              <td className="px-4 py-2 text-left border">Total Hits</td>
+              {data?.map((item) => (
+                <td
+                  className="px-4 py-2 text-left border"
+                  key={item.vendor_code}
+                >
+                  {item.Total_hits}
+                </td>
+              ))}
+              <td className="px-4 py-2 text-left border">
+                {data?.reduce((total, item) => total + item.Total_hits, 0)}
+              </td>
+            </tr>
+            <tr className="hover:bg-gray-100">
+              <td className="px-4 py-2 text-left border">Avg Duration</td>
+              {data?.map((item) => (
+                <td
+                  className="px-4 py-2 text-left border"
+                  key={item.vendor_code}
+                >
+                  {item.avg_duration}
+                </td>
+              ))}
+              <td className="px-4 py-2 text-left border">
+                {data?.reduce((total, item) => total + item.avg_duration, 0)}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

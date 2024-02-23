@@ -63,21 +63,23 @@ def project_data_summary(request, project_code: str):
         with connection.cursor() as cursor:
             cursor.execute(
                 f"""
-                SELECT
-                    vendor_code,
-                    status,
-                    COUNT(*) AS total_count,
-                    SUM(CASE WHEN status = 'terminate' AND qc_remarks='client terminate' THEN 1 ELSE 0 END) AS client_terminate,
-                    SUM(CASE WHEN status = 'terminate' AND qc_remarks='DFP terminate' THEN 1 ELSE 0 END) AS DFP_terminate,
-                    AVG(duration) AS avg_duration
+               SELECT
+                  vendor_code,
+                  SUM(CASE WHEN status = 'terminate' AND qc_remarks='client terminate' THEN 1 ELSE 0 END) AS client_terminate,
+                  SUM(CASE WHEN status = 'terminate' AND qc_remarks='DFP terminate' THEN 1 ELSE 0 END) AS DFP_terminate,
+                  SUM(CASE WHEN status = 'complete'  THEN 1 ELSE 0 END) AS complete_count,
+                  SUM(CASE WHEN status = 'insurvey'  THEN 1 ELSE 0 END) AS insurvey_count,
+                  SUM(CASE WHEN status = 'rejected'  THEN 1 ELSE 0 END) AS rejected_count,
+                  SUM(CASE WHEN status = 'overquota'  THEN 1 ELSE 0 END) AS over_quota_count,
+                  SUM(CASE WHEN vendor_code=vendor_code  THEN 1 ELSE 0 END) AS Total_hits,
+                   AVG(duration) AS avg_duration
                 FROM
                     app_projectsurveytrace
                 WHERE
                     project_code = '{project_code}'
                     AND test = 0
                 GROUP BY
-                    vendor_code,
-                    status
+                    vendor_code
             """
             )
 

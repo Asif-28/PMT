@@ -1,34 +1,72 @@
 "use client";
-import React from "react";
+import React, { use, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { useStatusStore } from "@/store/Status";
+import { useProjectCodeStore } from "@/store/ProjectCode";
 
-const DropDown = ({ value1, value2 }: any) => {
-  const [checkStatus, setcheckStatus] = React.useState("");
+const DropDown = ({ value1, value2, value3, status, project_code }: any) => {
+  const [statusValue, setStatusValue] = useState(status);
+  const useStatus = useStatusStore((state: any) => state.status);
+  const updataStatus = useStatusStore((state: any) => state.setStatus);
+  const useProjectCode = useProjectCodeStore(
+    (state: any) => state.project_code
+  );
+  const updataProjectCode = useProjectCodeStore(
+    (state: any) => state.setProjectCode
+  );
+
   const handleChange = (event: SelectChangeEvent) => {
-    setcheckStatus(event.target.value as string);
+    setStatusValue(event.target.value as string);
+
+    updataProjectCode(project_code);
+    updataStatus(event.target.value as string);
   };
-  console.log(checkStatus);
+
   return (
-    <div>
-      <Box sx={{ maxWidth: 150 }}>
-        <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Status</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={checkStatus}
-            label="Status"
-            onChange={handleChange}
-          >
-            <MenuItem value={value1}>{value1}</MenuItem>
-            <MenuItem value={value2}>{value2}</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
+    <div className=" flex items-center justify-center gap-2 sm:gap-3 w-full">
+      <div className="w-28">
+        <Box sx={{ maxWidth: 100 }}>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">{status}</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={statusValue}
+              label="Status"
+              onChange={handleChange}
+            >
+              <MenuItem value={value1}>{value1}</MenuItem>
+              <MenuItem value={value2}>{value2}</MenuItem>
+              <MenuItem value={value3}>{value3}</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+      </div>
+
+      <div>
+        <span className="relative flex h-3 w-3">
+          {status === "live" ? (
+            <>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-700 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+            </>
+          ) : status === "paused" ? (
+            <>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-700 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-yellow-500"></span>
+            </>
+          ) : (
+            <>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-700 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+            </>
+          )}
+        </span>
+      </div>
     </div>
   );
 };
