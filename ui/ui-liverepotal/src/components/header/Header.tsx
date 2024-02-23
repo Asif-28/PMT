@@ -15,6 +15,7 @@ const Header: React.FC = () => {
   const handleLogout = () => {
     localStorage.removeItem("Authorization");
     localStorage.removeItem("toggleValue");
+    localStorage.removeItem("dataSummary");
     Cookies.remove("X-API-KEY");
     Cookies.remove("csrftoken");
 
