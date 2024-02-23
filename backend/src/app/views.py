@@ -194,7 +194,7 @@ def get_survey(request):
     return redirect(f"{redirect_url}")
 
 
-def complete_survey(request):
+def complete_survey_status(request):
     """
     GET /survey/status?key=123&status=complete
     """
