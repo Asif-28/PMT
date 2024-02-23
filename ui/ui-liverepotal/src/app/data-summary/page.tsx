@@ -118,16 +118,20 @@ export default function BasicTable() {
         <table className="table-auto w-full border-collapse border h-full">
           <thead>
             <tr>
-              <th className="px-4 py-2 text-left border">Status</th>
+              <th className="px-4 py-2 text-left border text-[#0746BF]">
+                Status
+              </th>
               {data?.map((item) => (
                 <th
-                  className="px-4 py-2 text-left border"
+                  className="px-4 py-2 text-left border text-[#0746BF]"
                   key={item.vendor_code}
                 >
                   {item.vendor_code}
                 </th>
               ))}
-              <th className="px-4 py-2 text-left border">Total</th>
+              <th className="px-4 py-2 text-left border text-[#0746BF]">
+                Total
+              </th>
             </tr>
           </thead>
           <tbody>
