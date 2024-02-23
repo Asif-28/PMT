@@ -5,6 +5,7 @@ import DropDown from "../utils/DropDown";
 import Image from "next/image";
 import axiosWrapper from "@/hooks/DataFetch";
 import useUpdateProjectPauseClose from "@/hooks/UpdatePauseAndClose";
+import withAuth from "../withAuth/withAuth";
 
 const ClosedProjectComponent: React.FC = () => {
   const [projectsdata, setProjectsData] = useState<Project[]>([]);
@@ -124,4 +125,5 @@ const ClosedProjectComponent: React.FC = () => {
   );
 };
 
+// export default withAuth(ClosedProjectComponent);
 export default ClosedProjectComponent;

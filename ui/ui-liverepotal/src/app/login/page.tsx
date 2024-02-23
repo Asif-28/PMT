@@ -8,6 +8,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { redirect, useRouter } from "next/navigation";
 import { useAuthTokenStore } from "../../store/AuthToken";
+import loginAuth from "@/components/withAuth/loginAuth";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -180,4 +181,5 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default loginAuth(Login);
+// export default Login;

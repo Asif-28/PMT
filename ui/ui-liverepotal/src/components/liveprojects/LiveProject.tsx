@@ -8,6 +8,12 @@ import axiosWrapper from "@/hooks/DataFetch";
 import { redirect, useRouter } from "next/navigation";
 import { useDataSummaryStore } from "@/store/DataSummary";
 import Cookies from "js-cookie";
+import withAuth from "../withAuth/withAuth";
+import dynamic from "next/dynamic";
+
+const Live = dynamic(() => import("./LiveProject"), {
+  ssr: false,
+});
 
 const LiveProjectComponent: React.FC = () => {
   // useLayoutEffect(() => {
@@ -209,4 +215,5 @@ const LiveProjectComponent: React.FC = () => {
   );
 };
 
+// export default withAuth(LiveProjectComponent);
 export default LiveProjectComponent;
