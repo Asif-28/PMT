@@ -16,14 +16,7 @@ const page = () => {
           here&apos;s what&apos;s happening with your project today
         </span>
       </h3>
-      <Counts
-        todayCount={194}
-        yesterdayCount={100}
-        totalCount={133}
-        yesterdayTotalCount={144}
-        todaysTarget={200}
-        yesterdaysTarget={500}
-      />
+      <Counts />
       <div className="section flex justify-between mt-20 gap-6 relative">
         <MyView />
         <PartnersProgress value1={10} value2={8} value3={89} value4={35} />

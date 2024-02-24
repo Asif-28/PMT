@@ -1,8 +1,14 @@
+"use client";
 import React from "react";
 import LinearWithValueLabel from "./ProgressBar";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const PartnersProgress = ({ value1, value2, value3, value4 }: any) => {
+  const router = useRouter();
+  const handleProjectSummary = () => {
+    router.push("/data-summary");
+  };
   return (
     <div className="flex flex-col">
       <div className="md:min-w-[30rem] max-w-[32rem] shadow-xl px-8 py-3 rounded-2xl bg-[#fff]">
@@ -36,7 +42,10 @@ const PartnersProgress = ({ value1, value2, value3, value4 }: any) => {
       </div>
       {/* logo end  */}
       <div className="md:min-w-[30rem] max-w-[32rem] shadow-xl px-8 py-3 rounded-2xl bg-[#fff]">
-        <div className="flex justify-between pt-4 pb-6 px-2">
+        <div
+          onClick={handleProjectSummary}
+          className="flex justify-between pt-4 pb-6 px-2 cursor-pointer"
+        >
           <h2 className="font-bold text-gray-950">Data Summary</h2>
           <p className="text-sm">Overall</p>
         </div>

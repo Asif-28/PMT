@@ -42,7 +42,8 @@ const LiveProjectComponent: React.FC = () => {
 
   const handleSummary = ({ project }: any) => {
     updateDataSummary(project.project_code);
-    router.push("/data-summary");
+    // router.push("/data-summary");
+    router.push("/dashboard");
   };
 
   useEffect(() => {
