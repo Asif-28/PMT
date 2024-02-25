@@ -24,7 +24,7 @@ const page = () => {
           <TimeZones />
         </div>
       </div>
-      <Notification />
+      {/* <Notification /> */}
     </div>
   );
 };

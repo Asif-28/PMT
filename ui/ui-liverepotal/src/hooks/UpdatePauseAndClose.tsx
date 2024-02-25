@@ -3,6 +3,8 @@ import axios from "axios";
 import { useStatusStore } from "@/store/Status";
 import { useProjectCodeStore } from "@/store/ProjectCode";
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
 interface ApiResponse {
   // Define the properties you expect in the response
   // For example, you can have data, status, etc.
@@ -24,7 +26,7 @@ const useUpdateProjectPauseClose = ({ security }: any) => {
 
       // Check if both useProjectCode and useStatus are selected
       if (useProjectCode && useStatus) {
-        const url = "http://localhost:8000/project/update";
+        const url = `${baseUrl}project/update`;
         const params = {
           project_code: useProjectCode,
           status: useStatus,
