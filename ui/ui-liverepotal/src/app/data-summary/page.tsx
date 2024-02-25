@@ -91,8 +91,10 @@ export default function BasicTable() {
 
   return (
     <div className="section">
-      <h1 className="font-semibold text-2xl py-4 mt-10">Data Group Summary</h1>
-      <h2 className="text-[#64748B] pb-8">
+      <h1 className="font-semibold text-2xl py-4 mt-10 md:ml-8 ml-2">
+        Data Group Summary
+      </h1>
+      <h2 className="text-[#64748B] pb-8 md:ml-8 ml-2">
         Infant Milk Formula in Spain - {projectKeyValue}
       </h2>
       <div className="flex items-center gap-2  md:gap-24 my-7 md:my-12 md:ml-8 ml-2 ">
