@@ -3,6 +3,8 @@ import axios from "axios";
 import { useStatusStore } from "@/store/Status";
 import { useProjectCodeStore } from "@/store/ProjectCode";
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
 interface ApiResponse {
   data: any;
   status: number;
@@ -36,7 +38,7 @@ const useUpdateProject = () => {
         }
         console.log(toggleValue[useProjectCode]);
 
-        const url = "http://localhost:8000/project/update";
+        const url = `${baseUrl}project/update`;
         const params = {
           project_code: useProjectCode,
           status: useStatus,

@@ -5,20 +5,11 @@ import DropDown from "../utils/DropDown";
 import Image from "next/image";
 import useUpdateProject from "@/hooks/UpdateProjectLive";
 import axiosWrapper from "@/hooks/DataFetch";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useDataSummaryStore } from "@/store/DataSummary";
-import Cookies from "js-cookie";
+import withAuth from "../withAuth/withAuth";
 
 const LiveProjectComponent: React.FC = () => {
-  // useLayoutEffect(() => {
-  //   const cookie = Cookies.get("X-API-KEY");
-  //   if (cookie) {
-  //     redirect("/");
-  //   } else {
-  //     redirect("/login");
-  //   }
-  // }, []);
-
   const [projectsdata, setProjectsData] = useState<Project[]>([]);
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);
@@ -48,11 +39,11 @@ const LiveProjectComponent: React.FC = () => {
   const updateDataSummary = useDataSummaryStore(
     (state: any) => state.setDataSummary
   );
-  console.log(dataSummary);
 
   const handleSummary = ({ project }: any) => {
     updateDataSummary(project.project_code);
-    router.push("/data-summary");
+    // router.push("/data-summary");
+    router.push("/dashboard");
   };
 
   useEffect(() => {
@@ -136,7 +127,7 @@ const LiveProjectComponent: React.FC = () => {
             </tr>
           </thead>
 
-          <tbody className="bg-white divide-y-4 divide-gray-200">
+          <tbody className="bg-white divide-y-4 divide-gray-200 md:font-semibold">
             {projectsdata?.map((project: any) => (
               <tr
                 key={project.project_code}
@@ -209,4 +200,4 @@ const LiveProjectComponent: React.FC = () => {
   );
 };
 
-export default LiveProjectComponent;
+export default withAuth(LiveProjectComponent);

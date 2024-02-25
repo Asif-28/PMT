@@ -5,12 +5,15 @@ import DropDown from "../utils/DropDown";
 import Image from "next/image";
 import axiosWrapper from "@/hooks/DataFetch";
 import useUpdateProjectPauseClose from "@/hooks/UpdatePauseAndClose";
+import withAuth from "../withAuth/withAuth";
+import { useDataSummaryStore } from "@/store/DataSummary";
+import { useRouter } from "next/navigation";
 
 const PauseProjectComponent: React.FC = () => {
   const [projectsdata, setProjectsData] = useState<Project[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const res = useUpdateProjectPauseClose({ security: false });
-  console.log(res + " value");
+  const router = useRouter();
 
   useEffect(() => {
     async function FetchData() {
@@ -29,6 +32,16 @@ const PauseProjectComponent: React.FC = () => {
     }
     FetchData();
   }, [res]);
+
+  const dataSummary = useDataSummaryStore((state: any) => state.dataSummary);
+  const updateDataSummary = useDataSummaryStore(
+    (state: any) => state.setDataSummary
+  );
+
+  const handleSummary = ({ project }: any) => {
+    updateDataSummary(project.project_code);
+    router.push("/data-summary");
+  };
 
   return (
     <div className="max-w-[1550px] mx-auto">
@@ -84,10 +97,13 @@ const PauseProjectComponent: React.FC = () => {
             </tr>
           </thead>
 
-          <tbody className="bg-white divide-y-4 divide-gray-200">
+          <tbody className="bg-white divide-y-4 divide-gray-200 md:font-semibold">
             {projectsdata.map((project: any) => (
               <tr key={project.project_code} className="whitespace-nowrap">
-                <td className="px-3 md:px-6 py-2 sm:py-4">
+                <td
+                  onClick={() => handleSummary({ project })}
+                  className="px-3 md:px-6 py-2 sm:py-4 cursor-pointer"
+                >
                   {project.project_name}
                 </td>
                 <td className="px-3 md:px-6 py-2 sm:py-4">
@@ -124,4 +140,4 @@ const PauseProjectComponent: React.FC = () => {
   );
 };
 
-export default PauseProjectComponent;
+export default withAuth(PauseProjectComponent);

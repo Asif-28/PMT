@@ -8,6 +8,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { redirect, useRouter } from "next/navigation";
 import { useAuthTokenStore } from "../../store/AuthToken";
+import loginAuth from "@/components/withAuth/loginAuth";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -167,17 +168,17 @@ const Login = () => {
         <div className=" bg-[#5C2081] h-screen w-full max-w-2xl rounded-tr-[2.5rem] rounded-br-[2.5rem] flex justify-center pt-20 relative">
           <div className="absolute right-0 top-64">
             <Image
-              src="/legacy-bg.png"
+              src="/legacy-background.svg"
               alt="background"
               height={600}
               width={550}
             />
           </div>
-          <h1 className="text-[#fff] text-5xl font-bold">LEGACY REPOTAL</h1>
+          <h1 className="text-[#fff] text-5xl font-bold">LEGACY REPORTAL</h1>
         </div>
       </div>
     </main>
   );
 };
 
-export default Login;
+export default loginAuth(Login);

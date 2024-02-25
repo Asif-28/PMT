@@ -1,4 +1,9 @@
-import PauseProjectComponent from "@/components/pauseprojects/PauseProjects";
+import dynamic from "next/dynamic";
+
+const PauseProjectComponent = dynamic(
+  () => import("../../components/pauseprojects/PauseProjects"),
+  { ssr: false }
+);
 
 const PausedProjects = () => {
   return (

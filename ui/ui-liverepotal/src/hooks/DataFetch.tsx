@@ -1,6 +1,8 @@
 import axios, { AxiosRequestConfig } from "axios";
 
-const apiUrl = "http://localhost:8000/live_portal";
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
+const apiUrl = `${baseUrl}live_portal`;
 
 async function axiosWrapper<T>(
   endpoint: string,
